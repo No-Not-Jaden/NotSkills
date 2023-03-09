@@ -1,0 +1,7 @@
+# 0 for timed clicks
+# 1 for directional clicks
+skill-select-type: 0
+# how big the pause ratio is between big and small pauses
+pause-ratio: 1.75
+# how long until your last click is expired in milliseconds
+expire-ms: 10000
