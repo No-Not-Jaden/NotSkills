@@ -148,11 +148,29 @@ public class Events  implements Listener {
                                             event.getPlayer().sendMessage(ChatColor.GREEN + "You have triggered slot: 1");
                                             if (event.getItem().isSimilar(wand))
                                                 Spells.castIndexSpell(0, event.getPlayer());
+                                            if (event.getItem().isSimilar(sword)) {
+                                                skillEffects.addSkill(event.getPlayer(), 0);
+                                            }
+                                            if (event.getItem().isSimilar(bow)) {
+                                                skillEffects.addSkill(event.getPlayer(), 4);
+                                            }
+                                            if (event.getItem().isSimilar(trident)) {
+                                                skillEffects.addSkill(event.getPlayer(), 8);
+                                            }
                                         } else {
                                             // down
                                             event.getPlayer().sendMessage(ChatColor.GREEN + "You have triggered slot: 3");
                                             if (event.getItem().isSimilar(wand))
                                                 Spells.castIndexSpell(2, event.getPlayer());
+                                            if (event.getItem().isSimilar(sword)) {
+                                                skillEffects.addSkill(event.getPlayer(), 2);
+                                            }
+                                            if (event.getItem().isSimilar(bow)) {
+                                                skillEffects.addSkill(event.getPlayer(), 6);
+                                            }
+                                            if (event.getItem().isSimilar(trident)) {
+                                                skillEffects.addSkill(event.getPlayer(), 10);
+                                            }
                                         }
                                     } else {
                                         if (left){
@@ -160,11 +178,29 @@ public class Events  implements Listener {
                                             event.getPlayer().sendMessage(ChatColor.GREEN + "You have triggered slot: 4");
                                             if (event.getItem().isSimilar(wand))
                                                 Spells.castIndexSpell(3, event.getPlayer());
+                                            if (event.getItem().isSimilar(sword)) {
+                                                skillEffects.addSkill(event.getPlayer(), 3);
+                                            }
+                                            if (event.getItem().isSimilar(bow)) {
+                                                skillEffects.addSkill(event.getPlayer(), 7);
+                                            }
+                                            if (event.getItem().isSimilar(trident)) {
+                                                skillEffects.addSkill(event.getPlayer(), 11);
+                                            }
                                         } else {
                                             // right
                                             event.getPlayer().sendMessage(ChatColor.GREEN + "You have triggered slot: 2");
                                             if (event.getItem().isSimilar(wand))
                                                 Spells.castIndexSpell(1, event.getPlayer());
+                                            if (event.getItem().isSimilar(sword)) {
+                                                skillEffects.addSkill(event.getPlayer(), 1);
+                                            }
+                                            if (event.getItem().isSimilar(bow)) {
+                                                skillEffects.addSkill(event.getPlayer(), 5);
+                                            }
+                                            if (event.getItem().isSimilar(trident)) {
+                                                skillEffects.addSkill(event.getPlayer(), 9);
+                                            }
                                         }
                                     }
 
