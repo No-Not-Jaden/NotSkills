@@ -17,24 +17,25 @@ import java.util.Random;
 
 public class Spells {
 
-    public static void castIndexSpell(int i, Player player, Plugin plugin){
+    public static void castIndexSpell(int i, Player player){
         switch (i){
             case 0:
-                smite(player, plugin);
+                smite(player);
                 break;
             case 1:
-                iceShards(player, plugin);
+                iceShards(player);
                 break;
             case 2:
-                snipe(player, plugin);
+                snipe(player);
                 break;
             case 3:
-                absorb(player, plugin);
+                absorb(player);
                 break;
         }
     }
 
-    public static void absorb(Player p, Plugin plugin){
+
+    public static void absorb(Player p){
         Random rand = new Random();
 
         Particle.DustOptions dustOptions = new Particle.DustOptions(org.bukkit.Color.fromRGB(0, 0, 0), 10);
@@ -82,7 +83,7 @@ public class Spells {
                             }
                         }
                     }
-                    if (timer > 32){
+                    if (timer > 16){
                         this.cancel();
                     }
                     timer++;
@@ -91,11 +92,11 @@ public class Spells {
                 }
 
             }
-        }.runTaskTimer(plugin,0,10L);
+        }.runTaskTimer(NotSkills.getInstance(),0,10L);
 
     }
 
-    public static void iceShards(Player p, Plugin plugin) {
+    public static void iceShards(Player p) {
 
         Particle.DustOptions dustOptions = new Particle.DustOptions(org.bukkit.Color.fromRGB(10, 50, 200), 1);
         Location front = p.getEyeLocation().add(p.getLocation().getDirection().multiply(1.3));
@@ -137,17 +138,17 @@ public class Spells {
                     this.cancel();
                 }
             }
-        }.runTaskTimer(plugin, 0, 1L);
+        }.runTaskTimer(NotSkills.getInstance(), 0, 1L);
     }
-    public static void smite(Player p, Plugin plugin){
+    public static void smite(Player p){
 
         Location target = p.getTargetBlock(null, 50).getLocation();
         LightningStrike lightningStrike = p.getWorld().strikeLightning(target);
-        lightningStrike.setMetadata("magic", new FixedMetadataValue(plugin, true));
-        lightningStrike.setMetadata(p.getUniqueId().toString(), new FixedMetadataValue(plugin, true));
+        lightningStrike.setMetadata("magic", new FixedMetadataValue(NotSkills.getInstance(), true));
+        lightningStrike.setMetadata(p.getUniqueId().toString(), new FixedMetadataValue(NotSkills.getInstance(), true));
     }
 
-    public static void snipe(Player p, Plugin plugin) {
+    public static void snipe(Player p) {
 
         Location launchLocation = p.getEyeLocation().add(p.getEyeLocation().getDirection());
         Vector launchDirection = p.getEyeLocation().getDirection().normalize();
@@ -200,7 +201,7 @@ public class Spells {
                 }
                 runs++;
             }
-        }.runTaskTimer(plugin,0L,1L);
+        }.runTaskTimer(NotSkills.getInstance(),0L,1L);
 
 
         //arrow.setMetadata("magic", new FixedMetadataValue(plugin, true));

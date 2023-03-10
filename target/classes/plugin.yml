@@ -1,0 +1,8 @@
+name: NotSkills
+version: '1.16'
+main: me.jadenp.notskills.NotSkills
+api-version: 1.19
+commands:
+  notskills:
+    description: use
+    aliases: [ns]

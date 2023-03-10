@@ -17,12 +17,14 @@ public final class NotSkills extends JavaPlugin {
         instance = this;
         Items.addMaterialData();
         Bukkit.getPluginManager().registerEvents(new Events(), this);
-        getCommand("notskills").setExecutor(new Commands());
+        Commands commands = new Commands();
+        getCommand("notskills").setExecutor(commands);
+        getCommand("notskills").setTabCompleter(commands);
         saveDefaultConfig();
         ConfigOptions.reloadOptions();
     }
 
-    public static Plugin getInstance() {
+    public static NotSkills getInstance() {
         return instance;
     }
 

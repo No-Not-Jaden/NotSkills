@@ -24,7 +24,7 @@ public class Items {
         meta.setLore(new ArrayList<>(Arrays.asList("", ChatColor.DARK_GREEN + "Not your ordinary stick...", ChatColor.DARK_GREEN + "This one is in the shape of a gun", "")));
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         wand.setItemMeta(meta);
-        wand.addEnchantment(Enchantment.DURABILITY, 0);
+        wand.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
 
         meta = sword.getItemMeta();
         assert meta != null;
@@ -43,7 +43,7 @@ public class Items {
         meta.setDisplayName(ChatColor.GREEN + "Skill Trident");
         meta.setLore(new ArrayList<>(Arrays.asList("", ChatColor.DARK_GREEN + "Borrowed from Aqua-man", "")));
         trident.setItemMeta(meta);
-        trident.addEnchantment(Enchantment.LOYALTY, 2);
+        trident.addEnchantment(Enchantment.LOYALTY, 3);
     }
 
     public static boolean isMagicItem(ItemStack itemStack){

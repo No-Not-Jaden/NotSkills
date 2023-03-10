@@ -1,8 +1,11 @@
 package me.jadenp.notskills;
 
-import jdk.internal.net.http.common.Pair;
+
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -15,12 +18,11 @@ import java.util.Map;
 import java.util.UUID;
 
 import static me.jadenp.notskills.ConfigOptions.*;
-import static me.jadenp.notskills.Items.isMagicItem;
-import static me.jadenp.notskills.Items.wand;
+import static me.jadenp.notskills.Items.*;
 
 public class Events  implements Listener {
     public Map<UUID, ArrayList<Long>> casting = new HashMap<>(); // used for timed clicks
-    public Map<UUID, Pair<Location, Long>> lastClicks = new HashMap<>();
+    public Map<UUID, LocLong> lastClicks = new HashMap<>();
 
     private static final boolean[][] registeredTriggers = new boolean[][]{
             {false, false, false},
@@ -28,13 +30,20 @@ public class Events  implements Listener {
             {true, true, false},
             {true, false, false}
     };
-    public Events(){}
+
+    public SkillEffects skillEffects;
+
+    public Events() {
+        skillEffects = new SkillEffects();
+        Bukkit.getPluginManager().registerEvents(skillEffects, NotSkills.getInstance());
+    }
+
     @EventHandler
-    public void onInteract(PlayerInteractEvent event){
-        if (event.getPlayer().getItemInUse() != null)
-            if (event.getPlayer().isSneaking()) // so you don't accidentally cast a spell or skill
-                if (isMagicItem(event.getPlayer().getItemInUse())){
-                    if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_AIR) {
+    public void onInteract(PlayerInteractEvent event) {
+        if (event.getItem() != null) {
+            if (event.getPlayer().isSneaking()) { // so you don't accidentally cast a spell or skill
+                if (isMagicItem(event.getItem())) {
+                    if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
                         if (skillSelectType == 0) {
                             ArrayList<Long> clickTimes;
                             // grab previous clicks
@@ -42,7 +51,9 @@ public class Events  implements Listener {
                                 clickTimes = casting.get(event.getPlayer().getUniqueId());
                                 // clear up expired clicks
                                 while (clickTimes.size() > 0 && clickTimes.get(0) + expireMS < System.currentTimeMillis()) {
+                                    Bukkit.getLogger().info(clickTimes.get(0) + " | " + expireMS + " | " + System.currentTimeMillis());
                                     clickTimes.remove(0);
+
                                 }
                             } else {
                                 clickTimes = new ArrayList<>();
@@ -92,62 +103,86 @@ public class Events  implements Listener {
                                 // check with registered triggers to see if the pattern is valid
                                 int index = checkPattern(trigger);
                                 if (index != -1) {
-                                    event.getPlayer().sendMessage(ChatColor.GREEN + "You have triggered slot: " + index + 1);
-                                    if (event.getPlayer().getItemInUse().isSimilar(wand)) {
-                                        Spells.castIndexSpell(index, event.getPlayer(), NotSkills.getInstance());
+                                    event.getPlayer().sendMessage(ChatColor.GREEN + "You have triggered slot: " + (index + 1));
+                                    if (event.getItem().isSimilar(wand)) {
+                                        Spells.castIndexSpell(index, event.getPlayer());
+                                    }
+                                    if (event.getItem().isSimilar(sword)) {
+                                        skillEffects.addSkill(event.getPlayer(), index);
+                                    }
+                                    if (event.getItem().isSimilar(bow)) {
+                                        skillEffects.addSkill(event.getPlayer(), index + 4);
+                                    }
+                                    if (event.getItem().isSimilar(trident)) {
+                                        skillEffects.addSkill(event.getPlayer(), index + 8);
                                     }
                                 } else {
                                     event.getPlayer().sendMessage(ChatColor.GOLD + "Not a valid pattern.");
                                 }
+                                event.getPlayer().playSound(event.getPlayer(), Sound.ENTITY_ARROW_HIT_PLAYER, 1,1);
+                            } else {
+                                event.getPlayer().playSound(event.getPlayer(), Sound.ENTITY_LEASH_KNOT_BREAK, 1,1);
                             }
                             if (casting.containsKey(event.getPlayer().getUniqueId())) {
                                 casting.replace(event.getPlayer().getUniqueId(), clickTimes);
                             } else {
                                 casting.put(event.getPlayer().getUniqueId(), clickTimes);
                             }
-                        } else if (skillSelectType == 1){
+                        } else if (skillSelectType == 1) {
                             Location clickLocation = event.getPlayer().getEyeLocation().add(event.getPlayer().getEyeLocation().getDirection());
-                            if (lastClicks.containsKey(event.getPlayer().getUniqueId())){
-                                Pair<Location, Long> lastClick = lastClicks.get(event.getPlayer().getUniqueId());
-                                if (lastClick.second + expireMS < System.currentTimeMillis()){
-                                    lastClick = new Pair<>(clickLocation, System.currentTimeMillis());
+                            if (lastClicks.containsKey(event.getPlayer().getUniqueId())) {
+                                LocLong lastClick = lastClicks.get(event.getPlayer().getUniqueId());
+                                if (lastClick.getLong() + expireMS < System.currentTimeMillis()) {
+                                    lastClick = new LocLong(clickLocation, System.currentTimeMillis());
                                     lastClicks.replace(event.getPlayer().getUniqueId(), lastClick);
                                 } else {
-                                    Vector p2first = lastClick.first.toVector().subtract(event.getPlayer().getEyeLocation().toVector());
+                                    Vector p2first = lastClick.getLocation().toVector().subtract(event.getPlayer().getEyeLocation().toVector());
                                     Vector p2second = clickLocation.toVector().subtract(event.getPlayer().getEyeLocation().toVector());
                                     double yaw = getYawAngle(p2first, p2second);
                                     boolean left = getRelativeVector(p2first, p2second).equals("l");
-                                    double yDiff = clickLocation.getY() - lastClick.first.getY();
-                                    if (yDiff > 0.75){
-                                        // up
-                                        event.getPlayer().sendMessage(ChatColor.GREEN + "You have triggered slot: 1");
-                                        if (event.getPlayer().getItemInUse().isSimilar(wand))
-                                            Spells.castIndexSpell(0, event.getPlayer(), NotSkills.getInstance());
-                                    } else if (!left && yaw > Math.PI / 4) {
-                                        // right
-                                        event.getPlayer().sendMessage(ChatColor.GREEN + "You have triggered slot: 2");
-                                        if (event.getPlayer().getItemInUse().isSimilar(wand))
-                                            Spells.castIndexSpell(1, event.getPlayer(), NotSkills.getInstance());
-                                    } else if (yDiff < 0.75) {
-                                        // down
-                                        event.getPlayer().sendMessage(ChatColor.GREEN + "You have triggered slot: 3");
-                                        if (event.getPlayer().getItemInUse().isSimilar(wand))
-                                            Spells.castIndexSpell(2, event.getPlayer(), NotSkills.getInstance());
-                                    } else if (left && yaw > Math.PI / 4) {
-                                        // right
-                                        event.getPlayer().sendMessage(ChatColor.GREEN + "You have triggered slot: 4");
-                                        if (event.getPlayer().getItemInUse().isSimilar(wand))
-                                            Spells.castIndexSpell(3, event.getPlayer(), NotSkills.getInstance());
+                                    double yDiff = clickLocation.getY() - lastClick.getLocation().getY();
+                                    if (Math.abs(yDiff) > yaw){
+                                        // up or down
+                                        if (yDiff > 0){
+                                            // up
+                                            event.getPlayer().sendMessage(ChatColor.GREEN + "You have triggered slot: 1");
+                                            if (event.getItem().isSimilar(wand))
+                                                Spells.castIndexSpell(0, event.getPlayer());
+                                        } else {
+                                            // down
+                                            event.getPlayer().sendMessage(ChatColor.GREEN + "You have triggered slot: 3");
+                                            if (event.getItem().isSimilar(wand))
+                                                Spells.castIndexSpell(2, event.getPlayer());
+                                        }
+                                    } else {
+                                        if (left){
+                                            //left
+                                            event.getPlayer().sendMessage(ChatColor.GREEN + "You have triggered slot: 4");
+                                            if (event.getItem().isSimilar(wand))
+                                                Spells.castIndexSpell(3, event.getPlayer());
+                                        } else {
+                                            // right
+                                            event.getPlayer().sendMessage(ChatColor.GREEN + "You have triggered slot: 2");
+                                            if (event.getItem().isSimilar(wand))
+                                                Spells.castIndexSpell(1, event.getPlayer());
+                                        }
                                     }
+
+                                    event.getPlayer().playSound(event.getPlayer(), Sound.ENTITY_ARROW_HIT_PLAYER, 1,1);
+                                    lastClicks.remove(event.getPlayer().getUniqueId());
                                 }
                             } else {
-                                Pair<Location,Long> lastClick = new Pair<>(clickLocation, System.currentTimeMillis());
+                                event.getPlayer().playSound(event.getPlayer(), Sound.ENTITY_LEASH_KNOT_BREAK, 1,1);
+                                LocLong lastClick = new LocLong(clickLocation, System.currentTimeMillis());
                                 lastClicks.put(event.getPlayer().getUniqueId(), lastClick);
                             }
                         }
                     }
+                }
             }
     }
+
+}
 
     private double getYawAngle(Vector v1, Vector v2){
         double x = v1.getX();

@@ -1,5 +1,6 @@
 package me.jadenp.notskills;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -31,6 +32,7 @@ public class Commands implements CommandExecutor, TabCompleter {
                     }
                 }
                 if (args[0].equalsIgnoreCase("reload")){
+                    sender.sendMessage(ChatColor.GREEN + "Reloaded config!");
                     ConfigOptions.reloadOptions();
                 }
             }
@@ -47,6 +49,7 @@ public class Commands implements CommandExecutor, TabCompleter {
                 tab.add("trident");
                 tab.add("sword");
                 tab.add("bow");
+                tab.add("reload");
             }
         }
         return tab;
