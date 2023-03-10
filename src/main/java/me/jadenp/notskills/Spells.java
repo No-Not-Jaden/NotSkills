@@ -83,7 +83,7 @@ public class Spells {
                             }
                         }
                     }
-                    if (timer > 16){
+                    if (timer > 8){
                         this.cancel();
                     }
                     timer++;

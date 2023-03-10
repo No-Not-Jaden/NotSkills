@@ -2,14 +2,18 @@ package me.jadenp.notskills;
 
 
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -103,19 +107,7 @@ public class Events  implements Listener {
                                 // check with registered triggers to see if the pattern is valid
                                 int index = checkPattern(trigger);
                                 if (index != -1) {
-                                    event.getPlayer().sendMessage(ChatColor.GREEN + "You have triggered slot: " + (index + 1));
-                                    if (event.getItem().isSimilar(wand)) {
-                                        Spells.castIndexSpell(index, event.getPlayer());
-                                    }
-                                    if (event.getItem().isSimilar(sword)) {
-                                        skillEffects.addSkill(event.getPlayer(), index);
-                                    }
-                                    if (event.getItem().isSimilar(bow)) {
-                                        skillEffects.addSkill(event.getPlayer(), index + 4);
-                                    }
-                                    if (event.getItem().isSimilar(trident)) {
-                                        skillEffects.addSkill(event.getPlayer(), index + 8);
-                                    }
+                                    useSkill(event.getPlayer(), event.getItem(), index);
                                 } else {
                                     event.getPlayer().sendMessage(ChatColor.GOLD + "Not a valid pattern.");
                                 }
@@ -145,62 +137,18 @@ public class Events  implements Listener {
                                         // up or down
                                         if (yDiff > 0){
                                             // up
-                                            event.getPlayer().sendMessage(ChatColor.GREEN + "You have triggered slot: 1");
-                                            if (event.getItem().isSimilar(wand))
-                                                Spells.castIndexSpell(0, event.getPlayer());
-                                            if (event.getItem().isSimilar(sword)) {
-                                                skillEffects.addSkill(event.getPlayer(), 0);
-                                            }
-                                            if (event.getItem().isSimilar(bow)) {
-                                                skillEffects.addSkill(event.getPlayer(), 4);
-                                            }
-                                            if (event.getItem().isSimilar(trident)) {
-                                                skillEffects.addSkill(event.getPlayer(), 8);
-                                            }
+                                            useSkill(event.getPlayer(), event.getItem(), 0);
                                         } else {
                                             // down
-                                            event.getPlayer().sendMessage(ChatColor.GREEN + "You have triggered slot: 3");
-                                            if (event.getItem().isSimilar(wand))
-                                                Spells.castIndexSpell(2, event.getPlayer());
-                                            if (event.getItem().isSimilar(sword)) {
-                                                skillEffects.addSkill(event.getPlayer(), 2);
-                                            }
-                                            if (event.getItem().isSimilar(bow)) {
-                                                skillEffects.addSkill(event.getPlayer(), 6);
-                                            }
-                                            if (event.getItem().isSimilar(trident)) {
-                                                skillEffects.addSkill(event.getPlayer(), 10);
-                                            }
+                                            useSkill(event.getPlayer(), event.getItem(), 2);
                                         }
                                     } else {
                                         if (left){
                                             //left
-                                            event.getPlayer().sendMessage(ChatColor.GREEN + "You have triggered slot: 4");
-                                            if (event.getItem().isSimilar(wand))
-                                                Spells.castIndexSpell(3, event.getPlayer());
-                                            if (event.getItem().isSimilar(sword)) {
-                                                skillEffects.addSkill(event.getPlayer(), 3);
-                                            }
-                                            if (event.getItem().isSimilar(bow)) {
-                                                skillEffects.addSkill(event.getPlayer(), 7);
-                                            }
-                                            if (event.getItem().isSimilar(trident)) {
-                                                skillEffects.addSkill(event.getPlayer(), 11);
-                                            }
+                                            useSkill(event.getPlayer(), event.getItem(), 3);
                                         } else {
                                             // right
-                                            event.getPlayer().sendMessage(ChatColor.GREEN + "You have triggered slot: 2");
-                                            if (event.getItem().isSimilar(wand))
-                                                Spells.castIndexSpell(1, event.getPlayer());
-                                            if (event.getItem().isSimilar(sword)) {
-                                                skillEffects.addSkill(event.getPlayer(), 1);
-                                            }
-                                            if (event.getItem().isSimilar(bow)) {
-                                                skillEffects.addSkill(event.getPlayer(), 5);
-                                            }
-                                            if (event.getItem().isSimilar(trident)) {
-                                                skillEffects.addSkill(event.getPlayer(), 9);
-                                            }
+                                            useSkill(event.getPlayer(), event.getItem(), 1);
                                         }
                                     }
 
@@ -219,6 +167,22 @@ public class Events  implements Listener {
     }
 
 }
+
+    public void useSkill(Player player, ItemStack hand, int slot){
+        // check which skill type it should be
+        if (hand.isSimilar(wand))
+            Spells.castIndexSpell(slot, player);
+        if (hand.isSimilar(sword))
+            skillEffects.addSkill(player, slot);
+        if (hand.isSimilar(bow))
+            skillEffects.addSkill(player, slot + 4);
+        if (hand.isSimilar(trident))
+            skillEffects.addSkill(player, slot + 8);
+        // lil notification message
+        player.sendMessage(ChatColor.GREEN + "You have triggered slot: " + (slot + 1));
+        String message = ChatColor.GREEN + "Skill Slot " + (slot + 1) + " Activated";
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
+    }
 
     private double getYawAngle(Vector v1, Vector v2){
         double x = v1.getX();
