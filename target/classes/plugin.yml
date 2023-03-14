@@ -1,8 +1,12 @@
 name: NotSkills
-version: '1.21'
+version: '1.27'
 main: me.jadenp.notskills.NotSkills
 api-version: 1.19
 commands:
   notskills:
-    description: use
+    description: Use this plugin!
     aliases: [ns]
+permissions:
+  notskills.admin:
+    description: Use the commands!
+    default: op

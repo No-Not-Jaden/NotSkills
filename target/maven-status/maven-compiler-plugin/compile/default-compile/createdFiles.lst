@@ -2,9 +2,12 @@ me\jadenp\notskills\SkillEffects.class
 me\jadenp\notskills\Commands.class
 me\jadenp\notskills\Events.class
 me\jadenp\notskills\Spells$3.class
+me\jadenp\notskills\PlayerData.class
 me\jadenp\notskills\SkillLong.class
 me\jadenp\notskills\Spells.class
+me\jadenp\notskills\SkillTrigger.class
 me\jadenp\notskills\Spells$2.class
+me\jadenp\notskills\Trigger.class
 me\jadenp\notskills\NotSkills.class
 me\jadenp\notskills\ConfigOptions.class
 me\jadenp\notskills\Items.class

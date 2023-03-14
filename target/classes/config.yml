@@ -1,14 +1,8 @@
-# 0 for timed clicks
-# 1 for directional clicks
+# -1 to let the players choose
 skill-select-type: 0
 # how big the pause ratio is between big and small pauses
 pause-ratio: 1.75
 # how long until your last click is expired in milliseconds
 expire-ms: 10000
 
-# timed click patters
-# these are the spaces inbetween clicks
-# small small small
-# big small big
-# big big small
-# big small small
+

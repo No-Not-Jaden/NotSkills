@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import static me.jadenp.notskills.ConfigOptions.*;
-import static me.jadenp.notskills.Items.*;
 
 public class Events  implements Listener {
     public Map<UUID, ArrayList<Long>> casting = new HashMap<>(); // used for timed clicks
@@ -48,7 +47,7 @@ public class Events  implements Listener {
             if (event.getPlayer().isSneaking()) { // so you don't accidentally cast a spell or skill
                 if (isMagicItem(event.getItem())) {
                     if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
-                        if (skillSelectType == 0) {
+                        if (defaultSST == 0) {
                             ArrayList<Long> clickTimes;
                             // grab previous clicks
                             if (casting.containsKey(event.getPlayer().getUniqueId())) {
@@ -120,7 +119,7 @@ public class Events  implements Listener {
                             } else {
                                 casting.put(event.getPlayer().getUniqueId(), clickTimes);
                             }
-                        } else if (skillSelectType == 1) {
+                        } else if (defaultSST == 1) {
                             Location clickLocation = event.getPlayer().getEyeLocation().add(event.getPlayer().getEyeLocation().getDirection());
                             if (lastClicks.containsKey(event.getPlayer().getUniqueId())) {
                                 LocLong lastClick = lastClicks.get(event.getPlayer().getUniqueId());

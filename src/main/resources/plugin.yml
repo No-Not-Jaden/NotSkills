@@ -4,5 +4,12 @@ main: me.jadenp.notskills.NotSkills
 api-version: 1.19
 commands:
   notskills:
-    description: use
+    description: Use this plugin!
     aliases: [ns]
+permissions:
+  notskills.admin:
+    description: Use the admin commands!
+    default: op
+  notskills.sst:
+    description: set your skill select type
+    default: true
