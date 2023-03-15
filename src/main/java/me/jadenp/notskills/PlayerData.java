@@ -32,4 +32,12 @@ public class PlayerData {
         }
         return 0;
     }
+
+    public void setCoolDown(String name, double seconds){
+        if (skillCooldowns.containsKey(name)){
+            skillCooldowns.replace(name, (long) (seconds * 1000));
+        } else {
+            skillCooldowns.put(name, (long) (seconds * 1000));
+        }
+    }
 }

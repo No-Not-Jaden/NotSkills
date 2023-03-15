@@ -2,14 +2,12 @@ package me.jadenp.notskills;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.util.Vector;
 
 import java.util.*;
 
@@ -56,47 +54,53 @@ public class SkillTrigger implements Listener {
                 Location clickLocation = player.getEyeLocation().add(player.getEyeLocation().getDirection());
                 clicks.add(new TriggerClick(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK, player.isSneaking(), ((LivingEntity)player).isOnGround(), clickLocation));
 
-                List<TriggerClick> validClicks =  new ArrayList<>();
-                if (getTrigger(player) == Trigger.DIRECTIONAL_CLICK){
-                    for (TriggerClick click : clicks){
-                        if (click.isCrouching()){
-                            validClicks.add(click);
-                        }
-                    }
+                int skillTrigger = 0;
+                switch (getTrigger(player)){
+                    case DIRECTIONAL_CLICK:
+                        skillTrigger = Trigger.directionalTrigger(player, clicks);
+                        break;
+                    case LEFT_RIGHT_CLICK:
+                        skillTrigger = Trigger.leftRightTrigger(player, clicks);
+                        break;
+                    case CROUCH_CLICK:
+                        skillTrigger = Trigger.crouchTrigger(player, clicks);
+                        break;
+                    case JUMP_CLICK:
+                        skillTrigger = Trigger.jumpTrigger(player, clicks);
+                        break;
+                    case CROUCH_JUMP_CLICK:
+                        skillTrigger = Trigger.crouchJumpTrigger(player, clicks);
+                        break;
+                    case TIMED_CLICK:
+                        skillTrigger = Trigger.timedTrigger(player, clicks);
+                        break;
+                    case DOUBLE_CLICK:
+                        skillTrigger = Trigger.doubleTrigger(player, clicks);
+                        break;
+                    case TRIPLE_CLICK:
+                        skillTrigger = Trigger.tripleTrigger(player, clicks);
+                        break;
+                    case MULTI_CLICK:
+                        skillTrigger = Trigger.multiTrigger(player,clicks);
+                        break;
+                }
 
-                    if (validClicks.size() > 1) {
-                        org.bukkit.util.Vector p2first = lastClick.getLocation().toVector().subtract(event.getPlayer().getEyeLocation().toVector());
-                        Vector p2second = clickLocation.toVector().subtract(event.getPlayer().getEyeLocation().toVector());
-                        double yaw = getYawAngle(p2first, p2second);
-                        boolean left = getRelativeVector(p2first, p2second).equals("l");
-                        double yDiff = clickLocation.getY() - lastClick.getLocation().getY();
-                        if (Math.abs(yDiff) > yaw) {
-                            // up or down
-                            if (yDiff > 0) {
-                                // up
-                                useSkill(event.getPlayer(), event.getItem(), 0);
-                            } else {
-                                // down
-                                useSkill(event.getPlayer(), event.getItem(), 2);
-                            }
-                        } else {
-                            if (left) {
-                                //left
-                                useSkill(event.getPlayer(), event.getItem(), 3);
-                            } else {
-                                // right
-                                useSkill(event.getPlayer(), event.getItem(), 1);
-                            }
-                        }
 
-                        event.getPlayer().playSound(event.getPlayer(), Sound.ENTITY_ARROW_HIT_PLAYER, 1, 1);
-                    }
+                if (skillTrigger > 0) {
+                    // activate skill
+                    clicks.clear();
 
                 }
+
+                if (recordedClicks.containsKey(player.getUniqueId()))
+                    recordedClicks.replace(player.getUniqueId(), clicks);
+                else
+                    recordedClicks.put(player.getUniqueId(), clicks);
+
             }
 
-    }
 
+    }
 
 
 

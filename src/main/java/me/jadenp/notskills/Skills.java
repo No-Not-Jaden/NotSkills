@@ -13,7 +13,7 @@ import static me.jadenp.notskills.ConfigOptions.*;
 public class Skills {
     private final static int maxSkillSlots = 8;
 
-    private List<String> lore = new ArrayList<>();
+    private List<String> lore;
     private int emptySkillSlots;
     private String[] usedSkillSlots = new String[maxSkillSlots];
 

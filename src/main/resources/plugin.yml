@@ -2,6 +2,8 @@ name: NotSkills
 version: '${project.version}'
 main: me.jadenp.notskills.NotSkills
 api-version: 1.19
+softdepend:
+  - PlaceholderAPI
 commands:
   notskills:
     description: Use this plugin!
