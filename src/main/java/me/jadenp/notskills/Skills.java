@@ -1,19 +1,21 @@
 package me.jadenp.notskills;
 
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static me.jadenp.notskills.ConfigOptions.skillIdentifier;
-import static me.jadenp.notskills.ConfigOptions.skillSlotsReserved;
+import static me.jadenp.notskills.ConfigOptions.*;
 
 public class Skills {
+    private final static int maxSkillSlots = 8;
 
     private List<String> lore = new ArrayList<>();
     private int emptySkillSlots;
-    private int usedSkillSlots;
+    private String[] usedSkillSlots = new String[maxSkillSlots];
 
     public Skills(List<String> lore){
         this.lore = lore;
@@ -24,33 +26,41 @@ public class Skills {
                 inSkillArea = !inSkillArea;
                 continue;
             }
+            if (str.equals(skillBreak))
+                continue;
             if (inSkillArea){
                 // check if string is reserved
                 int slots = getEmptySlots(str);
                 if (slots == -1){
-                    usedSkillSlots++;
+
+                    int bind;
+                    try {
+                        // grabbing the bind slot attached to the skill
+                        // have to parse around the special characters denoted as skillBindIdentifier in ConfigOptions.java
+                        bind = Integer.parseInt(str.substring(str.indexOf(splitBind[0] + splitBind[0].length()), str.indexOf(splitBind[1])));
+                    } catch (NumberFormatException | IndexOutOfBoundsException e){
+                        Bukkit.getLogger().warning("Error reading skill bind!");
+                        continue;
+                    }
+                    // some checks here ^^vv so just in case the lore is broken, there aren't big errors in console
+                    if (usedSkillSlots.length <= bind){
+                        Bukkit.getLogger().warning("Skill bind number is grater than max skill slots!");
+                        continue;
+                    }
+
+                    // these 2 lines are what actually matter
+                    String fullBindText = splitBind[0] + bind + splitBind[1]; // get stuff we don't want in the skill name
+                    usedSkillSlots[bind - 1] = str.substring(fullBindText.length()); // put everything we want into skill slot array
+
                     continue;
                 }
                 emptySkillSlots+= slots;
             }
         }
     }
-    public Skills(int skillSlots, String... skills){
-        lore = addSkillSlots(new ArrayList<>(), skillSlots);
-
-        for (String s : skills){
-            lore.add(0, s);
-        }
-    }
-    public Skills(List<String> previousLore, int skillSlots, String... skills){
-        lore = addSkillSlots(previousLore, skillSlots);
-
-        for (String s : skills){
-            lore.add(0, s);
-        }
-    }
 
     public List<String> getLore() {
+        reconstructLore();
         return lore;
     }
 
@@ -59,12 +69,16 @@ public class Skills {
     }
 
     public int getUsedSkillSlots() {
-        return usedSkillSlots;
+        for (int i = 0; i < usedSkillSlots.length; i++) {
+            if (usedSkillSlots[i] == null)
+                return i;
+        }
+        return usedSkillSlots.length;
     }
 
     // -1 for not an empty slot string
     private int getEmptySlots(String str){
-        String[] splitReserved = skillSlotsReserved.split("\\{amount\\}");
+
         for (String s : splitReserved){
             if (!str.contains(s)){
                 return -1;
@@ -74,24 +88,66 @@ public class Skills {
         int a = 0;
         try {
             a = Integer.parseInt(amount);
-        } catch (NumberFormatException ignored){
-
+        } catch (NumberFormatException e){
+            Bukkit.getLogger().warning("Empty skill slots do not display a number!");
         }
         return a;
     }
 
-    private List<String> addSkillSlots(List<String> startingLore, int amount){
-        startingLore.add(skillIdentifier); // used to identify skills used by this plugin
-        String skillSlots = skillSlotsReserved; // used to identify how many skill slots this item has
-        while (skillSlots.contains("{amount}")) {
-            skillSlots = skillSlots.replace("{amount}", amount + "");
+    public List<String> getOriginalLore(){
+        List<String> newLore = new ArrayList<>();
+        boolean inSkills = false;
+        for (String line : lore){
+            if (line.equals(skillIdentifier))
+                inSkills = !inSkills;
+            if (inSkills)
+                continue;
+            newLore.add(line);
         }
-        startingLore.add(skillSlots);
-        startingLore.add(skillIdentifier);
-        return startingLore;
+        return newLore;
     }
 
-    public static boolean hasSkill(ItemStack itemStack){
+    private void reconstructLore(){
+        List<String> newLore = getOriginalLore();
+        newLore.add(skillIdentifier);
+        for (int i = 0; i < usedSkillSlots.length; i++) {
+            if (usedSkillSlots[i] == null)
+                break;
+            if (i > 0)
+                newLore.add(skillBreak);
+            newLore.add(splitBind[0] + (i + 1) + splitBind[1] + usedSkillSlots[i]);
+        }
+        if (emptySkillSlots > 0){
+            newLore.add(skillBreak);
+            newLore.add(splitReserved[0] + emptySkillSlots + splitReserved[1]);
+        }
+        newLore.add(skillIdentifier);
+        lore = newLore;
+    }
+
+
+    public void addSkillSlots(int amount){
+        emptySkillSlots+= amount;
+        if (emptySkillSlots + getUsedSkillSlots() > maxSkillSlots){
+            Bukkit.getLogger().warning("Too many skill slots on an item!");
+            emptySkillSlots = maxSkillSlots;
+        }
+    }
+
+    public boolean addSkill(String name){
+        if (emptySkillSlots == 0)
+            return false;
+        for (int i = 0; i < usedSkillSlots.length; i++) {
+            if (usedSkillSlots[i] == null){
+                emptySkillSlots--;
+                usedSkillSlots[i] = name;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean hasSkill(@NotNull ItemStack itemStack){
         ItemMeta meta = itemStack.getItemMeta();
         assert meta != null;
         if (meta.hasLore()){
@@ -106,16 +162,45 @@ public class Skills {
         return false;
     }
 
-    private List<String> removeSkillSlots(int amount){
+    public boolean hasSkill(String name){
+        for (String str : usedSkillSlots){
+            if (str == null)
+                continue;
+            if (str.equalsIgnoreCase(name))
+                return true;
+        }
+        return false;
+    }
+
+    private void removeSkillSlots(int amount){
         // remove skills from lore, start with empty skill slots, then the highest skill
         if (emptySkillSlots > amount){
-
+            emptySkillSlots-= amount;
+            return;
+        }
+        amount-= emptySkillSlots;
+        emptySkillSlots = 0;
+        for (int i = usedSkillSlots.length - 1; i >= 0; i--) {
+            if (amount == 0)
+                return;
+            if (usedSkillSlots[i] == null)
+                continue;
+            usedSkillSlots[i] = null;
+            amount--;
         }
     }
 
-    private void removeSkill(String skill){
-        // remove names skill
-
+    private boolean removeSkill(String skill){
+        // remove named skill
+        for (int i = 0; i < usedSkillSlots.length; i++) {
+            if (usedSkillSlots[i] == null)
+                continue;
+            if (usedSkillSlots[i].equalsIgnoreCase(skill)){
+                usedSkillSlots[i] = null;
+                return true;
+            }
+        }
+        return false;
     }
 
 }
