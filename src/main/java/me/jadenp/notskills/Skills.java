@@ -109,29 +109,32 @@ public class Skills {
 
     private void reconstructLore(){
         List<String> newLore = getOriginalLore();
-        newLore.add(skillIdentifier);
-        for (int i = 0; i < usedSkillSlots.length; i++) {
-            if (usedSkillSlots[i] == null)
-                break;
-            if (i > 0)
+        if (emptySkillSlots > 0 || getUsedSkillSlots() > 0) {
+            newLore.add(skillIdentifier);
+            for (int i = 0; i < usedSkillSlots.length; i++) {
+                if (usedSkillSlots[i] == null)
+                    break;
+                if (i > 0)
+                    newLore.add(skillBreak);
+                newLore.add(splitBind[0] + (i + 1) + splitBind[1] + usedSkillSlots[i]);
+            }
+            if (emptySkillSlots > 0) {
                 newLore.add(skillBreak);
-            newLore.add(splitBind[0] + (i + 1) + splitBind[1] + usedSkillSlots[i]);
+                newLore.add(splitReserved[0] + emptySkillSlots + splitReserved[1]);
+            }
+            newLore.add(skillIdentifier);
         }
-        if (emptySkillSlots > 0){
-            newLore.add(skillBreak);
-            newLore.add(splitReserved[0] + emptySkillSlots + splitReserved[1]);
-        }
-        newLore.add(skillIdentifier);
         lore = newLore;
     }
 
 
-    public void addSkillSlots(int amount){
+    public Skills addSkillSlots(int amount){
         emptySkillSlots+= amount;
         if (emptySkillSlots + getUsedSkillSlots() > maxSkillSlots){
             Bukkit.getLogger().warning("Too many skill slots on an item!");
             emptySkillSlots = maxSkillSlots;
         }
+        return this;
     }
 
     public boolean addSkill(String name){
@@ -161,6 +164,22 @@ public class Skills {
         }
         return false;
     }
+    
+    public int getSkill(String name){
+        for (int i = 0; i < usedSkillSlots.length; i++) {
+            if (usedSkillSlots[i] == null)
+                continue;
+            if (usedSkillSlots[i].equalsIgnoreCase(name))
+                return i + 1;
+        }
+        return 0;
+    }
+
+    public String getSkill(int index){
+        if (index > usedSkillSlots.length)
+            return null;
+        return usedSkillSlots[index-1];
+    }
 
     public boolean hasSkill(String name){
         for (String str : usedSkillSlots){
@@ -172,22 +191,23 @@ public class Skills {
         return false;
     }
 
-    private void removeSkillSlots(int amount){
+    private Skills removeSkillSlots(int amount){
         // remove skills from lore, start with empty skill slots, then the highest skill
         if (emptySkillSlots > amount){
             emptySkillSlots-= amount;
-            return;
+            return this;
         }
         amount-= emptySkillSlots;
         emptySkillSlots = 0;
         for (int i = usedSkillSlots.length - 1; i >= 0; i--) {
             if (amount == 0)
-                return;
+                return this;
             if (usedSkillSlots[i] == null)
                 continue;
             usedSkillSlots[i] = null;
             amount--;
         }
+        return this;
     }
 
     private boolean removeSkill(String skill){

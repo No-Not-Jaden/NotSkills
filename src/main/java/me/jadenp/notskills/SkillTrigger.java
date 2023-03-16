@@ -89,7 +89,10 @@ public class SkillTrigger implements Listener {
                 if (skillTrigger > 0) {
                     // activate skill
                     clicks.clear();
-
+                    Skills skill = new Skills(Objects.requireNonNull(Objects.requireNonNull(player.getInventory().getItemInMainHand().getItemMeta()).getLore()));
+                    SkillOptions skillOptions = getSkill(skill.getSkill(skillTrigger));
+                    if (skillOptions != null)
+                        skillOptions.runActions(player);
                 }
 
                 if (recordedClicks.containsKey(player.getUniqueId()))

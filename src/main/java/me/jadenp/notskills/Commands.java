@@ -18,6 +18,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static me.jadenp.notskills.Items.*;
 import static me.jadenp.notskills.ConfigOptions.*;
@@ -65,21 +66,28 @@ public class Commands implements CommandExecutor, TabCompleter {
                 sender.sendMessage(ChatColor.BLUE + "/ns select (type)" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Changes skill select type");
             }
             if (args[0].equalsIgnoreCase("give")) {
-                if (args.length == 5) {
+                if (args.length >= 3) {
                     Player player = Bukkit.getPlayer(args[1]);
                     if (player == null) {
                         sender.sendMessage(prefix + ChatColor.RED + "Unknown player!");
                         return true;
                     }
 
+                    boolean artifact = false;
                     // get material
                     Material m = args[2].contains("{") ? Material.getMaterial(args[2].substring(0, args[2].indexOf("{")).toUpperCase()) : Material.getMaterial(args[2]);
                     if (m == null) {
-                        sender.sendMessage(prefix + ChatColor.RED + "Unknown item!");
-                        return true;
+                        if (args[2].equalsIgnoreCase("artifact")){
+                            m = Material.PAPER;
+                            artifact = true;
+                        } else {
+                            sender.sendMessage(prefix + ChatColor.RED + "Unknown item!");
+                            return true;
+                        }
+
                     }
 
-                    ItemStack item = new ItemStack(m);
+                    ItemStack item = artifact ? skillSlotArtifact : new ItemStack(m);
 
                     if (args[2].contains("{")) {
                         // has nbt
@@ -96,31 +104,39 @@ public class Commands implements CommandExecutor, TabCompleter {
                     }
 
                     // get item amount
-                    int amount;
-                    try {
-                        amount = Integer.parseInt(args[3]);
-                    } catch (NumberFormatException e) {
-                        sender.sendMessage(prefix + ChatColor.RED + "Not a valid item amount!");
-                        return true;
+                    int amount = 1;
+                    if (args.length >= 4) {
+                        try {
+                            amount = Integer.parseInt(args[3]);
+                        } catch (NumberFormatException e) {
+                            sender.sendMessage(prefix + ChatColor.RED + "Not a valid item amount!");
+                            return true;
+                        }
+                        item.setAmount(amount);
                     }
-                    item.setAmount(amount);
 
                     // get skill slot amount
-                    int ssAmount;
-                    try {
-                        ssAmount = Integer.parseInt(args[4]);
-                    } catch (NumberFormatException e) {
-                        sender.sendMessage(prefix + ChatColor.RED + "Not a valid skill slot amount!");
-                        return true;
+                    int ssAmount = 1;
+                    if (args.length == 5) {
+                        try {
+                            ssAmount = Integer.parseInt(args[4]);
+                        } catch (NumberFormatException e) {
+                            sender.sendMessage(prefix + ChatColor.RED + "Not a valid skill slot amount!");
+                            return true;
+                        }
                     }
 
-                    // add skill slot lore
-                    ItemMeta meta = item.getItemMeta();
-                    assert meta != null;
-                    List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>(); // create lore if needed
-                    assert lore != null;
-                    meta.setLore(new Skills(lore, ssAmount).getLore());
-                    item.setItemMeta(meta);
+                    if (!artifact) {
+                        // add skill slot lore
+                        ItemMeta meta = item.getItemMeta();
+                        assert meta != null;
+                        List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>(); // create lore if needed
+                        assert lore != null;
+                        Skills skill = new Skills(lore);
+                        skill.addSkillSlots(ssAmount);
+                        meta.setLore(skill.getLore());
+                        item.setItemMeta(meta);
+                    }
 
                     // give player item
                     givePlayer(player, item);
@@ -150,7 +166,7 @@ public class Commands implements CommandExecutor, TabCompleter {
                     }
                     ItemMeta meta = item.getItemMeta();
                     assert meta != null;
-                    List<String> lore = meta.hasLore() ? new Skills(meta.getLore(), amount).getLore() : new Skills(amount).getLore();
+                    List<String> lore = meta.hasLore() ? new Skills(Objects.requireNonNull(meta.getLore())).addSkillSlots(amount).getLore() : new Skills(new ArrayList<>()).addSkillSlots(amount).getLore();
                     meta.setLore(lore);
                     item.setItemMeta(meta);
                     player.getInventory().setItemInMainHand(item);
@@ -167,7 +183,7 @@ public class Commands implements CommandExecutor, TabCompleter {
                     }
                     ItemMeta meta = item.getItemMeta();
                     assert meta != null;
-                    List<String> lore = meta.hasLore() ? new Skills(meta.getLore(), amount).getLore() : new Skills(amount).getLore();
+                    List<String> lore = meta.hasLore() ? new Skills(Objects.requireNonNull(meta.getLore())).addSkillSlots(amount).getLore() : new Skills(new ArrayList<>()).addSkillSlots(amount).getLore();
                     meta.setLore(lore);
                     item.setItemMeta(meta);
                     ((Player)sender).getInventory().setItemInMainHand(item);
