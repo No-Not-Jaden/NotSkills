@@ -62,6 +62,14 @@ public class ConfigOptions {
 
     }
 
+    public static SkillOptions getSkill(String name){
+        for (SkillOptions skill : skills){
+            if (skill.getName().equalsIgnoreCase(name))
+                return skill;
+        }
+        return null;
+    }
+
     public static String getPlaceholders(String str, OfflinePlayer player){
         return papiEnabled ? PlaceholderAPI.setPlaceholders(player, str) : str;
     }
