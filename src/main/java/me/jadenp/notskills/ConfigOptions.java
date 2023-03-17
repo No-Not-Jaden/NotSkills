@@ -52,8 +52,8 @@ public class ConfigOptions {
         pauseRatio = config.getDouble("pause-ratio");
         expireMS = config.getInt("expire-ms");
 
-        splitReserved = skillSlotsReserved.split("\\{amount\\}");
-        splitBind = skillBindIdentifier.split("\\{amount\\}");
+        splitReserved = skillSlotsReserved.split("\\{amount}");
+        splitBind = skillBindIdentifier.split("\\{amount}");
 
         skills.clear();
         for (int i = 1; config.isSet("skills." + i + ".name"); i++){

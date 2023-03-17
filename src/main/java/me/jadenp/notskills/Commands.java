@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -193,10 +194,45 @@ public class Commands implements CommandExecutor, TabCompleter {
 
 
             if (args[0].equalsIgnoreCase("remove")) {
+                // /ns remove <amount> <player>
                 if (args.length == 2) {
                     // remove a specific amount or from a player
                     Player player = Bukkit.getPlayer(args[1]);
                     if (player == null) {
+                        // number
+                        int amount;
+                        try {
+                            amount = Integer.parseInt(args[1]);
+                        } catch (NumberFormatException e) {
+                            sender.sendMessage(prefix + ChatColor.RED + "Not a valid amount!");
+                            return true;
+                        }
+                        ItemStack item = ((Player) sender).getInventory().getItemInMainHand();
+                        if (item.hasItemMeta() && Objects.requireNonNull(item.getItemMeta()).hasLore()) {
+                            Skills skill = new Skills(Objects.requireNonNull(item.getItemMeta().getLore())).removeSkillSlots(amount);
+                            item.getItemMeta().setLore(skill.getLore());
+                            ((Player)sender).getInventory().setItemInMainHand(item);
+                        } else {
+                            sender.sendMessage(prefix + ChatColor.RED + "Cannot remove skills from this item!");
+                        }
+                        sender.sendMessage(prefix + ChatColor.GREEN + "Successfully removed " + amount + " skills.");
+                    } else {
+                        ItemStack item = player.getInventory().getItemInMainHand();
+                        if (item.hasItemMeta() && Objects.requireNonNull(item.getItemMeta()).hasLore()) {
+                            Skills skill = new Skills(Objects.requireNonNull(item.getItemMeta().getLore())).removeAllSkills();
+                            item.getItemMeta().setLore(skill.getLore());
+                            player.getInventory().setItemInMainHand(item);
+                        } else {
+                            sender.sendMessage(prefix + ChatColor.RED + "Cannot remove skills from this item!");
+                        }
+                        sender.sendMessage(prefix + ChatColor.GREEN + "Successfully removed all skills from " + player.getName() + "'s held item.");
+                    }
+                } else if (args.length == 3) {
+                    Player player = Bukkit.getPlayer(args[2]);
+                    if (player == null) {
+                        sender.sendMessage(prefix + ChatColor.RED + "Invalid player.");
+                    } else {
+                        // number
                         int amount;
                         try {
                             amount = Integer.parseInt(args[1]);
@@ -205,11 +241,16 @@ public class Commands implements CommandExecutor, TabCompleter {
                             return true;
                         }
 
-                    } else {
-
+                        ItemStack item = player.getInventory().getItemInMainHand();
+                        if (item.hasItemMeta() && Objects.requireNonNull(item.getItemMeta()).hasLore()) {
+                            Skills skill = new Skills(Objects.requireNonNull(item.getItemMeta().getLore())).removeSkillSlots(amount);
+                            item.getItemMeta().setLore(skill.getLore());
+                            player.getInventory().setItemInMainHand(item);
+                        } else {
+                            sender.sendMessage(prefix + ChatColor.RED + "Cannot remove skills from this item!");
+                        }
+                        sender.sendMessage(prefix + ChatColor.GREEN + "Successfully removed " + amount + " skills from " + player.getName() + "'s held item.");
                     }
-                } else {
-                    // remove all
 
                 }
             }

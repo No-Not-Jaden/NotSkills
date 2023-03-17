@@ -6,6 +6,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static me.jadenp.notskills.ConfigOptions.*;
@@ -191,7 +192,13 @@ public class Skills {
         return false;
     }
 
-    private Skills removeSkillSlots(int amount){
+    public Skills removeAllSkills(){
+        emptySkillSlots = 0;
+        Arrays.fill(usedSkillSlots, null);
+        return this;
+    }
+
+    public Skills removeSkillSlots(int amount){
         // remove skills from lore, start with empty skill slots, then the highest skill
         if (emptySkillSlots > amount){
             emptySkillSlots-= amount;

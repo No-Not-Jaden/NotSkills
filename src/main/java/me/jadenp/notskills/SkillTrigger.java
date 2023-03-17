@@ -18,8 +18,8 @@ public class SkillTrigger implements Listener {
 
     private static SkillTrigger instance;
 
-    private Map<UUID, List<TriggerClick>> recordedClicks = new HashMap<>();
-    private Map<UUID, Trigger> selectedTriggers = new HashMap<>();
+    private final Map<UUID, List<TriggerClick>> recordedClicks = new HashMap<>();
+    private final Map<UUID, Trigger> selectedTriggers = new HashMap<>();
     public SkillTrigger(){
         instance = this;
         Bukkit.getPluginManager().registerEvents(this, NotSkills.getInstance());
