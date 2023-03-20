@@ -64,13 +64,11 @@ public class ConfigOptions {
 
     }
 
-    public static SkillOptions getSkill(String name, boolean stripColor){
-        if (stripColor)
-            name = ChatColor.stripColor(color(name));
+    public static SkillOptions getSkill(String name){
+        name = ChatColor.stripColor(color(name));
         for (SkillOptions skill : skills){
             String skillName = skill.getName();
-            if (stripColor)
-                skillName = ChatColor.stripColor(color(skillName));
+            skillName = ChatColor.stripColor(color(skillName));
             if (skillName.equalsIgnoreCase(name))
                 return skill;
         }

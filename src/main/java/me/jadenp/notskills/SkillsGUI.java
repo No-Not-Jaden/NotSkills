@@ -89,7 +89,7 @@ public class SkillsGUI implements Listener {
                 ItemMeta bookMeta = event.getCurrentItem().getItemMeta();
                 assert bookMeta != null;
                 // return if this fails, so nothing will break
-                if (!skill.removeSkill(bookMeta.getDisplayName(), true))
+                if (!skill.removeSkill(bookMeta.getDisplayName()))
                     return;
             } else if (event.getCurrentItem().getType() == Material.BOOK){
                 // select skill
@@ -147,7 +147,7 @@ public class SkillsGUI implements Listener {
         // move current skills to a new list
         List<SkillOptions> currentSkills = new ArrayList<>();
         for (int i = 0; i < skill.getUsedSkillSlots(); i++) {
-            SkillOptions skillOptions = getSkill(skill.getSkill(i), false);
+            SkillOptions skillOptions = getSkill(skill.getSkill(i));
             availableSkills.remove(skillOptions);
             currentSkills.add(skillOptions);
         }
@@ -155,7 +155,7 @@ public class SkillsGUI implements Listener {
         // move unlocked skills to a new list
         List<SkillOptions> unlockedSkills = new ArrayList<>();
         for (String str : playerData.getSkillsUnlocked()){
-            SkillOptions skillOptions = getSkill(str, false);
+            SkillOptions skillOptions = getSkill(str);
             availableSkills.remove(skillOptions);
             unlockedSkills.add(skillOptions);
         }

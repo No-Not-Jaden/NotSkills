@@ -227,16 +227,14 @@ public class Skills {
         return this;
     }
 
-    public boolean removeSkill(String skill, boolean stripColor){
+    public boolean removeSkill(String skill){
         // remove named skill
-        if (stripColor)
-            skill = ChatColor.stripColor(color(skill));
+        skill = ChatColor.stripColor(color(skill));
         for (int i = 0; i < usedSkillSlots.length; i++) {
             if (usedSkillSlots[i] == null)
                 continue;
             String skillName = usedSkillSlots[i];
-            if (stripColor)
-                skillName = ChatColor.stripColor(color(skillName));
+            skillName = ChatColor.stripColor(color(skillName));
             if (skillName.equalsIgnoreCase(skill)){
                 usedSkillSlots[i] = null;
                 return true;

@@ -1,6 +1,7 @@
 me\jadenp\notskills\Commands.class
 me\jadenp\notskills\Events.class
 me\jadenp\notskills\Spells$3.class
+me\jadenp\notskills\SkillsGUI.class
 me\jadenp\notskills\PlayerData.class
 me\jadenp\notskills\Spells.class
 me\jadenp\notskills\SkillTrigger.class
