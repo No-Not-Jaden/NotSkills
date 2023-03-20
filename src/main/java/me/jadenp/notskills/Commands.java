@@ -17,9 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.units.qual.C;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static me.jadenp.notskills.Items.*;
 import static me.jadenp.notskills.ConfigOptions.*;
@@ -51,6 +49,18 @@ public class Commands implements CommandExecutor, TabCompleter {
                 }
             }
         }
+        if (args[0].equalsIgnoreCase("help")) {
+            sender.sendMessage(prefix + ChatColor.YELLOW + "Here are a list of commands:");
+            if (sender.hasPermission("notskills.admin")) {
+                sender.sendMessage(ChatColor.BLUE + "/skill add (amount) <player>" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Adds a skill slot to held item.");
+                sender.sendMessage(ChatColor.BLUE + "/skill remove <amount> <player>" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Removes a skill slot from held item.");
+                sender.sendMessage(ChatColor.BLUE + "/skill give (player) (item) (amount) (skill slots)" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Gives a player an item with skill slots.");
+            }
+            if (sender.hasPermission("notskills.sst")) {
+                sender.sendMessage(ChatColor.BLUE + "/skill select (type)" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Changes skill select type.");
+            }
+            sender.sendMessage(ChatColor.BLUE + "/skill" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Opens skill menu for the held item.");
+        }
         if (!sender.hasPermission("notskills.admin")) {
             sender.sendMessage(ChatColor.RED + "You do not have permission to access this command.");
             return true;
@@ -59,14 +69,7 @@ public class Commands implements CommandExecutor, TabCompleter {
             if (args[0].equalsIgnoreCase("reload")) {
                 reloadOptions();
                 sender.sendMessage(prefix + ChatColor.YELLOW + "Reloaded NotSkills version " + NotSkills.getInstance().getDescription().getVersion() + "!");
-            } else if (args[0].equalsIgnoreCase("help")) {
-                sender.sendMessage(prefix + ChatColor.YELLOW + "Here are a list of commands:");
-                sender.sendMessage(ChatColor.BLUE + "/ns add (amount) <player>" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Adds a skill slot to held item.");
-                sender.sendMessage(ChatColor.BLUE + "/ns remove <amount> <player>" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Removes a skill slot from held item.");
-                sender.sendMessage(ChatColor.BLUE + "/ns give (player) (item) (amount) (skill slots)" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Gives a player an item with skill slots");
-                sender.sendMessage(ChatColor.BLUE + "/ns select (type)" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Changes skill select type");
-            }
-            if (args[0].equalsIgnoreCase("give")) {
+            } else if (args[0].equalsIgnoreCase("give")) {
                 if (args.length >= 3) {
                     Player player = Bukkit.getPlayer(args[1]);
                     if (player == null) {
@@ -141,11 +144,9 @@ public class Commands implements CommandExecutor, TabCompleter {
 
                     // give player item
                     givePlayer(player, item);
-                    sender.sendMessage(prefix + ChatColor.GREEN + "Gave " + ChatColor.DARK_GREEN + player.getName() + amount + ChatColor.GREEN + "x " + ChatColor.DARK_GREEN + m + ChatColor.GREEN + ".");
+                    sender.sendMessage(prefix + ChatColor.GREEN + "Gave " + ChatColor.DARK_GREEN + player.getName() + " " + amount + ChatColor.GREEN + "x " + ChatColor.DARK_GREEN + m + ChatColor.GREEN + ".");
                 }
-            }
-
-            if (args[0].equalsIgnoreCase("add")) {
+            } else if (args[0].equalsIgnoreCase("add")) {
                 int amount;
                 try {
                     amount = Integer.parseInt(args[1]);
@@ -154,7 +155,7 @@ public class Commands implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
-                if (args.length == 2){
+                if (args.length == 3){
                     // using another player
                     Player player = Bukkit.getPlayer(args[1]);
                     if (player == null){
@@ -190,10 +191,7 @@ public class Commands implements CommandExecutor, TabCompleter {
                     ((Player)sender).getInventory().setItemInMainHand(item);
                     ((Player)sender).updateInventory();
                 }
-            }
-
-
-            if (args[0].equalsIgnoreCase("remove")) {
+            } else if (args[0].equalsIgnoreCase("remove")) {
                 // /ns remove <amount> <player>
                 if (args.length == 2) {
                     // remove a specific amount or from a player
@@ -254,6 +252,9 @@ public class Commands implements CommandExecutor, TabCompleter {
 
                 }
             }
+        } else {
+            if (sender instanceof Player)
+                SkillsGUI.getInstance().openGUI((Player) sender);
         }
         return true;
     }
@@ -263,13 +264,50 @@ public class Commands implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(@NonNull CommandSender sender, @NonNull Command command, @NonNull String s, String[] args) {
         List<String> tab = new ArrayList<>();
         if (command.getName().equalsIgnoreCase("notskills")) {
-            if (args.length == 1) {
-                tab.add("wand");
-                tab.add("trident");
-                tab.add("sword");
-                tab.add("bow");
-                tab.add("reload");
+            if (sender.hasPermission("notskills.admin")){
+                if (args.length == 1) {
+                    tab.add("add");
+                    tab.add("remove");
+                    tab.add("give");
+                } else if (args.length == 2){
+                    if (args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("remove")){
+                        tab.add("#");
+                    }
+                    if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("give")){
+                        for (Player player : Bukkit.getOnlinePlayers()){
+                            tab.add(player.getName());
+                        }
+                    }
+                } else if (args.length == 3) {
+                    if (args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("remove")){
+                        for (Player player : Bukkit.getOnlinePlayers()){
+                            tab.add(player.getName());
+                        }
+                    } else if (args[0].equalsIgnoreCase("give")){
+                        tab.add("artifact");
+                    }
+                }
             }
+            if (sender.hasPermission("notskills.sst")){
+                if (args.length == 1) {
+                    tab.add("select");
+                } else if (args.length == 2){
+                    if (args[0].equalsIgnoreCase("select")){
+                        tab.add("LEFT_RIGHT_CLICK");
+                        tab.add("CROUCH_CLICK");
+                        tab.add("JUMP_CLICK");
+                        tab.add("CROUCH_JUMP_CLICK");
+                        tab.add("DIRECTIONAL_CLICK");
+                        tab.add("TIMED_CLICK");
+                        tab.add("DOUBLE_CLICK");
+                        tab.add("TRIPLE_CLICK");
+                        tab.add("MULTI_CLICK");
+                    }
+                }
+            }
+            String typed = args[args.length - 1];
+            tab.removeIf(test -> test.toLowerCase(Locale.ROOT).indexOf(typed.toLowerCase(Locale.ROOT)) != 0);
+            Collections.sort(tab);
         }
         return tab;
     }

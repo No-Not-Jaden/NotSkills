@@ -7,7 +7,7 @@ softdepend:
 commands:
   notskills:
     description: Use this plugin!
-    aliases: [ns]
+    aliases: [ns, skill]
 permissions:
   notskills.admin:
     description: Use the admin commands!

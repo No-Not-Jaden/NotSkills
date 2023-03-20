@@ -11,6 +11,12 @@ skills:
   1:
     # what the skill is called on skill artifacts and in item lore
     name: '&f&lLevitate'
+    # Lore of skill item in skill select menu
+    description:
+      - ''
+      - '&7Concentrate hard enough'
+      - '&7to glide with the wind'
+      - ''
     # how long in seconds before the player can use this skill again
     cooldown: 2.5
     # Starting the action with:
@@ -38,12 +44,20 @@ skills:
       - 'Blaze_Rod'
   2:
     name: '&f&lSmite'
+    description:
+      - ''
+      - '&7The gods act in your favor'
+      - ''
     cooldown: 5
     actions:
       - '[console] execute at {target20} run summon lightning'
     allowed-items: []
   3:
     name: '&f&lSeed Prank'
+    description:
+      - ''
+      - '&7First day on the job?'
+      - ''
     cooldown: 360
     actions:
       - '[message] &7&oWhere did these seeds come from?'
@@ -51,6 +65,12 @@ skills:
     allowed-items: []
   4:
     name: '&f&lLuck Reading'
+    description:
+      - ''
+      - '&7Say you''re addicted to gambling'
+      - '&7without saying you''re addicted'
+      - '&7to gambling'
+      - ''
     cooldown: 1200
     actions:
       - '[message] &eYour daily luck reading (0-10) is...'

@@ -2,13 +2,10 @@ package me.jadenp.notskills;
 
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerData {
-    private Map<String, Long> skillCooldowns = new HashMap<>();
+    private final Map<String, Long> skillCooldowns = new HashMap<>();
     private final UUID uuid;
     public PlayerData(UUID uuid){
         this.uuid = uuid;
@@ -24,6 +21,14 @@ public class PlayerData {
 
     public boolean isSkillUnlocked(String name){
         return skillCooldowns.containsKey(name);
+    }
+
+    public List<String> getSkillsUnlocked(){
+        List<String> skills = new ArrayList<>();
+        for (Object obj : skillCooldowns.keySet().toArray()){
+            skills.add((String) obj);
+        }
+        return skills;
     }
 
     public long getCooldown(String name){

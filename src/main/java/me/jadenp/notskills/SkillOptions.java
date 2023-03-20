@@ -1,26 +1,32 @@
 package me.jadenp.notskills;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
+import static me.jadenp.notskills.ConfigOptions.*;
 
 public class SkillOptions {
     private final String name;
     private final double cooldown;
     private final List<String> actions;
     private final List<String> allowedItems;
+    private final List<String> description;
 
-    public SkillOptions(String name, double cooldown, List<String> actions, @Nullable List<String> allowedItems) {
+    public SkillOptions(String name, double cooldown, List<String> actions, @Nullable List<String> allowedItems, List<String> description) {
 
         this.name = name;
         this.cooldown = cooldown;
         this.actions = actions;
         this.allowedItems = allowedItems;
+        this.description = description;
     }
 
     public boolean isAllowedItem(Material material) {
@@ -95,6 +101,40 @@ public class SkillOptions {
                     break;
             }
         }
+    }
+    
+    public ItemStack getDisplayItem(int state){
+        ItemStack itemStack = new ItemStack(Material.STRUCTURE_VOID);
+        if (state == 0){
+            itemStack = new ItemStack(Material.ENCHANTED_BOOK);
+        } else if (state == 1){
+            itemStack = new ItemStack(Material.BOOK);
+        }
+        if (state == 0 || state == 1){
+            ItemMeta meta = itemStack.getItemMeta();
+            assert meta != null;
+            meta.setDisplayName(color(name));
+            List<String> lore = new ArrayList<>();
+            for (String str : description){
+                lore.add(color(str));
+            }
+            meta.setLore(lore);
+        }
+        if (state == 2){
+            ItemMeta meta = itemStack.getItemMeta();
+            assert meta != null;
+            meta.setDisplayName(color(name));
+            List<String> lore = new ArrayList<>();
+            for (String str : description){
+                StringBuilder builder = new StringBuilder(ChatColor.GRAY + "");
+                for (int i = 0; i < str.length(); i++) {
+                    builder.append("*");
+                }
+                lore.add(builder.toString());
+            }
+            meta.setLore(lore);
+        }
+        return itemStack;
     }
 
     public double getCooldown() {

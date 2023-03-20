@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.sql.Array;
@@ -40,6 +41,7 @@ public class ConfigOptions {
     public static long multiClickResetTime = 500L;
     public static List<SkillOptions> skills = new ArrayList<>();
     public static boolean papiEnabled = false;
+    public static String skillMenu = ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Available Skills";
 
     public static void reloadOptions(){
         papiEnabled = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
@@ -57,17 +59,26 @@ public class ConfigOptions {
 
         skills.clear();
         for (int i = 1; config.isSet("skills." + i + ".name"); i++){
-            skills.add(new SkillOptions(color(config.getString("skills." + i + ".name")), config.getDouble("skills." + i + ".cooldown"), config.getStringList("skills." + i + ".actions"), config.getStringList("skills." + i + ".allowed-items")));
+            skills.add(new SkillOptions(color(config.getString("skills." + i + ".name")), config.getDouble("skills." + i + ".cooldown"), config.getStringList("skills." + i + ".actions"), config.getStringList("skills." + i + ".allowed-items"), config.getStringList("skills." + i + ".description")));
         }
 
     }
 
-    public static SkillOptions getSkill(String name){
+    public static SkillOptions getSkill(String name, boolean stripColor){
+        if (stripColor)
+            name = ChatColor.stripColor(color(name));
         for (SkillOptions skill : skills){
-            if (skill.getName().equalsIgnoreCase(name))
+            String skillName = skill.getName();
+            if (stripColor)
+                skillName = ChatColor.stripColor(color(skillName));
+            if (skillName.equalsIgnoreCase(name))
                 return skill;
         }
         return null;
+    }
+
+    public static PlayerData getPlayerData(Player player){
+        return NotSkills.getInstance().playerDataMap.get(player.getUniqueId());
     }
 
     public static String getPlaceholders(String str, OfflinePlayer player){

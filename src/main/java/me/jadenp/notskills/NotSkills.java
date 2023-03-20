@@ -3,12 +3,17 @@ package me.jadenp.notskills;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 public final class NotSkills extends JavaPlugin {
 
     // use clicks to cast spell
     // record time between clicks
 
     private static NotSkills instance;
+    public Map<UUID, PlayerData> playerDataMap = new HashMap<>();
 
     @Override
     public void onEnable() {

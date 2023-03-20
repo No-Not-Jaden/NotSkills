@@ -1,12 +1,17 @@
 name: NotSkills
-version: '1.27'
+version: '1.29'
 main: me.jadenp.notskills.NotSkills
 api-version: 1.19
+softdepend:
+  - PlaceholderAPI
 commands:
   notskills:
     description: Use this plugin!
     aliases: [ns]
 permissions:
   notskills.admin:
-    description: Use the commands!
+    description: Use the admin commands!
     default: op
+  notskills.sst:
+    description: set your skill select type
+    default: true

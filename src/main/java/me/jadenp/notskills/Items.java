@@ -18,6 +18,7 @@ import java.util.Map;
 public class Items {
 
     public static ItemStack skillSlotArtifact = new ItemStack(Material.PAPER);
+    public static ItemStack fill = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
 
     public static void addMaterialData(){
         ItemMeta meta = skillSlotArtifact.getItemMeta();
@@ -32,6 +33,11 @@ public class Items {
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         skillSlotArtifact.setItemMeta(meta);
         skillSlotArtifact.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
+
+        meta = fill.getItemMeta();
+        assert meta != null;
+        meta.setDisplayName("");
+        fill.setItemMeta(meta);
 
     }
 

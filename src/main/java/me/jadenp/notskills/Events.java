@@ -15,6 +15,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.PrepareInventoryResultEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
@@ -29,13 +30,9 @@ import static me.jadenp.notskills.Items.*;
 
 public class Events  implements Listener {
     public Events() {
-
+        Bukkit.getPluginManager().registerEvents(new SkillsGUI(), NotSkills.getInstance());
     }
 
-    @EventHandler
-    public void onInteract(PlayerInteractEvent event) {
-
-    }
 
     @EventHandler
     public void preparedResult(PrepareInventoryResultEvent event){
@@ -52,6 +49,13 @@ public class Events  implements Listener {
                 }
 
             }
+        }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event){
+        if (getPlayerData(event.getPlayer()) == null){
+            NotSkills.getInstance().playerDataMap.put(event.getPlayer().getUniqueId(), new PlayerData(event.getPlayer().getUniqueId()));
         }
     }
 

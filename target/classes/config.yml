@@ -1,8 +1,60 @@
-# -1 to let the players choose
-skill-select-type: 0
+
+skill-select:
+  default: 8
+  players-choose: true
 # how big the pause ratio is between big and small pauses
 pause-ratio: 1.75
 # how long until your last click is expired in milliseconds
 expire-ms: 10000
+
+skills:
+  1:
+    # what the skill is called on skill artifacts and in item lore
+    name: '&f&lLevitate'
+    # how long in seconds before the player can use this skill again
+    cooldown: 2.5
+    # Starting the action with:
+    # • [player] will run a command as the player
+    # • [console] will run a command as the console
+    # • [message] will send the player a message
+    # These characters will be replaced:
+    # • {player} will be replaced with the player's name
+    # • {target<x>} will be replaced with the block position that the player is looking at with a maximum distance of x
+    # • {random<x>} will be replaced with a random number from 0 (inclusive) to x (non-inclusive)
+    # • {random<y>_<x>} will be replaced with a random number from y (inclusive) to x (non-inclusive)
+    # External plugin support:
+    # • Placeholders will be parsed as the player
+    actions:
+      - '[console] execute run give {player} levitation 1 {random20_300} false'
+      - '[message] &7&oYou appear to feel lighter.'
+    # Which items the skill can be applied to (using the command to add skills bypasses this)
+    # • The name of the item material must include at least one string in the list
+    # • Add "*" at the beginning to match the string strictly
+    # • Leave the list empty to allow the skill on all items
+    # In this case, a stick, all types of hoes, and a blaze rod can have this skill be attached to them
+    allowed-items:
+      - '*Stick'
+      - 'Hoe'
+      - 'Blaze_Rod'
+  2:
+    name: '&f&lSmite'
+    cooldown: 5
+    actions:
+      - '[console] execute at {target20} run summon lightning'
+    allowed-items: []
+  3:
+    name: '&f&lSeed Prank'
+    cooldown: 360
+    actions:
+      - '[message] &7&oWhere did these seeds come from?'
+      - '[console] give {player} wheat_seeds 3600'
+    allowed-items: []
+  4:
+    name: '&f&lLuck Reading'
+    cooldown: 1200
+    actions:
+      - '[message] &eYour daily luck reading (0-10) is...'
+      - '[message] &d&l{random10}'
+    allowed-items: []
 
 

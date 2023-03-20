@@ -1,6 +1,7 @@
 package me.jadenp.notskills;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -120,7 +121,8 @@ public class Skills {
                 newLore.add(splitBind[0] + (i + 1) + splitBind[1] + usedSkillSlots[i]);
             }
             if (emptySkillSlots > 0) {
-                newLore.add(skillBreak);
+                if (getUsedSkillSlots() > 0)
+                    newLore.add(skillBreak);
                 newLore.add(splitReserved[0] + emptySkillSlots + splitReserved[1]);
             }
             newLore.add(skillIdentifier);
@@ -192,8 +194,16 @@ public class Skills {
         return false;
     }
 
+    // deletes skills
     public Skills removeAllSkills(){
         emptySkillSlots = 0;
+        Arrays.fill(usedSkillSlots, null);
+        return this;
+    }
+
+    // changes used skills into empty skills
+    public Skills resetSkills(){
+        emptySkillSlots+= getUsedSkillSlots();
         Arrays.fill(usedSkillSlots, null);
         return this;
     }
@@ -217,12 +227,17 @@ public class Skills {
         return this;
     }
 
-    private boolean removeSkill(String skill){
+    public boolean removeSkill(String skill, boolean stripColor){
         // remove named skill
+        if (stripColor)
+            skill = ChatColor.stripColor(color(skill));
         for (int i = 0; i < usedSkillSlots.length; i++) {
             if (usedSkillSlots[i] == null)
                 continue;
-            if (usedSkillSlots[i].equalsIgnoreCase(skill)){
+            String skillName = usedSkillSlots[i];
+            if (stripColor)
+                skillName = ChatColor.stripColor(color(skillName));
+            if (skillName.equalsIgnoreCase(skill)){
                 usedSkillSlots[i] = null;
                 return true;
             }
