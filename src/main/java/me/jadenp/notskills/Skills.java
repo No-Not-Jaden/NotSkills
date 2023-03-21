@@ -17,7 +17,7 @@ public class Skills {
 
     private List<String> lore;
     private int emptySkillSlots;
-    private String[] usedSkillSlots = new String[maxSkillSlots];
+    private final String[] usedSkillSlots = new String[maxSkillSlots];
 
     public Skills(List<String> lore){
         this.lore = lore;

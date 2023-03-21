@@ -254,7 +254,7 @@ public class Commands implements CommandExecutor, TabCompleter {
             }
         } else {
             if (sender instanceof Player)
-                SkillsGUI.getInstance().openGUI((Player) sender);
+                SkillsGUI.getInstance().openGUI((Player) sender, 1);
         }
         return true;
     }

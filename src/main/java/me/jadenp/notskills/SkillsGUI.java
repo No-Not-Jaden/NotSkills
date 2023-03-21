@@ -11,17 +11,18 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import javax.swing.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 import static me.jadenp.notskills.ConfigOptions.*;
-import static me.jadenp.notskills.Items.fill;
+import static me.jadenp.notskills.Items.*;
 
 public class SkillsGUI implements Listener {
 
-    private ItemStack[] skillMenuContents = new ItemStack[54];
-    private final ItemStack nextArrow = new ItemStack(Material.SPECTRAL_ARROW);
-    private final ItemStack backArrow = new ItemStack(Material.SPECTRAL_ARROW);
+    private final ItemStack[] skillMenuContents = new ItemStack[54];
+
     private final ItemStack clearAllSkills = new ItemStack(Material.BARRIER);
     private static SkillsGUI instance;
 
@@ -53,19 +54,11 @@ public class SkillsGUI implements Listener {
         skillMenuContents[48] = yellowFill;
         skillMenuContents[50] = yellowFill;
 
-        meta = nextArrow.getItemMeta();
-        assert meta != null;
-        meta.setDisplayName(ChatColor.YELLOW + "Next");
-        backArrow.setItemMeta(meta);
-        meta = backArrow.getItemMeta();
-        assert meta != null;
-        meta.setDisplayName(ChatColor.YELLOW + "Back");
-        backArrow.setItemMeta(meta);
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event){
-        if (event.getView().getTitle().equals(skillMenu)){
+        if (isSkillGUI(event.getView().getTitle())){
             // viewing their skills
             event.setCancelled(true);
 
@@ -80,6 +73,7 @@ public class SkillsGUI implements Listener {
             ItemMeta meta = skillItem.getItemMeta();
             assert meta != null;
             Skills skill = new Skills(Objects.requireNonNull(meta.getLore()));
+            int page = getGUIPage(event.getView().getTitle());
 
             if (event.getCurrentItem().isSimilar(clearAllSkills)) {
                 // reset skills
@@ -98,6 +92,12 @@ public class SkillsGUI implements Listener {
                 // return because not enough skill slots
                 if (!skill.addSkill(bookMeta.getDisplayName()))
                     return;
+            } else if (event.getCurrentItem().isSimilar(nextArrow)){
+                openGUI((Player) event.getWhoClicked(), page + 1);
+                return;
+            } else if (event.getCurrentItem().isSimilar(backArrow)){
+                openGUI((Player) event.getWhoClicked(), page - 1);
+                return;
             }
             else {
                 // return so we don't waste resources updating the item
@@ -114,16 +114,46 @@ public class SkillsGUI implements Listener {
                     meta.setLore(skill.getLore());
                     skillItem.setItemMeta(meta);
                     playerContents[i] = skillItem;
-                    openGUI((Player) event.getWhoClicked());
+                    openGUI((Player) event.getWhoClicked(), page);
                     return;
                 }
             }
         }
     }
 
-    public void openGUI(Player player){
+    public boolean isSkillGUI(String title){
+        for (String s : splitSkillMenu){
+            if (!title.contains(s))
+                return false;
+        }
+        return true;
+    }
+
+    public int getGUIPage(String title){
+        title = title.substring(splitSkillMenu[0].length());
+        if (splitSkillMenu.length > 1){
+            title = title.substring(0, title.indexOf(splitSkillMenu[1]));
+        }
+        int page = 1;
+        try {
+            page = Integer.parseInt(title);
+        } catch (NumberFormatException ignored){}
+        return page;
+    }
+
+    public String getGUITitle(int page){
+        StringBuilder title = new StringBuilder(splitSkillMenu[0] + page);
+        for (int i = 1; i < splitSkillMenu.length; i++) {
+            title.append(splitSkillMenu[i]);
+            if (i != splitSkillMenu.length - 1)
+                title.append(page);
+        }
+        return title.toString();
+    }
+
+    public void openGUI(Player player, int page){
         PlayerData playerData = getPlayerData(player);
-        Inventory inventory = Bukkit.createInventory(player, 54, skillMenu);
+        Inventory inventory = Bukkit.createInventory(player, 54, getGUITitle(page));
         ItemStack[] contents = Arrays.copyOf(skillMenuContents, skillMenuContents.length);
 
         ItemStack skillItem = player.getInventory().getItemInMainHand();
@@ -144,32 +174,46 @@ public class SkillsGUI implements Listener {
         assert lore != null;
         Skills skill = new Skills(lore);
 
-        // move current skills to a new list
-        List<SkillOptions> currentSkills = new ArrayList<>();
+        List<ItemStack> combinedContents = new ArrayList<>();
+
+        // move current skills to combined contents
         for (int i = 0; i < skill.getUsedSkillSlots(); i++) {
             SkillOptions skillOptions = getSkill(skill.getSkill(i));
             availableSkills.remove(skillOptions);
-            currentSkills.add(skillOptions);
+            if (skillOptions != null)
+                combinedContents.add(skillOptions.getDisplayItem(0));
         }
 
-        // move unlocked skills to a new list
-        List<SkillOptions> unlockedSkills = new ArrayList<>();
+        // move unlocked skills to combines contents
         for (String str : playerData.getSkillsUnlocked()){
             SkillOptions skillOptions = getSkill(str);
             availableSkills.remove(skillOptions);
-            unlockedSkills.add(skillOptions);
+            if (skillOptions != null)
+                combinedContents.add(skillOptions.getDisplayItem(1));
+        }
+
+        // move the rest of available skills to combined contents
+        for (SkillOptions skillOptions : availableSkills){
+            combinedContents.add(skillOptions.getDisplayItem(2));
+        }
+
+        // remove items that are on a previous page
+        if ((page - 1) * 28 > 0) {
+            combinedContents.subList(0, (page - 1) * 28).clear();
+            contents[45] = backArrow; // if anything was removed, there was a previous page
+        }
+
+        // add next arrow if size is big enough
+        if (combinedContents.size() > 28){
+            contents[53] = nextArrow;
         }
 
         // display skills accordingly
         int sNum = 0;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 7; j++) {
-                if (sNum < currentSkills.size()){
-                    contents[i * 9 + 10 + j] = currentSkills.get(sNum).getDisplayItem(0);
-                } else if (sNum - currentSkills.size() < unlockedSkills.size()){
-                    contents[i * 9 + 10 + j] = unlockedSkills.get(sNum - currentSkills.size()).getDisplayItem(0);
-                } else if (sNum - currentSkills.size() - unlockedSkills.size() < availableSkills.size()){
-                    contents[i * 9 + 10 + j] = unlockedSkills.get(sNum - currentSkills.size() - unlockedSkills.size()).getDisplayItem(0);
+                if (sNum < combinedContents.size()){
+                    contents[i * 9 + 10 + j] = combinedContents.get(sNum);
                 } else {
                     break;
                 }

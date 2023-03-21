@@ -8,7 +8,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -41,7 +40,8 @@ public class ConfigOptions {
     public static long multiClickResetTime = 500L;
     public static List<SkillOptions> skills = new ArrayList<>();
     public static boolean papiEnabled = false;
-    public static String skillMenu = ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Available Skills";
+    public static String skillMenu = ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Available Skills " + ChatColor.GRAY + "" + ChatColor.ITALIC + "Page {page}";
+    public static String[] splitSkillMenu;
 
     public static void reloadOptions(){
         papiEnabled = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
@@ -53,9 +53,11 @@ public class ConfigOptions {
         playersChooseSST = config.getBoolean("skill-select.players-choose");
         pauseRatio = config.getDouble("pause-ratio");
         expireMS = config.getInt("expire-ms");
+        multiClickResetTime = config.getLong("multi-click-trigger");
 
         splitReserved = skillSlotsReserved.split("\\{amount}");
         splitBind = skillBindIdentifier.split("\\{amount}");
+        splitSkillMenu = skillMenu.split("\\{page}");
 
         skills.clear();
         for (int i = 1; config.isSet("skills." + i + ".name"); i++){

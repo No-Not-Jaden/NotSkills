@@ -1,13 +1,16 @@
 package me.jadenp.notskills;
 
-import org.bukkit.entity.Player;
-
 import java.util.*;
 
 public class PlayerData {
     private final Map<String, Long> skillCooldowns = new HashMap<>();
-    private final UUID uuid;
+    private UUID uuid;
     public PlayerData(UUID uuid){
+        this.uuid = uuid;
+    }
+    public PlayerData(){}
+
+    public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
 
@@ -43,6 +46,13 @@ public class PlayerData {
             skillCooldowns.replace(name, (long) (seconds * 1000));
         } else {
             skillCooldowns.put(name, (long) (seconds * 1000));
+        }
+    }
+
+    public void setSkills(String[] skills){
+        skillCooldowns.clear();
+        for (String skill : skills){
+            skillCooldowns.put(skill, 0L);
         }
     }
 }

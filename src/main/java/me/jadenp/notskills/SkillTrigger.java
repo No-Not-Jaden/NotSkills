@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 
 import java.util.*;
 
@@ -103,6 +104,18 @@ public class SkillTrigger implements Listener {
             }
 
 
+    }
+
+    // remove clicks when the player switches hot bar slots
+    @EventHandler
+    public void onItemSwitch(PlayerItemHeldEvent event){
+        // see if clicking the number changes
+        Bukkit.getLogger().info("Switch");
+        if (event.getNewSlot() != event.getPreviousSlot()){
+            if (Skills.hasSkill(event.getPlayer().getInventory().getItemInMainHand())){
+                recordedClicks.remove(event.getPlayer().getUniqueId());
+            }
+        }
     }
 
 

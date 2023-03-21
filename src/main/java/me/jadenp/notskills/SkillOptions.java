@@ -66,7 +66,7 @@ public class SkillOptions {
             }
             while (command.contains("{random")){
                 String bounds = command.substring(command.indexOf("{random") + 7, command.substring(command.indexOf("{random") + 7).indexOf("}") + command.indexOf("{random") + 7);
-                int upperBounds = 1;
+                int upperBounds;
                 int lowerBounds = 0;
                 if (bounds.contains("_")){
                     try {
