@@ -21,6 +21,13 @@ public final class NotSkills extends JavaPlugin {
     // use clicks to cast spell
     // record time between clicks
 
+    /**
+     * language
+     * unlock skills somehow
+     * combine artifacts
+     * skill remove doesnt work
+     */
+
     private static NotSkills instance;
     public Map<UUID, PlayerData> playerDataMap = new HashMap<>();
     public File playerData;
@@ -50,7 +57,7 @@ public final class NotSkills extends JavaPlugin {
         try {
             // check to see if there is a file
             if (!playerData.createNewFile()) {
-                Type mapType = new TypeToken<Map<String, PlayerData>>() {
+                Type mapType = new TypeToken<Map<UUID, PlayerData>>() {
                 }.getType();
                 playerDataMap = gson.fromJson(new String(Files.readAllBytes(Paths.get(playerData.getPath()))), mapType);
             }
@@ -64,8 +71,12 @@ public final class NotSkills extends JavaPlugin {
             public void run() {
                 save();
             }
-        }.runTaskTimer(this, 3600L, 3600L);
+        }.runTaskTimer(this, 6000L, 6000L);
 
+    }
+
+    public void addData(UUID uuid){
+        playerDataMap.put(uuid, new PlayerData(uuid));
     }
 
     public void save() {

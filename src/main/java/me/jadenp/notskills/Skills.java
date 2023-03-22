@@ -155,7 +155,8 @@ public class Skills {
 
     public static boolean hasSkill(@NotNull ItemStack itemStack){
         ItemMeta meta = itemStack.getItemMeta();
-        assert meta != null;
+        if (meta == null)
+            return false;
         if (meta.hasLore()){
             List<String> lore = meta.getLore();
             assert lore != null;

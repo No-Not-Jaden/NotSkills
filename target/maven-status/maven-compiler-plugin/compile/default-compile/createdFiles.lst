@@ -1,8 +1,8 @@
-me/jadenp/notskills/Skills.class
-me/jadenp/notskills/SkillOptions.class
-me/jadenp/notskills/NotSkills$1.class
-me/jadenp/notskills/SkillTrigger$1.class
-me/jadenp/notskills/NotSkills$2.class
-me/jadenp/notskills/SkillsGUI.class
-me/jadenp/notskills/TriggerClick.class
-me/jadenp/notskills/PlayerDataAdapter.class
+me\jadenp\notskills\SkillsGUI.class
+me\jadenp\notskills\PlayerDataAdapter.class
+me\jadenp\notskills\SkillTrigger$1.class
+me\jadenp\notskills\Skills.class
+me\jadenp\notskills\NotSkills$1.class
+me\jadenp\notskills\SkillOptions.class
+me\jadenp\notskills\NotSkills$2.class
+me\jadenp\notskills\TriggerClick.class

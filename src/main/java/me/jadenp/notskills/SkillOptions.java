@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import static me.jadenp.notskills.ConfigOptions.*;
 
 public class SkillOptions {
@@ -30,56 +31,57 @@ public class SkillOptions {
     }
 
     public boolean isAllowedItem(Material material) {
-        if (allowedItems != null)
-            for (String item : allowedItems) {
-                if (item.charAt(0) == '*') {
-                    if (material.toString().equals(item.substring(1).toUpperCase())) {
-                        return true;
-                    }
-                    continue;
-                }
-                if (material.toString().contains(item.toUpperCase())) {
+        if (allowedItems == null || allowedItems.isEmpty())
+            return true;
+        for (String item : allowedItems) {
+            if (item.charAt(0) == '*') {
+                if (material.toString().equals(item.substring(1).toUpperCase())) {
                     return true;
                 }
+                continue;
             }
+            if (material.toString().contains(item.toUpperCase())) {
+                return true;
+            }
+        }
         return false;
     }
 
-    public void runActions(Player player){
-        for (String action : actions){
+    public void runActions(Player player) {
+        for (String action : actions) {
             // get first action type
             String type = action.substring(0, action.indexOf(" "));
             String command = action.substring(type.length() + 1);
             command = ConfigOptions.getPlaceholders(command, player);
             command = command.replaceAll("\\{player}", player.getName());
-            while (command.contains("{target")){
+            while (command.contains("{target")) {
                 String distance = command.substring(command.indexOf("{target") + 7, command.substring(command.indexOf("{target") + 7).indexOf("}") + command.indexOf("{target") + 7);
                 int d;
                 try {
-                   d = Integer.parseInt(distance);
-                } catch (NumberFormatException e){
+                    d = Integer.parseInt(distance);
+                } catch (NumberFormatException e) {
                     Bukkit.getLogger().warning("Skill Action for " + name + " run by " + player.getName() + " does not have \"{target<x>}\" formatted properly.");
                     continue;
                 }
                 Block target = player.getTargetBlock(null, d);
-                command = command.substring(0, command.indexOf("{target")) + target.getX() + " " + target.getY() + " " +  target.getZ() + command.substring(command.indexOf("{target") + distance.length() + 8);
+                command = command.substring(0, command.indexOf("{target")) + target.getX() + " " + target.getY() + " " + target.getZ() + command.substring(command.indexOf("{target") + distance.length() + 8);
             }
-            while (command.contains("{random")){
+            while (command.contains("{random")) {
                 String bounds = command.substring(command.indexOf("{random") + 7, command.substring(command.indexOf("{random") + 7).indexOf("}") + command.indexOf("{random") + 7);
                 int upperBounds;
                 int lowerBounds = 0;
-                if (bounds.contains("_")){
+                if (bounds.contains("_")) {
                     try {
                         upperBounds = Integer.parseInt(bounds.substring(bounds.indexOf("_") + 1));
                         lowerBounds = Integer.parseInt(bounds.substring(0, bounds.indexOf("_")));
-                    } catch (NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         Bukkit.getLogger().warning("Skill Action for " + name + " run by " + player.getName() + " does not have \"{random<y>_<x>}\" formatted properly.");
                         continue;
                     }
                 } else {
                     try {
                         upperBounds = Integer.parseInt(bounds);
-                    } catch (NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         Bukkit.getLogger().warning("Skill Action for " + name + " run by " + player.getName() + " does not have \"{random<x>}\" formatted properly.");
                         continue;
                     }
@@ -89,7 +91,7 @@ public class SkillOptions {
                 command = command.substring(0, command.indexOf("{random")) + rand + command.substring(command.indexOf("{random") + bounds.length() + 8);
                 command = ConfigOptions.color(command);
             }
-            switch (type){
+            switch (type) {
                 case "[console]":
                     Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
                     break;
@@ -102,38 +104,42 @@ public class SkillOptions {
             }
         }
     }
-    
-    public ItemStack getDisplayItem(int state){
+
+    public ItemStack getDisplayItem(int state) {
         ItemStack itemStack = new ItemStack(Material.STRUCTURE_VOID);
-        if (state == 0){
+        if (state == 0) {
             itemStack = new ItemStack(Material.ENCHANTED_BOOK);
-        } else if (state == 1){
+        } else if (state == 1) {
             itemStack = new ItemStack(Material.BOOK);
         }
-        if (state == 0 || state == 1){
-            ItemMeta meta = itemStack.getItemMeta();
-            assert meta != null;
+        ItemMeta meta = itemStack.getItemMeta();
+        assert meta != null;
+        if (state == 0 || state == 1) {
             meta.setDisplayName(color(name));
             List<String> lore = new ArrayList<>();
-            for (String str : description){
+            for (String str : description) {
                 lore.add(color(str));
             }
             meta.setLore(lore);
         }
-        if (state == 2){
-            ItemMeta meta = itemStack.getItemMeta();
-            assert meta != null;
+        if (state == 2) {
             meta.setDisplayName(color(name));
             List<String> lore = new ArrayList<>();
-            for (String str : description){
+            for (String str : description) {
                 StringBuilder builder = new StringBuilder(ChatColor.GRAY + "");
                 for (int i = 0; i < str.length(); i++) {
+                    if ((int) (Math.random() * 2) == 1){
+                        builder.append(ChatColor.MAGIC);
+                    } else {
+                        builder.append(ChatColor.GRAY);
+                    }
                     builder.append("*");
                 }
                 lore.add(builder.toString());
             }
             meta.setLore(lore);
         }
+        itemStack.setItemMeta(meta);
         return itemStack;
     }
 

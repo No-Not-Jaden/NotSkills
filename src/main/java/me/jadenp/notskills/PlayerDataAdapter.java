@@ -19,15 +19,18 @@ public class PlayerDataAdapter extends TypeAdapter<PlayerData> {
             return;
         }
         // format skills in one string
+        String skl = "";
         StringBuilder skills = new StringBuilder();
         for (String s : playerData.getSkillsUnlocked()){
             skills.append(s).append(",");
         }
+        if (skills.length() > 0)
+            skl = skills.substring(0, skills.length()-1);
         // write data
         jsonWriter.name("uuid");
         jsonWriter.value(playerData.getUuid().toString());
         jsonWriter.name("skills");
-        jsonWriter.value(skills.substring(0, skills.length()-1));
+        jsonWriter.value(skl);
         jsonWriter.endObject();
     }
 

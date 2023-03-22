@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Objects;
+import java.util.UUID;
 
 import static me.jadenp.notskills.ConfigOptions.getPlayerData;
 import static me.jadenp.notskills.Items.skillSlotArtifact;
@@ -18,6 +19,7 @@ import static me.jadenp.notskills.Items.skillSlotArtifact;
 public class Events  implements Listener {
     public Events() {
         Bukkit.getPluginManager().registerEvents(new SkillsGUI(), NotSkills.getInstance());
+        Bukkit.getPluginManager().registerEvents(new SkillTrigger(), NotSkills.getInstance());
     }
 
 
@@ -43,7 +45,7 @@ public class Events  implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event){
         if (getPlayerData(event.getPlayer()) == null){
-            NotSkills.getInstance().playerDataMap.put(event.getPlayer().getUniqueId(), new PlayerData(event.getPlayer().getUniqueId()));
+            NotSkills.getInstance().addData(event.getPlayer().getUniqueId());
         }
     }
 

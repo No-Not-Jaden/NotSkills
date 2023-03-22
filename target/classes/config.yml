@@ -1,11 +1,27 @@
 
 skill-select:
+  # 0 LEFT_RIGHT_CLICK : 8 max skills - Sneaking while using left/right click *Note: only works with java
+  # 1 CROUCH_CLICK : 1 max skill - Clicking while sneaking
+  # 2 JUMP_CLICK : 1 max skill - Clicking while in the air
+  # 3 CROUCH_JUMP_CLICK : 2 max skills - Clicking while sneaking or jumping
+  # 4 TIMED_CLICK : 7 max skills - four timed clicks while sneaking with either big or small spaces between clicks (like reverse morse code) *Note: steep learning curve
+  # 5 DOUBLE_CLICK : 1 max skill - two clicks less than {expire-ms} apart
+  # 6 TRIPLE_CLICK : 1 max skill - three clicks less than {expire-ms} apart
+  # 7 MULTI_CLICK : 3 max skills - double, triple, or quadruple click and one click that is clicked after {multi-click-trigger} ms have passed since the last click
+  # 8 DIRECTIONAL_CLICK : 4 max skills - two clicks in different positions, the second click can be up/down/right/left to select a skill slot (IMO this is the easiest)
   default: 8
+  # Players can choose their skill select type with /skill select (type)
+  # Requires permission: notskills.sst - given by default
   players-choose: true
-# how big the pause ratio is between big and small pauses
+# how big the pause ratio is between big and small pauses for TIMED_CLICK
 pause-ratio: 1.75
 # how long until your last click is expired in milliseconds
 expire-ms: 10000
+# how big the space in milliseconds between the last clicks in MULTI_CLICK to trigger
+multi-click-trigger: 500
+
+#language:
+
 
 skills:
   1:

@@ -21,6 +21,7 @@ public class SkillTrigger implements Listener {
 
     private final Map<UUID, List<TriggerClick>> recordedClicks = new HashMap<>();
     private final Map<UUID, Trigger> selectedTriggers = new HashMap<>();
+    private final Map<UUID, Long> interactCooldown = new HashMap<>();
     public SkillTrigger(){
         instance = this;
         Bukkit.getPluginManager().registerEvents(this, NotSkills.getInstance());
@@ -47,6 +48,16 @@ public class SkillTrigger implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event){
+            if (interactCooldown.containsKey(event.getPlayer().getUniqueId())){
+                if (interactCooldown.get(event.getPlayer().getUniqueId()) > System.currentTimeMillis()){
+                    return;
+                } else {
+                    interactCooldown.replace(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 20);
+                }
+            } else {
+                interactCooldown.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 20);
+            }
+
 
             if (Skills.hasSkill(event.getPlayer().getInventory().getItemInMainHand())){
                 Player player = event.getPlayer();
@@ -110,7 +121,6 @@ public class SkillTrigger implements Listener {
     @EventHandler
     public void onItemSwitch(PlayerItemHeldEvent event){
         // see if clicking the number changes
-        Bukkit.getLogger().info("Switch");
         if (event.getNewSlot() != event.getPreviousSlot()){
             if (Skills.hasSkill(event.getPlayer().getInventory().getItemInMainHand())){
                 recordedClicks.remove(event.getPlayer().getUniqueId());

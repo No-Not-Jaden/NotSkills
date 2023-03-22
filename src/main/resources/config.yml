@@ -20,7 +20,7 @@ expire-ms: 10000
 # how big the space in milliseconds between the last clicks in MULTI_CLICK to trigger
 multi-click-trigger: 500
 
-language:
+#language:
 
 
 skills:

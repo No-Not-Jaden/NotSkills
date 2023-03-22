@@ -49,23 +49,23 @@ public class Commands implements CommandExecutor, TabCompleter {
                 }
             }
         }
-        if (args[0].equalsIgnoreCase("help")) {
-            sender.sendMessage(prefix + ChatColor.YELLOW + "Here are a list of commands:");
-            if (sender.hasPermission("notskills.admin")) {
-                sender.sendMessage(ChatColor.BLUE + "/skill add (amount) <player>" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Adds a skill slot to held item.");
-                sender.sendMessage(ChatColor.BLUE + "/skill remove <amount> <player>" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Removes a skill slot from held item.");
-                sender.sendMessage(ChatColor.BLUE + "/skill give (player) (item) (amount) (skill slots)" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Gives a player an item with skill slots.");
+        if (args.length > 0) {
+            if (args[0].equalsIgnoreCase("help")) {
+                sender.sendMessage(prefix + ChatColor.YELLOW + "Here are a list of commands:");
+                if (sender.hasPermission("notskills.admin")) {
+                    sender.sendMessage(ChatColor.BLUE + "/skill add (amount) <player>" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Adds a skill slot to held item.");
+                    sender.sendMessage(ChatColor.BLUE + "/skill remove <amount> <player>" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Removes a skill slot from held item.");
+                    sender.sendMessage(ChatColor.BLUE + "/skill give (player) (item) (amount) (skill slots)" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Gives a player an item with skill slots.");
+                }
+                if (sender.hasPermission("notskills.sst")) {
+                    sender.sendMessage(ChatColor.BLUE + "/skill select (type)" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Changes skill select type.");
+                }
+                sender.sendMessage(ChatColor.BLUE + "/skill" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Opens skill menu for the held item.");
             }
-            if (sender.hasPermission("notskills.sst")) {
-                sender.sendMessage(ChatColor.BLUE + "/skill select (type)" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Changes skill select type.");
+            if (!sender.hasPermission("notskills.admin")) {
+                sender.sendMessage(ChatColor.RED + "You do not have permission to access this command.");
+                return true;
             }
-            sender.sendMessage(ChatColor.BLUE + "/skill" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Opens skill menu for the held item.");
-        }
-        if (!sender.hasPermission("notskills.admin")) {
-            sender.sendMessage(ChatColor.RED + "You do not have permission to access this command.");
-            return true;
-        }
-        if (args.length > 1) {
             if (args[0].equalsIgnoreCase("reload")) {
                 reloadOptions();
                 sender.sendMessage(prefix + ChatColor.YELLOW + "Reloaded NotSkills version " + NotSkills.getInstance().getDescription().getVersion() + "!");
@@ -79,7 +79,7 @@ public class Commands implements CommandExecutor, TabCompleter {
 
                     boolean artifact = false;
                     // get material
-                    Material m = args[2].contains("{") ? Material.getMaterial(args[2].substring(0, args[2].indexOf("{")).toUpperCase()) : Material.getMaterial(args[2]);
+                    Material m = args[2].contains("{") ? Material.getMaterial(args[2].substring(0, args[2].indexOf("{")).toUpperCase()) : Material.getMaterial(args[2].toUpperCase());
                     if (m == null) {
                         if (args[2].equalsIgnoreCase("artifact")){
                             m = Material.PAPER;
@@ -253,8 +253,13 @@ public class Commands implements CommandExecutor, TabCompleter {
                 }
             }
         } else {
-            if (sender instanceof Player)
+            if (sender instanceof Player) {
+                if (!Skills.hasSkill(((Player) sender).getInventory().getItemInMainHand())) {
+                    sender.sendMessage(prefix + ChatColor.RED + "This item doesn't have any skill slots");
+                    return true;
+                }
                 SkillsGUI.getInstance().openGUI((Player) sender, 1);
+            }
         }
         return true;
     }
@@ -264,11 +269,13 @@ public class Commands implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(@NonNull CommandSender sender, @NonNull Command command, @NonNull String s, String[] args) {
         List<String> tab = new ArrayList<>();
         if (command.getName().equalsIgnoreCase("notskills")) {
+            tab.add("help");
             if (sender.hasPermission("notskills.admin")){
                 if (args.length == 1) {
                     tab.add("add");
                     tab.add("remove");
                     tab.add("give");
+                    tab.add("reload");
                 } else if (args.length == 2){
                     if (args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("remove")){
                         tab.add("#");
