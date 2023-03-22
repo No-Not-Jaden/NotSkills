@@ -16,8 +16,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static me.jadenp.notskills.ConfigOptions.*;
-import static me.jadenp.notskills.Items.*;
+import static me.jadenp.notskills.utils.ConfigOptions.*;
+import static me.jadenp.notskills.utils.Language.*;
+import static me.jadenp.notskills.utils.Items.*;
 
 public class SkillsGUI implements Listener {
 

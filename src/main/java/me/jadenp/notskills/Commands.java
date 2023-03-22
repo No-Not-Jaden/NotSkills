@@ -15,12 +15,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.units.qual.C;
 
 import java.util.*;
 
-import static me.jadenp.notskills.Items.*;
-import static me.jadenp.notskills.ConfigOptions.*;
+import static me.jadenp.notskills.utils.Items.*;
+import static me.jadenp.notskills.utils.ConfigOptions.*;
+import static me.jadenp.notskills.utils.Language.*;
 
 public class Commands implements CommandExecutor, TabCompleter {
     public Commands() {
@@ -33,17 +33,22 @@ public class Commands implements CommandExecutor, TabCompleter {
         if (sender.hasPermission("notskills.sst")){
             if (args.length > 1){
                 if (args[0].equalsIgnoreCase("select")){
+                    if (!(sender instanceof Player)){
+                        sender.sendMessage(ChatColor.RED + "Only players can use this command!");
+                        return true;
+                    }
+
                     if (playersChooseSST) {
                         try {
                             Trigger trigger = Trigger.valueOf(args[1].toUpperCase());
                             SkillTrigger.getInstance().setTrigger(((Player) sender), trigger);
-                            sender.sendMessage(prefix + ChatColor.GREEN + "Changed your skill select type to " + ChatColor.DARK_GREEN + trigger);
+                            sender.sendMessage(parse(prefix + sstChange, (Player) sender, trigger));
                         } catch (IllegalArgumentException e) {
-                            sender.sendMessage(prefix + ChatColor.RED + "Unknown skill select type!");
+                            sender.sendMessage(parse(prefix + unknownSst, (Player) sender));
                             return true;
                         }
                     } else {
-                        sender.sendMessage(prefix + ChatColor.YELLOW + "Choosing your own skill select type is not enabled.");
+                        sender.sendMessage(parse(prefix + sstDisabled, (Player) sender));
                     }
 
                 }
@@ -56,6 +61,8 @@ public class Commands implements CommandExecutor, TabCompleter {
                     sender.sendMessage(ChatColor.BLUE + "/skill add (amount) <player>" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Adds a skill slot to held item.");
                     sender.sendMessage(ChatColor.BLUE + "/skill remove <amount> <player>" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Removes a skill slot from held item.");
                     sender.sendMessage(ChatColor.BLUE + "/skill give (player) (item) (amount) (skill slots)" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Gives a player an item with skill slots.");
+                    sender.sendMessage(ChatColor.BLUE + "/skill unlock (skill) <player>" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Unlocks a skill.");
+                    sender.sendMessage(ChatColor.BLUE + "/skill lock (skill) <player>" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Locks a skill.");
                 }
                 if (sender.hasPermission("notskills.sst")) {
                     sender.sendMessage(ChatColor.BLUE + "/skill select (type)" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Changes skill select type.");
@@ -63,7 +70,7 @@ public class Commands implements CommandExecutor, TabCompleter {
                 sender.sendMessage(ChatColor.BLUE + "/skill" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Opens skill menu for the held item.");
             }
             if (!sender.hasPermission("notskills.admin")) {
-                sender.sendMessage(ChatColor.RED + "You do not have permission to access this command.");
+                sender.sendMessage(noPermission);
                 return true;
             }
             if (args[0].equalsIgnoreCase("reload")) {
@@ -73,7 +80,7 @@ public class Commands implements CommandExecutor, TabCompleter {
                 if (args.length >= 3) {
                     Player player = Bukkit.getPlayer(args[1]);
                     if (player == null) {
-                        sender.sendMessage(prefix + ChatColor.RED + "Unknown player!");
+                        sender.sendMessage(parse(prefix + unknownPlayer, null));
                         return true;
                     }
 
@@ -85,7 +92,7 @@ public class Commands implements CommandExecutor, TabCompleter {
                             m = Material.PAPER;
                             artifact = true;
                         } else {
-                            sender.sendMessage(prefix + ChatColor.RED + "Unknown item!");
+                            sender.sendMessage(parse(prefix + unknownItem, player));
                             return true;
                         }
 
@@ -151,7 +158,7 @@ public class Commands implements CommandExecutor, TabCompleter {
                 try {
                     amount = Integer.parseInt(args[1]);
                 } catch (NumberFormatException e) {
-                    sender.sendMessage(prefix + ChatColor.RED + "Not a valid amount!");
+                    sender.sendMessage(prefix + ChatColor.RED + "Not a valid skill amount!");
                     return true;
                 }
 
@@ -159,7 +166,7 @@ public class Commands implements CommandExecutor, TabCompleter {
                     // using another player
                     Player player = Bukkit.getPlayer(args[1]);
                     if (player == null){
-                        sender.sendMessage(prefix + ChatColor.RED + "Unknown player!");
+                        sender.sendMessage(parse(prefix + unknownPlayer, null));
                         return true;
                     }
                     ItemStack item = player.getInventory().getItemInMainHand();
@@ -207,28 +214,34 @@ public class Commands implements CommandExecutor, TabCompleter {
                         }
                         ItemStack item = ((Player) sender).getInventory().getItemInMainHand();
                         if (item.hasItemMeta() && Objects.requireNonNull(item.getItemMeta()).hasLore()) {
-                            Skills skill = new Skills(Objects.requireNonNull(item.getItemMeta().getLore())).removeSkillSlots(amount);
-                            item.getItemMeta().setLore(skill.getLore());
+                            ItemMeta meta = item.getItemMeta();
+                            Skills skill = new Skills(Objects.requireNonNull(meta.getLore())).removeSkillSlots(amount);
+                            meta.setLore(skill.getLore());
+                            item.setItemMeta(meta);
                             ((Player)sender).getInventory().setItemInMainHand(item);
                         } else {
-                            sender.sendMessage(prefix + ChatColor.RED + "Cannot remove skills from this item!");
+                            sender.sendMessage(parse(prefix + noSkillSlots, null));
+                            return true;
                         }
                         sender.sendMessage(prefix + ChatColor.GREEN + "Successfully removed " + amount + " skills.");
                     } else {
                         ItemStack item = player.getInventory().getItemInMainHand();
                         if (item.hasItemMeta() && Objects.requireNonNull(item.getItemMeta()).hasLore()) {
-                            Skills skill = new Skills(Objects.requireNonNull(item.getItemMeta().getLore())).removeAllSkills();
-                            item.getItemMeta().setLore(skill.getLore());
+                            ItemMeta meta = item.getItemMeta();
+                            Skills skill = new Skills(Objects.requireNonNull(meta.getLore())).removeAllSkills();
+                            meta.setLore(skill.getLore());
+                            item.setItemMeta(meta);
                             player.getInventory().setItemInMainHand(item);
                         } else {
-                            sender.sendMessage(prefix + ChatColor.RED + "Cannot remove skills from this item!");
+                            sender.sendMessage(parse(prefix + noSkillSlots, player));
+                            return true;
                         }
                         sender.sendMessage(prefix + ChatColor.GREEN + "Successfully removed all skills from " + player.getName() + "'s held item.");
                     }
                 } else if (args.length == 3) {
                     Player player = Bukkit.getPlayer(args[2]);
                     if (player == null) {
-                        sender.sendMessage(prefix + ChatColor.RED + "Invalid player.");
+                        sender.sendMessage(parse(prefix + unknownPlayer, null));
                     } else {
                         // number
                         int amount;
@@ -241,21 +254,61 @@ public class Commands implements CommandExecutor, TabCompleter {
 
                         ItemStack item = player.getInventory().getItemInMainHand();
                         if (item.hasItemMeta() && Objects.requireNonNull(item.getItemMeta()).hasLore()) {
-                            Skills skill = new Skills(Objects.requireNonNull(item.getItemMeta().getLore())).removeSkillSlots(amount);
-                            item.getItemMeta().setLore(skill.getLore());
+                            ItemMeta meta = item.getItemMeta();
+                            Skills skill = new Skills(Objects.requireNonNull(meta.getLore())).removeSkillSlots(amount);
+                            meta.setLore(skill.getLore());
+                            item.setItemMeta(meta);
                             player.getInventory().setItemInMainHand(item);
                         } else {
-                            sender.sendMessage(prefix + ChatColor.RED + "Cannot remove skills from this item!");
+                            sender.sendMessage(parse(prefix + noSkillSlots, player));
+                            return true;
                         }
                         sender.sendMessage(prefix + ChatColor.GREEN + "Successfully removed " + amount + " skills from " + player.getName() + "'s held item.");
                     }
 
                 }
+            } else if (args[0].equalsIgnoreCase("unlock") || args[0].equalsIgnoreCase("lock")){
+                if (args.length > 1) {
+                    Player player;
+                    if (args.length == 3) {
+                        // has player
+                        player = Bukkit.getPlayer(args[2]);
+                        if (player == null) {
+                            sender.sendMessage(parse(prefix + unknownPlayer, null));
+                            return true;
+                        }
+
+
+                    } else {
+                        if (!(sender instanceof Player)) {
+                            sender.sendMessage(prefix + ChatColor.RED + "Only players can use this version of the command!");
+                            return true;
+                        }
+                        player = (Player) sender;
+                    }
+                    SkillOptions skill = getSkill(args[1]);
+                    if (skill == null) {
+                        sender.sendMessage(prefix + ChatColor.RED + "Unknown skill!");
+                        return true;
+                    }
+                    if (args[0].equalsIgnoreCase("unlock")) {
+                        NotSkills.getInstance().unlockSkill(player.getUniqueId(), skill.getName(), true);
+                        sender.sendMessage(prefix + ChatColor.GREEN + "Unlocked " + ChatColor.DARK_GREEN + skill.getName() + ChatColor.GREEN + " for " + ChatColor.DARK_GREEN + player.getName());
+                    } else {
+                        NotSkills.getInstance().unlockSkill(player.getUniqueId(), skill.getName(), false);
+                        sender.sendMessage(prefix + ChatColor.GREEN + "Locked " + ChatColor.DARK_GREEN + skill.getName() + ChatColor.GREEN + " for " + ChatColor.DARK_GREEN + player.getName());
+                    }
+                } else {
+                    sender.sendMessage(prefix + ChatColor.RED + "Please specify arguments.");
+                }
+            }
+            else {
+                sender.sendMessage(prefix + ChatColor.RED + "Unknown command.");
             }
         } else {
             if (sender instanceof Player) {
                 if (!Skills.hasSkill(((Player) sender).getInventory().getItemInMainHand())) {
-                    sender.sendMessage(prefix + ChatColor.RED + "This item doesn't have any skill slots");
+                    sender.sendMessage(parse(prefix + noSkillSlots, (Player) sender));
                     return true;
                 }
                 SkillsGUI.getInstance().openGUI((Player) sender, 1);
@@ -276,6 +329,8 @@ public class Commands implements CommandExecutor, TabCompleter {
                     tab.add("remove");
                     tab.add("give");
                     tab.add("reload");
+                    tab.add("lock");
+                    tab.add("unlock");
                 } else if (args.length == 2){
                     if (args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("remove")){
                         tab.add("#");

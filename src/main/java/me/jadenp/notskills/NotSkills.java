@@ -3,6 +3,9 @@ package me.jadenp.notskills;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import me.jadenp.notskills.utils.ConfigOptions;
+import me.jadenp.notskills.utils.Items;
+import me.jadenp.notskills.utils.Language;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -22,10 +25,10 @@ public final class NotSkills extends JavaPlugin {
     // record time between clicks
 
     /**
-     * language
-     * unlock skills somehow
-     * combine artifacts
-     * skill remove doesnt work
+     * language ~
+     * unlock skills somehow -
+     * combine artifacts -
+     * skill remove doesn't work -
      */
 
     private static NotSkills instance;
@@ -38,11 +41,19 @@ public final class NotSkills extends JavaPlugin {
         // Plugin startup logic
         instance = this;
         playerData = new File(getDataFolder() + File.separator + "playerdata.json");
+
         Items.addMaterialData();
         Bukkit.getPluginManager().registerEvents(new Events(), this);
         Commands commands = new Commands();
         Objects.requireNonNull(getCommand("notskills")).setExecutor(commands);
         Objects.requireNonNull(getCommand("notskills")).setTabCompleter(commands);
+
+        File language = new File(getDataFolder() + File.separator + "language.yml");
+        if (!language.exists()){
+            saveResource(language.getPath(), false);
+        }
+        Language.reloadLanguage();
+
         saveDefaultConfig();
         ConfigOptions.reloadOptions();
 
@@ -78,6 +89,13 @@ public final class NotSkills extends JavaPlugin {
     public void addData(UUID uuid){
         playerDataMap.put(uuid, new PlayerData(uuid));
     }
+
+    public void unlockSkill(UUID uuid, String name, boolean unlock){
+        if (playerDataMap.containsKey(uuid)){
+            playerDataMap.get(uuid).setSkillUnlocked(name, unlock);
+        }
+    }
+
 
     public void save() {
         try (FileWriter writer = new FileWriter(playerData)) {

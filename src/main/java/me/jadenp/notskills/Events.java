@@ -2,19 +2,25 @@ package me.jadenp.notskills;
 
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.PrepareInventoryResultEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
-import static me.jadenp.notskills.ConfigOptions.getPlayerData;
-import static me.jadenp.notskills.Items.skillSlotArtifact;
+import static me.jadenp.notskills.utils.ConfigOptions.getPlayerData;
+import static me.jadenp.notskills.utils.Items.skillSlotArtifact;
 
 public class Events  implements Listener {
     public Events() {
@@ -24,23 +30,31 @@ public class Events  implements Listener {
 
 
     @EventHandler
-    public void preparedResult(PrepareInventoryResultEvent event){
-        if (event.getView().getType() == InventoryType.ANVIL){ // possible smithing table in the future
-            ItemStack[] contents = event.getInventory().getContents();
-            if (contents[1].isSimilar(skillSlotArtifact)){
-                if (contents[0] != null){
-                    ItemStack item = contents[0];
-                    ItemMeta meta = item.getItemMeta();
-                    assert meta != null;
-                    Skills skill = new Skills(Objects.requireNonNull(meta.getLore())).addSkillSlots(1);
-                    meta.setLore(skill.getLore());
-                    item.setItemMeta(meta);
-                    event.setResult(item);
-                }
+    public void onInventoryClick(InventoryClickEvent e) {
+        if (e.getWhoClicked() instanceof Player) {
+            if (e.getView().getType() == InventoryType.ANVIL) {
+                AnvilInventory anvilInv = (AnvilInventory) e.getInventory();
+                int slot = e.getRawSlot();
 
+                if (slot == 2) {
+                    ItemStack[] itemsInAnvil = anvilInv.getContents();
+
+                    if (itemsInAnvil[0] != null && itemsInAnvil[1].isSimilar(skillSlotArtifact)) {
+                        ItemStack result = itemsInAnvil[0];
+                        ItemMeta meta = result.getItemMeta();
+                        assert meta != null;
+                        List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();
+                        Skills skill = new Skills(lore);
+                        skill.addSkillSlots(itemsInAnvil[1].getAmount());
+                        meta.setLore(skill.getLore());
+                        result.setItemMeta(meta);
+                        e.setCurrentItem(result);
+                    }
+                }
             }
         }
     }
+
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event){

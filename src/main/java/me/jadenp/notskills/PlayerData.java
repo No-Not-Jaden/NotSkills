@@ -26,6 +26,15 @@ public class PlayerData {
         return skillCooldowns.containsKey(name);
     }
 
+    public void setSkillUnlocked(String name, boolean unlocked){
+        if (unlocked){
+            if (!skillCooldowns.containsKey(name))
+                skillCooldowns.put(name, 0L);
+        } else {
+            skillCooldowns.remove(name);
+        }
+    }
+
     public List<String> getSkillsUnlocked(){
         List<String> skills = new ArrayList<>();
         for (Object obj : skillCooldowns.keySet().toArray()){

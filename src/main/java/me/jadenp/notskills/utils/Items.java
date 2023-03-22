@@ -1,4 +1,4 @@
-package me.jadenp.notskills;
+package me.jadenp.notskills.utils;
 
 
 import org.bukkit.ChatColor;

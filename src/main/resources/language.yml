@@ -1,0 +1,21 @@
+prefix: '&7[&9Not&dSkills&7] &8> '
+skill-identifier: '&0-=<0>=-'
+skill-slots-available: '&f&l{amount}&7x &fSkill slots Available'
+skill-bind-identifier: '&7<&9{amount}&7> '
+skill-break: '&8*****'
+skill-menu: '&d&lAvailable Skills '
+
+sst-change: '&aChanged your skill select type to &2{type}&a.'
+unknown-sst: '&cUnknown skill select type'
+sst-disabled: '&eChoosing your own skill select type is not enabled.'
+no-permission: '&cYou do not have permission to access this command.'
+
+unknown-player: '&cUnknown Player!'
+unknown-item: '&cUnknown Item!'
+no-skill-slots: '&cThis item doesn''t have any skill slots.'
+
+invalid-item-amount: '&cNot a valid item amount!'
+invalid-skill-slot: '&cNot a valid skill slot amount!'
+give-success: '&aGave &2{player} {amount}&ax &2{material}&a.'
+air-skill: '&cYou cannot add a skill to air!'
+non-player: '&cOnly players can use this version of the command!'

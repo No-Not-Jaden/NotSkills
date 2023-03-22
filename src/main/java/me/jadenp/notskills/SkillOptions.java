@@ -1,5 +1,6 @@
 package me.jadenp.notskills;
 
+import me.jadenp.notskills.utils.ConfigOptions;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static me.jadenp.notskills.ConfigOptions.*;
+import static me.jadenp.notskills.utils.ConfigOptions.*;
 
 public class SkillOptions {
     private final String name;

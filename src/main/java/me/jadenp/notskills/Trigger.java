@@ -1,5 +1,6 @@
 package me.jadenp.notskills;
 
+import me.jadenp.notskills.utils.ConfigOptions;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -7,8 +8,8 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
-import static me.jadenp.notskills.ConfigOptions.*;
-import static me.jadenp.notskills.ConfigOptions.pauseRatio;
+import static me.jadenp.notskills.utils.ConfigOptions.*;
+import static me.jadenp.notskills.utils.ConfigOptions.pauseRatio;
 
 public enum Trigger {
     LEFT_RIGHT_CLICK(8), // java only

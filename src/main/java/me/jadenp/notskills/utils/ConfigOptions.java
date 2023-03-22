@@ -1,6 +1,10 @@
-package me.jadenp.notskills;
+package me.jadenp.notskills.utils;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import me.jadenp.notskills.NotSkills;
+import me.jadenp.notskills.PlayerData;
+import me.jadenp.notskills.SkillOptions;
+import me.jadenp.notskills.Trigger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -20,13 +24,7 @@ public class ConfigOptions {
     public static boolean playersChooseSST = true;
     public static double pauseRatio = 1.75;
     public static int expireMS = 10000;
-    public static String prefix = ChatColor.GRAY + "[" + ChatColor.BLUE + "Not" + ChatColor.LIGHT_PURPLE + "Skills" + ChatColor.GRAY + "] " + ChatColor.DARK_GRAY + "> ";
-    public static String skillIdentifier = ChatColor.BLACK + "-=<0>=-";
-    public static String skillSlotsReserved = ChatColor.WHITE + "" + ChatColor.BOLD + "{amount}" + ChatColor.GRAY + "x" + ChatColor.WHITE + " Skill Slots Available";
-    public static String[] splitReserved;
-    public static String skillBindIdentifier = ChatColor.GRAY + "<" + ChatColor.BLUE + "{amount}" + ChatColor.GRAY + "> ";
-    public static String[] splitBind;
-    public static String skillBreak = ChatColor.DARK_GRAY + "*****";
+
     public static boolean[][] threeTypePatterns = { // left is true, right is false
             {true, true, true},
             {true, true, false},
@@ -40,8 +38,7 @@ public class ConfigOptions {
     public static long multiClickResetTime = 500L;
     public static List<SkillOptions> skills = new ArrayList<>();
     public static boolean papiEnabled = false;
-    public static String skillMenu = ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Available Skills " + ChatColor.GRAY + "" + ChatColor.ITALIC + "Page {page}";
-    public static String[] splitSkillMenu;
+
 
     public static void reloadOptions(){
         papiEnabled = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
@@ -55,9 +52,7 @@ public class ConfigOptions {
         expireMS = config.getInt("expire-ms");
         multiClickResetTime = config.getLong("multi-click-trigger");
 
-        splitReserved = skillSlotsReserved.split("\\{amount}");
-        splitBind = skillBindIdentifier.split("\\{amount}");
-        splitSkillMenu = skillMenu.split("\\{page}");
+
 
         skills.clear();
         for (int i = 1; config.isSet("skills." + i + ".name"); i++){

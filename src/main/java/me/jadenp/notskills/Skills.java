@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static me.jadenp.notskills.ConfigOptions.*;
+import static me.jadenp.notskills.utils.ConfigOptions.*;
+import static me.jadenp.notskills.utils.Language.*;
 
 public class Skills {
     private final static int maxSkillSlots = 8;

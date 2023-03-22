@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 
 import java.util.*;
 
-import static me.jadenp.notskills.ConfigOptions.*;
+import static me.jadenp.notskills.utils.ConfigOptions.*;
 
 
 public class SkillTrigger implements Listener {
