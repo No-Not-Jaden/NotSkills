@@ -24,6 +24,7 @@ public class ConfigOptions {
     public static boolean playersChooseSST = true;
     public static double pauseRatio = 1.75;
     public static int expireMS = 10000;
+    public static boolean particles = true;
 
     public static boolean[][] threeTypePatterns = { // left is true, right is false
             {true, true, true},
@@ -46,11 +47,27 @@ public class ConfigOptions {
         NotSkills.getInstance().reloadConfig();
         FileConfiguration config = NotSkills.getInstance().getConfig();
 
+        if (!config.isSet("skill-select.default"))
+            config.set("skill-select.default", 8);
+        if (!config.isSet("skill-select.players-choose"))
+            config.set("skill-select.players-choose", true);
+        if (!config.isSet("pause-ratio"))
+            config.set("pause-ratio", 1.75);
+        if (!config.isSet("expire-ms"))
+            config.set("expire-ms", 10000);
+        if (!config.isSet("multi-click-trigger"))
+            config.set("multi-click-trigger", 500);
+        if (!config.isSet("particles"))
+            config.set("particles", true);
+
+        NotSkills.getInstance().saveConfig();
+
         defaultSST = getTrigger(config.getInt("skill-select.default"));
         playersChooseSST = config.getBoolean("skill-select.players-choose");
         pauseRatio = config.getDouble("pause-ratio");
         expireMS = config.getInt("expire-ms");
         multiClickResetTime = config.getLong("multi-click-trigger");
+        particles = config.getBoolean("particles");
 
 
 

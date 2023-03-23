@@ -61,8 +61,8 @@ public class Commands implements CommandExecutor, TabCompleter {
                     sender.sendMessage(ChatColor.BLUE + "/skill add (amount) <player>" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Adds a skill slot to held item.");
                     sender.sendMessage(ChatColor.BLUE + "/skill remove <amount> <player>" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Removes a skill slot from held item.");
                     sender.sendMessage(ChatColor.BLUE + "/skill give (player) (item) (amount) (skill slots)" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Gives a player an item with skill slots.");
-                    sender.sendMessage(ChatColor.BLUE + "/skill unlock (skill) <player>" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Unlocks a skill.");
-                    sender.sendMessage(ChatColor.BLUE + "/skill lock (skill) <player>" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Locks a skill.");
+                    sender.sendMessage(ChatColor.BLUE + "/skill unlock (player) (skill)" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Unlocks a skill.");
+                    sender.sendMessage(ChatColor.BLUE + "/skill lock (player) (skill)" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Locks a skill.");
                 }
                 if (sender.hasPermission("notskills.sst")) {
                     sender.sendMessage(ChatColor.BLUE + "/skill select (type)" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Changes skill select type.");
@@ -271,24 +271,32 @@ public class Commands implements CommandExecutor, TabCompleter {
                 }
             } else if (args[0].equalsIgnoreCase("unlock") || args[0].equalsIgnoreCase("lock")){
                 if (args.length > 1) {
-                    Player player;
-                    if (args.length == 3) {
-                        // has player
+                    Player player = null;
+                    if (args.length >= 3) {
+                        // could have player
                         player = Bukkit.getPlayer(args[2]);
-                        if (player == null) {
-                            sender.sendMessage(parse(prefix + unknownPlayer, null));
-                            return true;
-                        }
-
-
-                    } else {
+                    }
+                    StringBuilder skillName = new StringBuilder();
+                    if (player == null){
                         if (!(sender instanceof Player)) {
                             sender.sendMessage(prefix + ChatColor.RED + "Only players can use this version of the command!");
                             return true;
                         }
                         player = (Player) sender;
+                        // skill is args 1-end
+                        for (int i = 1; i < args.length; i++) {
+                            skillName.append(args[i]).append(" ");
+                        }
+                    } else {
+                        // skill is after player, so args2-end
+                        for (int i = 2; i < args.length; i++) {
+                            skillName.append(args[i]).append(" ");
+                        }
                     }
-                    SkillOptions skill = getSkill(args[1]);
+                    // delete the last space if the name isn't empty - it really shouldn't be empty, but we check jic
+                    if (skillName.length() > 0)
+                        skillName.deleteCharAt(skillName.length() - 1);
+                    SkillOptions skill = getSkill(skillName.toString());
                     if (skill == null) {
                         sender.sendMessage(prefix + ChatColor.RED + "Unknown skill!");
                         return true;
@@ -339,14 +347,9 @@ public class Commands implements CommandExecutor, TabCompleter {
                     if (args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("remove")){
                         tab.add("#");
                     }
-                    if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("give")){
+                    if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("lock") || args[0].equalsIgnoreCase("unlock")){
                         for (Player player : Bukkit.getOnlinePlayers()){
                             tab.add(player.getName());
-                        }
-                    }
-                    if (args[0].equalsIgnoreCase("lock") || args[0].equalsIgnoreCase("unlock")){
-                        for (SkillOptions skillOptions : skills){
-                            tab.add(ChatColor.stripColor((skillOptions.getName())));
                         }
                     }
                 } else if (args.length == 3) {
@@ -356,6 +359,13 @@ public class Commands implements CommandExecutor, TabCompleter {
                         }
                     } else if (args[0].equalsIgnoreCase("give")){
                         tab.add("artifact");
+                    }
+                }
+                if (args.length > 1){
+                    if (args[0].equalsIgnoreCase("lock") || args[0].equalsIgnoreCase("unlock")){
+                        for (SkillOptions skillOptions : skills){
+                            tab.add(ChatColor.stripColor((skillOptions.getName())));
+                        }
                     }
                 }
             }
