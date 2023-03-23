@@ -25,6 +25,7 @@ public enum Trigger {
     MULTI_CLICK(3); // double, triple, & quad click
 
     private final int maxSkills;
+    private final static float particleSize = 2.0f;
     Trigger(int maxSkills){
         this.maxSkills = maxSkills;
     }
@@ -45,7 +46,7 @@ public enum Trigger {
         if (validClicks.size() > 1) {
             player.playSound(player, Sound.ENTITY_ARROW_HIT_PLAYER, 1, 1);
             if (particles)
-                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(0, 255, 0), 3));
+                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(0, 255, 0), particleSize));
             org.bukkit.util.Vector p2first = validClicks.get(0).getClickLocation().toVector().subtract(player.getEyeLocation().toVector());
             Vector p2second = validClicks.get(1).getClickLocation().toVector().subtract(player.getEyeLocation().toVector());
             double yaw = getYawAngle(p2first, p2second);
@@ -74,7 +75,7 @@ public enum Trigger {
         if (clicks.get(clicks.size()-1).isCrouching()) {
             player.playSound(player, Sound.ENTITY_LEASH_KNOT_BREAK, 1, 1);
             if (particles)
-                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(252, 186, 3), 3));
+                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(252, 186, 3), particleSize));
         }
         return 0;
 
@@ -98,7 +99,7 @@ public enum Trigger {
                 if (j == ConfigOptions.threeTypePatterns[0].length - 1){
                     player.playSound(player, Sound.ENTITY_ARROW_HIT_PLAYER, 1, 1);
                     if (particles)
-                        player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(0, 255, 0), 3));
+                        player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(0, 255, 0), particleSize));
                     return i + 1;
                 }
             }
@@ -106,7 +107,7 @@ public enum Trigger {
         if (clicks.get(clicks.size()-1).isCrouching()) {
             player.playSound(player, Sound.ENTITY_LEASH_KNOT_BREAK, 1, 1);
             if (particles)
-                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(252, 186, 3), 3));
+                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(252, 186, 3), particleSize));
         }
         return 0;
     }
@@ -115,7 +116,7 @@ public enum Trigger {
         if (clicks.get(0).isCrouching()) {
             player.playSound(player, Sound.ENTITY_ARROW_HIT_PLAYER, 1, 1);
             if (particles)
-                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(0, 255, 0), 3));
+                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(0, 255, 0), particleSize));
             return 1;
         }
         return 0;
@@ -125,7 +126,7 @@ public enum Trigger {
         if (clicks.get(0).isJumping()) {
             player.playSound(player, Sound.ENTITY_ARROW_HIT_PLAYER, 1, 1);
             if (particles)
-                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(0, 255, 0), 3));
+                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(0, 255, 0), particleSize));
             return 1;
         }
         return 0;
@@ -135,13 +136,13 @@ public enum Trigger {
         if (clicks.get(0).isCrouching()) {
             player.playSound(player, Sound.ENTITY_ARROW_HIT_PLAYER, 1, 1);
             if (particles)
-                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(0, 255, 0), 3));
+                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(0, 255, 0), particleSize));
             return 1;
         }
         if (clicks.get(0).isJumping()) {
             player.playSound(player, Sound.ENTITY_ARROW_HIT_PLAYER, 1, 1);
             if (particles)
-                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(0, 255, 0), 3));
+                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(0, 255, 0), particleSize));
             return 2;
         }
         return 0;
@@ -199,7 +200,7 @@ public enum Trigger {
             }
             player.playSound(player, Sound.ENTITY_ARROW_HIT_PLAYER, 1,1);
             if (particles)
-                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(0, 255, 0), 3));
+                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(0, 255, 0), particleSize));
             // check with registered triggers to see if the pattern is valid
             for (int i = 1; i < ConfigOptions.threeTypePatterns.length; i++) {
                 for (int j = 0; j < ConfigOptions.threeTypePatterns[0].length; j++) {
@@ -216,7 +217,7 @@ public enum Trigger {
             if (clicks.get(clicks.size()-1).isCrouching()) {
                 player.playSound(player, Sound.ENTITY_LEASH_KNOT_BREAK, 1, 1);
                 if (particles)
-                    player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(252, 186, 3), 3));
+                    player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(252, 186, 3), particleSize));
             }
         }
 
@@ -236,13 +237,13 @@ public enum Trigger {
         if (validClicks.size() > 1){
             player.playSound(player, Sound.ENTITY_ARROW_HIT_PLAYER, 1, 1);
             if (particles)
-                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(0, 255, 0), 3));
+                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(0, 255, 0), particleSize));
             return 1;
         }
         if (clicks.get(clicks.size()-1).isCrouching()) {
             player.playSound(player, Sound.ENTITY_LEASH_KNOT_BREAK, 1, 1);
             if (particles)
-                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(252, 186, 3), 3));
+                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(252, 186, 3), particleSize));
         }
         return 0;
     }
@@ -260,13 +261,13 @@ public enum Trigger {
         if (validClicks.size() > 2){
             player.playSound(player, Sound.ENTITY_ARROW_HIT_PLAYER, 1, 1);
             if (particles)
-                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(0, 255, 0), 3));
+                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(0, 255, 0), particleSize));
             return 1;
         }
         if (clicks.get(clicks.size()-1).isCrouching()) {
             player.playSound(player, Sound.ENTITY_LEASH_KNOT_BREAK, 1, 1);
             if (particles)
-                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(252, 186, 3), 3));
+                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(252, 186, 3), particleSize));
         }
         return 0;
     }
@@ -284,7 +285,7 @@ public enum Trigger {
         if (validClicks.get(validClicks.size() - 1).getTime() - validClicks.get(0).getTime() > multiClickResetTime){
             player.playSound(player, Sound.ENTITY_ARROW_HIT_PLAYER, 1, 1);
             if (particles)
-                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(0, 255, 0), 3));
+                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(0, 255, 0), particleSize));
             if (validClicks.size() == 2){
                 return 1;
             } else if (validClicks.size() == 3){
@@ -296,7 +297,7 @@ public enum Trigger {
         if (clicks.get(clicks.size()-1).isCrouching()) {
             player.playSound(player, Sound.ENTITY_LEASH_KNOT_BREAK, 1, 1);
             if (particles)
-                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(252, 186, 3), 3));
+                player.spawnParticle(Particle.REDSTONE, player.getEyeLocation().add(player.getEyeLocation().getDirection()), 1, new Particle.DustOptions(Color.fromRGB(252, 186, 3), particleSize));
         }
         return 0;
     }

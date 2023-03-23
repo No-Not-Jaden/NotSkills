@@ -26,11 +26,11 @@ public final class NotSkills extends JavaPlugin {
 
     /**
      * language ~
-     * unlock skills somehow -
+     * unlock skills somehow - x
      * combine artifacts -
-     * skill remove doesn't work -
-     * cannot unlock skills with multiple names -
-     * particles to spawn when you use a trigger click -
+     * skill remove doesn't work - x
+     * cannot unlock skills with multiple names - x
+     * particles to spawn when you use a trigger click - x
      */
 
     private static NotSkills instance;

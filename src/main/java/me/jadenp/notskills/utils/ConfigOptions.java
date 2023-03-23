@@ -39,6 +39,7 @@ public class ConfigOptions {
     public static long multiClickResetTime = 500L;
     public static List<SkillOptions> skills = new ArrayList<>();
     public static boolean papiEnabled = false;
+    public static int maxSkillSlots = 8;
 
 
     public static void reloadOptions(){
