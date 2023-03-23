@@ -50,7 +50,7 @@ public class Commands implements CommandExecutor, TabCompleter {
                     } else {
                         sender.sendMessage(parse(prefix + sstDisabled, (Player) sender));
                     }
-
+                    return true;
                 }
             }
         }
@@ -68,6 +68,7 @@ public class Commands implements CommandExecutor, TabCompleter {
                     sender.sendMessage(ChatColor.BLUE + "/skill select (type)" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Changes skill select type.");
                 }
                 sender.sendMessage(ChatColor.BLUE + "/skill" + ChatColor.GRAY + " <=> " + ChatColor.DARK_AQUA + "Opens skill menu for the held item.");
+                return true;
             }
             if (!sender.hasPermission("notskills.admin")) {
                 sender.sendMessage(noPermission);
@@ -75,6 +76,7 @@ public class Commands implements CommandExecutor, TabCompleter {
             }
             if (args[0].equalsIgnoreCase("reload")) {
                 reloadOptions();
+                reloadLanguage();
                 sender.sendMessage(prefix + ChatColor.YELLOW + "Reloaded NotSkills version " + NotSkills.getInstance().getDescription().getVersion() + "!");
             } else if (args[0].equalsIgnoreCase("give")) {
                 if (args.length >= 3) {
@@ -322,7 +324,9 @@ public class Commands implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(@NonNull CommandSender sender, @NonNull Command command, @NonNull String s, String[] args) {
         List<String> tab = new ArrayList<>();
         if (command.getName().equalsIgnoreCase("notskills")) {
-            tab.add("help");
+            if (args.length == 1) {
+                tab.add("help");
+            }
             if (sender.hasPermission("notskills.admin")){
                 if (args.length == 1) {
                     tab.add("add");
@@ -338,6 +342,11 @@ public class Commands implements CommandExecutor, TabCompleter {
                     if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("give")){
                         for (Player player : Bukkit.getOnlinePlayers()){
                             tab.add(player.getName());
+                        }
+                    }
+                    if (args[0].equalsIgnoreCase("lock") || args[0].equalsIgnoreCase("unlock")){
+                        for (SkillOptions skillOptions : skills){
+                            tab.add(ChatColor.stripColor((skillOptions.getName())));
                         }
                     }
                 } else if (args.length == 3) {

@@ -76,12 +76,15 @@ public class SkillTrigger implements Listener {
                         break;
                     case CROUCH_CLICK:
                         skillTrigger = Trigger.crouchTrigger(player, clicks);
+                        clicks.clear();
                         break;
                     case JUMP_CLICK:
                         skillTrigger = Trigger.jumpTrigger(player, clicks);
+                        clicks.clear();
                         break;
                     case CROUCH_JUMP_CLICK:
                         skillTrigger = Trigger.crouchJumpTrigger(player, clicks);
+                        clicks.clear();
                         break;
                     case TIMED_CLICK:
                         skillTrigger = Trigger.timedTrigger(player, clicks);
@@ -102,9 +105,12 @@ public class SkillTrigger implements Listener {
                     // activate skill
                     clicks.clear();
                     Skills skill = new Skills(Objects.requireNonNull(Objects.requireNonNull(player.getInventory().getItemInMainHand().getItemMeta()).getLore()));
-                    SkillOptions skillOptions = getSkill(skill.getSkill(skillTrigger));
-                    if (skillOptions != null)
-                        skillOptions.runActions(player);
+                    String skillName = skill.getSkill(skillTrigger - 1);
+                    if (skillName != null) {
+                        SkillOptions skillOptions = getSkill(skillName);
+                        if (skillOptions != null)
+                            skillOptions.runActions(player);
+                    }
                 }
 
                 if (recordedClicks.containsKey(player.getUniqueId()))

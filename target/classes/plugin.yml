@@ -1,5 +1,5 @@
 name: NotSkills
-version: '1.37'
+version: '1.48'
 main: me.jadenp.notskills.NotSkills
 api-version: 1.19
 softdepend:

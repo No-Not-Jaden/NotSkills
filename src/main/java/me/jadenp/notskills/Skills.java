@@ -29,7 +29,7 @@ public class Skills {
                 inSkillArea = !inSkillArea;
                 continue;
             }
-            if (str.equals(skillBreak))
+            if (str.equals(skillBreak) && skillBreak.length() > 0)
                 continue;
             if (inSkillArea){
                 // check if string is reserved
@@ -40,7 +40,7 @@ public class Skills {
                     try {
                         // grabbing the bind slot attached to the skill
                         // have to parse around the special characters denoted as skillBindIdentifier in ConfigOptions.java
-                        bind = Integer.parseInt(str.substring(str.indexOf(splitBind[0] + splitBind[0].length()), str.indexOf(splitBind[1])));
+                        bind = Integer.parseInt(str.substring(str.indexOf(splitBind[0]) + splitBind[0].length(), str.indexOf(splitBind[1])));
                     } catch (NumberFormatException | IndexOutOfBoundsException e){
                         Bukkit.getLogger().warning("Error reading skill bind!");
                         continue;
@@ -81,7 +81,6 @@ public class Skills {
 
     // -1 for not an empty slot string
     private int getEmptySlots(String str){
-
         for (String s : splitReserved){
             if (!str.contains(s)){
                 return -1;
@@ -101,8 +100,10 @@ public class Skills {
         List<String> newLore = new ArrayList<>();
         boolean inSkills = false;
         for (String line : lore){
-            if (line.equals(skillIdentifier))
+            if (line.equals(skillIdentifier)) {
                 inSkills = !inSkills;
+                continue;
+            }
             if (inSkills)
                 continue;
             newLore.add(line);
@@ -117,12 +118,12 @@ public class Skills {
             for (int i = 0; i < usedSkillSlots.length; i++) {
                 if (usedSkillSlots[i] == null)
                     break;
-                if (i > 0)
+                if (i > 0 && skillBreak.length() > 0)
                     newLore.add(skillBreak);
                 newLore.add(splitBind[0] + (i + 1) + splitBind[1] + usedSkillSlots[i]);
             }
             if (emptySkillSlots > 0) {
-                if (getUsedSkillSlots() > 0)
+                if (getUsedSkillSlots() > 0 && skillBreak.length() > 0)
                     newLore.add(skillBreak);
                 newLore.add(splitReserved[0] + emptySkillSlots + splitReserved[1]);
             }
@@ -181,9 +182,9 @@ public class Skills {
     }
 
     public String getSkill(int index){
-        if (index > usedSkillSlots.length)
+        if (index >= usedSkillSlots.length)
             return null;
-        return usedSkillSlots[index-1];
+        return usedSkillSlots[index];
     }
 
     public boolean hasSkill(String name){
@@ -239,6 +240,7 @@ public class Skills {
             skillName = ChatColor.stripColor(color(skillName));
             if (skillName.equalsIgnoreCase(skill)){
                 usedSkillSlots[i] = null;
+                emptySkillSlots++;
                 return true;
             }
         }

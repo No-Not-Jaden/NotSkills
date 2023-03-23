@@ -20,9 +20,6 @@ expire-ms: 10000
 # how big the space in milliseconds between the last clicks in MULTI_CLICK to trigger
 multi-click-trigger: 500
 
-#language:
-
-
 skills:
   1:
     # what the skill is called on skill artifacts and in item lore
@@ -66,7 +63,7 @@ skills:
       - ''
     cooldown: 5
     actions:
-      - '[console] execute at {target20} run summon lightning'
+      - '[console] execute positioned {target20} run summon lightning'
     allowed-items: []
   3:
     name: '&f&lSeed Prank'

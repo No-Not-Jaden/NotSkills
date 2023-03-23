@@ -37,6 +37,8 @@ public enum Trigger {
                 validClicks.add(click);
             }
         }
+        if (validClicks.size() == 0)
+            return 0;
 
         if (validClicks.size() > 1) {
             player.playSound(player, Sound.ENTITY_ARROW_HIT_PLAYER, 1, 1);
@@ -79,6 +81,8 @@ public enum Trigger {
                 validClicks.add(click);
             }
         }
+        if (validClicks.size() == 0)
+            return 0;
 
         for (int i = 0; i < ConfigOptions.threeTypePatterns.length; i++) {
             for (int j = 0; j < ConfigOptions.threeTypePatterns[0].length; j++) {
@@ -131,6 +135,8 @@ public enum Trigger {
                 validClicks.add(click);
             }
         }
+        if (validClicks.size() == 0)
+            return 0;
 
         // check if they have enough to cast a spell
         if (clicks.size() >= 4) {
@@ -200,6 +206,8 @@ public enum Trigger {
                 validClicks.add(click);
             }
         }
+        if (validClicks.size() == 0)
+            return 0;
 
         if (validClicks.size() > 1){
             player.playSound(player, Sound.ENTITY_ARROW_HIT_PLAYER, 1, 1);
@@ -217,6 +225,8 @@ public enum Trigger {
                 validClicks.add(click);
             }
         }
+        if (validClicks.size() == 0)
+            return 0;
 
         if (validClicks.size() > 2){
             player.playSound(player, Sound.ENTITY_ARROW_HIT_PLAYER, 1, 1);
@@ -234,6 +244,8 @@ public enum Trigger {
                 validClicks.add(click);
             }
         }
+        if (validClicks.size() == 0)
+            return 0;
         // when time since start is > multiClickResetTime
         if (validClicks.get(validClicks.size() - 1).getTime() - validClicks.get(0).getTime() > multiClickResetTime){
             player.playSound(player, Sound.ENTITY_ARROW_HIT_PLAYER, 1, 1);

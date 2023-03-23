@@ -1,9 +1,11 @@
 prefix: '&7[&9Not&dSkills&7] &8> '
+# - Do not change these unless you want to break all skill slots on previous items -
 skill-identifier: '&0-=<0>=-'
-skill-slots-available: '&f&l{amount}&7x &fSkill slots Available'
+skill-slots-available: '&f&l{amount}&7x &fSkill Slots Available'
 skill-bind-identifier: '&7<&9{amount}&7> '
-skill-break: '&8*****'
+skill-break: ''
 skill-menu: '&d&lAvailable Skills '
+#-----------------------------------------------------------------------------------
 
 sst-change: '&aChanged your skill select type to &2{type}&a.'
 unknown-sst: '&cUnknown skill select type'

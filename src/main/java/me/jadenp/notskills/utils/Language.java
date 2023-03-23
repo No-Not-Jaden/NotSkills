@@ -39,11 +39,11 @@ public class Language {
         if (!configuration.isSet("skill-identifier"))
             configuration.set("skill-identifier", "&0-=<0>=-");
         if (!configuration.isSet("skill-slots-available"))
-            configuration.set("skill-slots-available", "&f&l{amount}&7x &fSkill slots Available");
+            configuration.set("skill-slots-available", "&f&l{amount}&7x &fSkill Slots Available");
         if (!configuration.isSet("skill-bind-identifier"))
             configuration.set("skill-bind-identifier", "&7<&9{amount}&7> ");
         if (!configuration.isSet("skill-break"))
-            configuration.set("skill-break", "&8*****");
+            configuration.set("skill-break", "");
         if (!configuration.isSet("skill-menu"))
             configuration.set("skill-menu", "&d&lAvailable Skills ");
         if (!configuration.isSet("no-permission"))

@@ -29,6 +29,8 @@ public final class NotSkills extends JavaPlugin {
      * unlock skills somehow -
      * combine artifacts -
      * skill remove doesn't work -
+     * cannot unlock skills with multiple names
+     * particles to spawn when you use a trigger click
      */
 
     private static NotSkills instance;
@@ -50,7 +52,7 @@ public final class NotSkills extends JavaPlugin {
 
         File language = new File(getDataFolder() + File.separator + "language.yml");
         if (!language.exists()){
-            saveResource(language.getPath(), false);
+            saveResource("language.yml", false);
         }
         Language.reloadLanguage();
 
@@ -71,6 +73,9 @@ public final class NotSkills extends JavaPlugin {
                 Type mapType = new TypeToken<Map<UUID, PlayerData>>() {
                 }.getType();
                 playerDataMap = gson.fromJson(new String(Files.readAllBytes(Paths.get(playerData.getPath()))), mapType);
+                if (playerDataMap == null){
+                    playerDataMap = new HashMap<>();
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -96,6 +101,9 @@ public final class NotSkills extends JavaPlugin {
         }
     }
 
+    public Map<UUID, PlayerData> getPlayerDataMap() {
+        return playerDataMap;
+    }
 
     public void save() {
         try (FileWriter writer = new FileWriter(playerData)) {

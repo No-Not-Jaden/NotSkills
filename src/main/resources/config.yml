@@ -63,7 +63,7 @@ skills:
       - ''
     cooldown: 5
     actions:
-      - '[console] execute at {target20} run summon lightning'
+      - '[console] execute positioned {target20} run summon lightning'
     allowed-items: []
   3:
     name: '&f&lSeed Prank'

@@ -115,6 +115,7 @@ public class SkillsGUI implements Listener {
                     meta.setLore(skill.getLore());
                     skillItem.setItemMeta(meta);
                     playerContents[i] = skillItem;
+                    event.getView().getBottomInventory().setContents(playerContents);
                     openGUI((Player) event.getWhoClicked(), page);
                     return;
                 }
@@ -188,7 +189,9 @@ public class SkillsGUI implements Listener {
         // move unlocked skills to combines contents
         for (String str : playerData.getSkillsUnlocked()){
             SkillOptions skillOptions = getSkill(str);
-            availableSkills.remove(skillOptions);
+            if (!availableSkills.remove(skillOptions)){
+                continue;
+            }
             if (skillOptions != null)
                 combinedContents.add(skillOptions.getDisplayItem(1));
         }
