@@ -1,10 +1,7 @@
 package me.jadenp.notskills.utils;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.jadenp.notskills.NotSkills;
-import me.jadenp.notskills.PlayerData;
-import me.jadenp.notskills.SkillOptions;
-import me.jadenp.notskills.Trigger;
+import me.jadenp.notskills.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -39,11 +36,14 @@ public class ConfigOptions {
     public static long multiClickResetTime = 500L;
     public static List<SkillOptions> skills = new ArrayList<>();
     public static boolean papiEnabled = false;
+    public static boolean mythicMobsEnabled = false;
     public static int maxSkillSlots = 8;
+    public static double mythicMobsSkillChance = 0.5;
 
 
     public static void reloadOptions(){
         papiEnabled = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
+        mythicMobsEnabled = Bukkit.getPluginManager().isPluginEnabled("MythicMobs");
 
         NotSkills.getInstance().reloadConfig();
         FileConfiguration config = NotSkills.getInstance().getConfig();
@@ -60,6 +60,8 @@ public class ConfigOptions {
             config.set("multi-click-trigger", 500);
         if (!config.isSet("particles"))
             config.set("particles", true);
+        if (!config.isSet("mythic-mobs-skill-chance"))
+            config.set("mythic-mobs-skill-chance", 0.5);
 
         NotSkills.getInstance().saveConfig();
 
@@ -69,12 +71,17 @@ public class ConfigOptions {
         expireMS = config.getInt("expire-ms");
         multiClickResetTime = config.getLong("multi-click-trigger");
         particles = config.getBoolean("particles");
+        mythicMobsSkillChance = config.getDouble("mythic-mobs-skill-chance", 0.5);
 
 
 
         skills.clear();
         for (int i = 1; config.isSet("skills." + i + ".name"); i++){
-            skills.add(new SkillOptions(color(config.getString("skills." + i + ".name")), config.getDouble("skills." + i + ".cooldown"), config.getStringList("skills." + i + ".actions"), config.getStringList("skills." + i + ".allowed-items"), config.getStringList("skills." + i + ".description")));
+            MythicMobsOptions mythicMobsOptions = null;
+            if (config.isSet("skills." + i + ".mythic-mobs.weight")){
+                mythicMobsOptions = new MythicMobsOptions(config.getInt("skills." + i + ".mythic-mobs.weight"), config.getStringList("skills." + i + ".mythic-mobs.included-mobs"));
+            }
+            skills.add(new SkillOptions(color(config.getString("skills." + i + ".name")), config.getDouble("skills." + i + ".cooldown"), config.getStringList("skills." + i + ".actions"), config.getStringList("skills." + i + ".allowed-items"), config.getStringList("skills." + i + ".description"), mythicMobsOptions));
         }
 
     }

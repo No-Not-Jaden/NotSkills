@@ -34,5 +34,6 @@
     <orderEntry type="library" name="Maven: de.tr7zw:functional-annotations:0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains:annotations:19.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: me.clip:placeholderapi:2.11.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: io.lumine:Mythic-Dist:5.2.1" level="project" />
   </component>
 </module>
