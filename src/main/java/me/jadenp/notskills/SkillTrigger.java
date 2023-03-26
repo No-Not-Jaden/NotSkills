@@ -126,7 +126,7 @@ public class SkillTrigger implements Listener {
                     player.playSound(player.getLocation(), Sound.ENTITY_SQUID_SQUIRT,1,1);
                     return;
                 }
-                data.setCoolDown(skillName, skillOptions.getCooldown());
+                NotSkills.getInstance().setCooldown(player.getUniqueId(), skillOptions.getName(), skillOptions.getCooldown());
                 skillOptions.runActions(player);
             }
 

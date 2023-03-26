@@ -1,6 +1,10 @@
 package me.jadenp.notskills;
 
+import org.bukkit.ChatColor;
+
 import java.util.*;
+
+import static me.jadenp.notskills.utils.ConfigOptions.color;
 
 public class PlayerData {
     private final Map<String, Long> skillCooldowns = new HashMap<>();
@@ -27,6 +31,7 @@ public class PlayerData {
     }
 
     public void setSkillUnlocked(String name, boolean unlocked){
+        name = ChatColor.stripColor(color(name));
         if (unlocked){
             if (!skillCooldowns.containsKey(name))
                 skillCooldowns.put(name, 0L);
@@ -44,6 +49,7 @@ public class PlayerData {
     }
 
     public long getCooldown(String name){
+        name = ChatColor.stripColor(color(name));
         if (skillCooldowns.containsKey(name)){
             return skillCooldowns.get(name);
         }
@@ -51,6 +57,7 @@ public class PlayerData {
     }
 
     public void setCoolDown(String name, double seconds){
+        name = ChatColor.stripColor(color(name));
         if (skillCooldowns.containsKey(name)){
             skillCooldowns.replace(name, (long) (seconds * 1000));
         } else {

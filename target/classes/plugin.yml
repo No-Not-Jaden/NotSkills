@@ -1,9 +1,10 @@
 name: NotSkills
-version: '1.57'
+version: '1.65'
 main: me.jadenp.notskills.NotSkills
 api-version: 1.19
 softdepend:
   - PlaceholderAPI
+  - MythicMobs
 commands:
   notskills:
     description: Use this plugin!

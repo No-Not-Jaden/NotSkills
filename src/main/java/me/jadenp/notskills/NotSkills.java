@@ -47,7 +47,7 @@ public final class NotSkills extends JavaPlugin {
         playerData = new File(getDataFolder() + File.separator + "playerdata.json");
 
         Items.addMaterialData();
-        Bukkit.getPluginManager().registerEvents(new Events(), this);
+
         Commands commands = new Commands();
         Objects.requireNonNull(getCommand("notskills")).setExecutor(commands);
         Objects.requireNonNull(getCommand("notskills")).setTabCompleter(commands);
@@ -60,6 +60,8 @@ public final class NotSkills extends JavaPlugin {
 
         saveDefaultConfig();
         ConfigOptions.reloadOptions();
+
+        Bukkit.getPluginManager().registerEvents(new Events(), this);
 
         // setup gson
         GsonBuilder builder = new GsonBuilder();
@@ -100,6 +102,12 @@ public final class NotSkills extends JavaPlugin {
     public void unlockSkill(UUID uuid, String name, boolean unlock){
         if (playerDataMap.containsKey(uuid)){
             playerDataMap.get(uuid).setSkillUnlocked(name, unlock);
+        }
+    }
+
+    public void setCooldown(UUID uuid, String name, double seconds){
+        if (playerDataMap.containsKey(uuid)){
+            playerDataMap.get(uuid).setCoolDown(name, seconds);
         }
     }
 

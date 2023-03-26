@@ -21,6 +21,8 @@ expire-ms: 10000
 multi-click-trigger: 500
 # display a redstone particle in front of the player when they select are selecting a skill
 particles: true
+# what rate a mythic mob will have to spawn with a skill item
+mythic-mobs-skill-chance: 0.5
 
 skills:
   1:
@@ -38,16 +40,21 @@ skills:
     # • [player] will run a command as the player
     # • [console] will run a command as the console
     # • [message] will send the player a message
+    # • [mythicmobs] <mob> (optional:{target<x>}) will spawn mythic mob
     # These characters will be replaced:
     # • {player} will be replaced with the player's name
+    # • {world} will be replaced with the world name
+    # • {dimension} will be replaced with the dimension name
     # • {target<x>} will be replaced with the block position that the player is looking at with a maximum distance of x
     # • {random<x>} will be replaced with a random number from 0 (inclusive) to x (non-inclusive)
     # • {random<y>_<x>} will be replaced with a random number from y (inclusive) to x (non-inclusive)
     # External plugin support:
     # • Placeholders will be parsed as the player
+    # • Mythic Mobs can be spawned through a skill and can be spawned with skill items (see below for an example)
     actions:
       - '[console] execute run give {player} levitation 1 {random20_300} false'
       - '[message] &7&oYou appear to feel lighter.'
+      #- '[mythicmobs] SkeletalKnight' # will spawn a Skeletal Knight if mythic mobs is enabled
     # Which items the skill can be applied to (using the command to add skills bypasses this)
     # • The name of the item material must include at least one string in the list
     # • Add "*" at the beginning to match the string strictly
@@ -57,6 +64,12 @@ skills:
       - '*Stick'
       - 'Hoe'
       - 'Blaze_Rod'
+      - 'Iron_Sword'
+    #mythic-mobs:
+    #  weight: 1 # how likely a mob will spawn with this specific skill
+       # what mobs can spawn with this skill - leave empty to allow all mythic mobs
+    #  included-mobs:
+    #    - 'SkeletalKnight'
   2:
     name: '&f&lSmite'
     description:
@@ -65,7 +78,7 @@ skills:
       - ''
     cooldown: 5
     actions:
-      - '[console] execute positioned {target20} run summon lightning'
+      - '[console] execute positioned {target20} run summon minecraft:lightning_bolt'
     allowed-items: []
   3:
     name: '&f&lSeed Prank'

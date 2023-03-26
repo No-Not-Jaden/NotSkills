@@ -43,6 +43,8 @@ skills:
     # • [mythicmobs] <mob> (optional:{target<x>}) will spawn mythic mob
     # These characters will be replaced:
     # • {player} will be replaced with the player's name
+    # • {world} will be replaced with the world name
+    # • {dimension} will be replaced with the dimension name
     # • {target<x>} will be replaced with the block position that the player is looking at with a maximum distance of x
     # • {random<x>} will be replaced with a random number from 0 (inclusive) to x (non-inclusive)
     # • {random<y>_<x>} will be replaced with a random number from y (inclusive) to x (non-inclusive)
@@ -62,6 +64,7 @@ skills:
       - '*Stick'
       - 'Hoe'
       - 'Blaze_Rod'
+      - 'Iron_Sword'
     #mythic-mobs:
     #  weight: 1 # how likely a mob will spawn with this specific skill
        # what mobs can spawn with this skill - leave empty to allow all mythic mobs
@@ -75,7 +78,7 @@ skills:
       - ''
     cooldown: 5
     actions:
-      - '[console] execute positioned {target20} run summon lightning'
+      - '[console] execute positioned {target20} run summon minecraft:lightning_bolt'
     allowed-items: []
   3:
     name: '&f&lSeed Prank'

@@ -28,7 +28,7 @@ import static me.jadenp.notskills.utils.Items.skillSlotArtifact;
 
 public class Events  implements Listener {
 
-    private Map<UUID, Long> mobCooldowns = new HashMap<>();
+    private final Map<UUID, Long> mobCooldowns = new HashMap<>();
     public Events() {
         Plugin plugin = NotSkills.getInstance();
         Bukkit.getPluginManager().registerEvents(new SkillsGUI(), plugin);
@@ -88,7 +88,8 @@ public class Events  implements Listener {
             return;
         ItemStack hand = equipment.getItemInMainHand();
         ItemMeta meta = hand.getItemMeta();
-        assert meta != null;
+        if (meta == null)
+            return;
         if (!meta.hasLore())
             return;
         Skills skill = new Skills(Objects.requireNonNull(meta.getLore()));

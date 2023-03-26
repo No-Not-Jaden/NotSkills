@@ -68,8 +68,10 @@ public class SkillOptions {
                 command = ConfigOptions.getPlaceholders(command, player);
                 command = command.replaceAll("\\{player}", player.getName());
             } else {
-                command = command.replaceAll("\\{player}", "@e[type=" + entity.getType() + ",limit=1,pos:[" + entity.getLocation().getX() + "f," + entity.getLocation().getY() + "f," + entity.getLocation().getZ() + "f]]");
+                command = command.replaceAll("\\{player}", "@e[type=" + entity.getType() + ",limit=1,x=" + entity.getLocation().getX() + ",y=" + entity.getLocation().getY() + ",z=" + entity.getLocation().getZ() + ", distance=...01]");
             }
+            command = command.replaceAll("\\{dimension}", entity.getWorld().getEnvironment().toString());
+            command = command.replace("\\{world}", entity.getWorld().getName());
             while (command.contains("{target")) {
                 String distance = command.substring(command.indexOf("{target") + 7, command.substring(command.indexOf("{target") + 7).indexOf("}") + command.indexOf("{target") + 7);
                 int d;
@@ -105,7 +107,16 @@ public class SkillOptions {
 
                 int rand = (int) ((Math.random() * (upperBounds - lowerBounds)) - lowerBounds);
                 command = command.substring(0, command.indexOf("{random")) + rand + command.substring(command.indexOf("{random") + bounds.length() + 8);
+                if (player == null)
+                    if (!command.contains("execute in ")){
+                        if (command.substring(0, 7).equalsIgnoreCase("execute")){
+                            command = command.substring(0, 7) + " in " + entity.getWorld().getEnvironment() + command.substring(7);
+                        } else {
+                            command = "execute in " + entity.getWorld().getEnvironment() + " " + command;
+                        }
+                    }
                 command = ConfigOptions.color(command);
+
             }
             switch (type) {
                 case "[console]":

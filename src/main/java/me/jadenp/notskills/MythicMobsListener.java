@@ -1,6 +1,7 @@
 package me.jadenp.notskills;
 
 import io.lumine.mythic.bukkit.events.MythicMobSpawnEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
@@ -34,17 +35,21 @@ public class MythicMobsListener implements Listener {
                 for (SkillOptions skill : skills){
                     if (!skill.isAllowedItem(hand.getType()))
                         continue;
+                    Bukkit.getLogger().info(skill.getName());
                     if (skill.getMythicMobsOptions() == null)
                         continue;
                     MythicMobsOptions mythicMobsOptions = skill.getMythicMobsOptions();
+                    Bukkit.getLogger().info(event.getMob().getMobType());
                     if (!mythicMobsOptions.getIncludedMobs().contains(event.getMob().getMobType()))
                         continue;
                     for (int i = 0; i < mythicMobsOptions.getWeight(); i++) {
                         validSkills.add(skill);
                     }
+                    Bukkit.getLogger().info("6");
                 }
                 if (validSkills.size() == 0)
                     return;
+                Bukkit.getLogger().info("7");
                 SkillOptions skillOptions = validSkills.get((int) (Math.random() * validSkills.size()));
                 ItemMeta meta = hand.getItemMeta();
                 assert meta != null;
