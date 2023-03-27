@@ -80,7 +80,7 @@ public class ConfigOptions {
             MythicMobsOptions mythicMobsOptions = null;
             if (config.isSet("skills." + i + ".mythic-mobs.weight")){
                 mythicMobsOptions = new MythicMobsOptions(config.getInt("skills." + i + ".mythic-mobs.weight"), config.getStringList("skills." + i + ".mythic-mobs.included-mobs"));
-                Bukkit.getLogger().info(config.getInt("skills." + i + ".mythic-mobs.weight") + " : " + config.getStringList("skills." + i + ".mythic-mobs.included-mobs"));
+                //Bukkit.getLogger().info(config.getInt("skills." + i + ".mythic-mobs.weight") + " : " + config.getStringList("skills." + i + ".mythic-mobs.included-mobs"));
             }
             skills.add(new SkillOptions(color(config.getString("skills." + i + ".name")), config.getDouble("skills." + i + ".cooldown"), config.getStringList("skills." + i + ".actions"), config.getStringList("skills." + i + ".allowed-items"), config.getStringList("skills." + i + ".description"), mythicMobsOptions));
         }

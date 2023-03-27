@@ -33,6 +33,8 @@ public final class NotSkills extends JavaPlugin {
      * particles to spawn when you use a trigger click - x
      * set cooldown -
      * pos tag works or even entity uses work
+     * Expected whitespace to end one argument, but found trailing data
+     * ...xecute in NORMAL run give @e[type=IRON_GOLEM,limit=1,x=40.24999001946145,y=109.0,z=-25.287147954033923, distance=...01] levitation 1 88 false<--[HERE]
      */
 
     private static NotSkills instance;
