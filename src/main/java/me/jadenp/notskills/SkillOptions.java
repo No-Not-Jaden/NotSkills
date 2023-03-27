@@ -60,6 +60,9 @@ public class SkillOptions {
         Player player = null;
         if (entity instanceof Player)
             player = (Player)  entity;
+        String dimension = entity.getWorld().getEnvironment().toString();
+        if (dimension.equals("NORMAL") || dimension.equals("CUSTOM"))
+            dimension = "overworld";
         for (String action : actions) {
             // get first action type
             String type = action.substring(0, action.indexOf(" "));
@@ -70,7 +73,7 @@ public class SkillOptions {
             } else {
                 command = command.replaceAll("\\{player}", "@e[type=" + entity.getType() + ",limit=1,x=" + entity.getLocation().getX() + ",y=" + entity.getLocation().getY() + ",z=" + entity.getLocation().getZ() + ", distance=...01]");
             }
-            command = command.replaceAll("\\{dimension}", entity.getWorld().getEnvironment().toString());
+            command = command.replaceAll("\\{dimension}", dimension);
             command = command.replace("\\{world}", entity.getWorld().getName());
             while (command.contains("{target")) {
                 String distance = command.substring(command.indexOf("{target") + 7, command.substring(command.indexOf("{target") + 7).indexOf("}") + command.indexOf("{target") + 7);
@@ -109,10 +112,11 @@ public class SkillOptions {
                 command = command.substring(0, command.indexOf("{random")) + rand + command.substring(command.indexOf("{random") + bounds.length() + 8);
                 if (player == null)
                     if (!command.contains("execute in ")){
+                        String world = multiVerseEnabled ? "minecraft:" + entity.getWorld().getName() : dimension;
                         if (command.substring(0, 7).equalsIgnoreCase("execute")){
-                            command = command.substring(0, 7) + " in " + entity.getWorld().getEnvironment() + command.substring(7);
+                            command = command.substring(0, 7) + " in " + world + command.substring(7);
                         } else {
-                            command = "execute in " + entity.getWorld().getEnvironment() + " " + command;
+                            command = "execute in " + world + " " + command;
                         }
                     }
                 command = ConfigOptions.color(command);

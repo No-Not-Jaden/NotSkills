@@ -39,11 +39,13 @@ public class ConfigOptions {
     public static boolean mythicMobsEnabled = false;
     public static int maxSkillSlots = 8;
     public static double mythicMobsSkillChance = 0.5;
-
+    public static boolean multiVerseEnabled = false;
+    public static boolean naturalSkillUnlock = true;
 
     public static void reloadOptions(){
         papiEnabled = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
         mythicMobsEnabled = Bukkit.getPluginManager().isPluginEnabled("MythicMobs");
+        multiVerseEnabled = Bukkit.getPluginManager().isPluginEnabled("MultiVerse-Core");
 
         NotSkills.getInstance().reloadConfig();
         FileConfiguration config = NotSkills.getInstance().getConfig();
@@ -62,6 +64,10 @@ public class ConfigOptions {
             config.set("particles", true);
         if (!config.isSet("mythic-mobs-skill-chance"))
             config.set("mythic-mobs-skill-chance", 0.5);
+        if (!config.isSet("max-skills"))
+            config.set("max-skills", 8);
+        if(!config.isSet("natural-skill-unlock"))
+            config.set("natural-skill-unlock", true);
 
         NotSkills.getInstance().saveConfig();
 
@@ -71,8 +77,9 @@ public class ConfigOptions {
         expireMS = config.getInt("expire-ms");
         multiClickResetTime = config.getLong("multi-click-trigger");
         particles = config.getBoolean("particles");
-        mythicMobsSkillChance = config.getDouble("mythic-mobs-skill-chance", 0.5);
-
+        mythicMobsSkillChance = config.getDouble("mythic-mobs-skill-chance");
+        maxSkillSlots = config.getInt("max-skills");
+        naturalSkillUnlock = config.getBoolean("natural-skill-unlock");
 
 
         skills.clear();
@@ -80,7 +87,6 @@ public class ConfigOptions {
             MythicMobsOptions mythicMobsOptions = null;
             if (config.isSet("skills." + i + ".mythic-mobs.weight")){
                 mythicMobsOptions = new MythicMobsOptions(config.getInt("skills." + i + ".mythic-mobs.weight"), config.getStringList("skills." + i + ".mythic-mobs.included-mobs"));
-                //Bukkit.getLogger().info(config.getInt("skills." + i + ".mythic-mobs.weight") + " : " + config.getStringList("skills." + i + ".mythic-mobs.included-mobs"));
             }
             skills.add(new SkillOptions(color(config.getString("skills." + i + ".name")), config.getDouble("skills." + i + ".cooldown"), config.getStringList("skills." + i + ".actions"), config.getStringList("skills." + i + ".allowed-items"), config.getStringList("skills." + i + ".description"), mythicMobsOptions));
         }

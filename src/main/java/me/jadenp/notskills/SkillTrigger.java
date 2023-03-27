@@ -11,10 +11,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
 import static me.jadenp.notskills.utils.ConfigOptions.*;
+import static me.jadenp.notskills.utils.Language.prefix;
 
 
 public class SkillTrigger implements Listener {
@@ -122,6 +125,18 @@ public class SkillTrigger implements Listener {
                     player.sendMessage(ChatColor.BLUE + "You do not know how to perform this skill.");
                     return;
                 }
+                int maxSS = maxSkillSlots;
+                for (int i = maxSkillSlots; i > 0; i--) {
+                    if (player.hasPermission("notskills.max." + i)){
+                        maxSS = i;
+                        break;
+                    }
+                }
+                if (skillTrigger > maxSS){
+                    player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1, 1);
+                    player.sendMessage(ChatColor.BLUE + "You cannot use this many skill slots!");
+                    return;
+                }
                 if (data.getCooldown(skillName) > System.currentTimeMillis()){
                     player.playSound(player.getLocation(), Sound.ENTITY_SQUID_SQUIRT,1,1);
                     return;
@@ -147,6 +162,28 @@ public class SkillTrigger implements Listener {
         if (event.getNewSlot() != event.getPreviousSlot()) {
             if (Skills.hasSkill(event.getPlayer().getInventory().getItemInMainHand())) {
                 recordedClicks.remove(event.getPlayer().getUniqueId());
+                if (!naturalSkillUnlock)
+                    return;
+                ItemStack newItem = event.getPlayer().getInventory().getItem(event.getNewSlot());
+                if (newItem == null)
+                    return;
+                if (!newItem.hasItemMeta())
+                    return;
+                ItemMeta meta = newItem.getItemMeta();
+                assert meta != null;
+                if (!meta.hasLore())
+                    return;
+                assert meta.getLore() != null;
+                Skills skill = new Skills(meta.getLore());
+                PlayerData data =  getPlayerData(event.getPlayer());
+                for (int i = 0; i < skill.getUsedSkillSlots(); i++) {
+                    // check if player has skill unlocked already
+                    if (!data.isSkillUnlocked(skill.getSkill(i))){
+                        // unlock skill
+                        NotSkills.getInstance().setCooldown(event.getPlayer().getUniqueId(), skill.getSkill(i), 0);
+                        event.getPlayer().sendMessage(prefix + ChatColor.YELLOW + "You unlocked " + getSkill(skill.getSkill(i)).getName());
+                    }
+                }
             }
         }
     }

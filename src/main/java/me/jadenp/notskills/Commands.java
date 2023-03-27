@@ -138,6 +138,10 @@ public class Commands implements CommandExecutor, TabCompleter {
                             return true;
                         }
                     }
+                    if (ssAmount < 0){
+                        sender.sendMessage(prefix + ChatColor.RED + "You cannot have negative skills!");
+                        return true;
+                    }
 
                     if (!artifact) {
                         // add skill slot lore
@@ -147,6 +151,10 @@ public class Commands implements CommandExecutor, TabCompleter {
                         assert lore != null;
                         Skills skill = new Skills(lore);
                         skill.addSkillSlots(ssAmount);
+                        if (skill.getUsedSkillSlots() + skill.getEmptySkillSlots() > maxSkillSlots){
+                           sender.sendMessage(prefix + ChatColor.RED + "Skill slots capped at: " + ChatColor.DARK_RED + maxSkillSlots);
+                            skill.setSkillSlots(maxSkillSlots);
+                        }
                         meta.setLore(skill.getLore());
                         item.setItemMeta(meta);
                     }
@@ -164,42 +172,41 @@ public class Commands implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
+                if (amount < 0){
+                    sender.sendMessage(prefix + ChatColor.RED + "You cannot have negative skills!");
+                    return true;
+                }
+
+                Player player;
                 if (args.length == 3){
-                    // using another player
-                    Player player = Bukkit.getPlayer(args[1]);
+                    player = Bukkit.getPlayer(args[1]);
                     if (player == null){
                         sender.sendMessage(parse(prefix + unknownPlayer, null));
                         return true;
                     }
-                    ItemStack item = player.getInventory().getItemInMainHand();
-                    if (item.getType().isAir()) {
-                        sender.sendMessage(prefix + ChatColor.RED + "You cannot add a skill to air!");
-                    }
-                    ItemMeta meta = item.getItemMeta();
-                    assert meta != null;
-                    List<String> lore = meta.hasLore() ? new Skills(Objects.requireNonNull(meta.getLore())).addSkillSlots(amount).getLore() : new Skills(new ArrayList<>()).addSkillSlots(amount).getLore();
-                    meta.setLore(lore);
-                    item.setItemMeta(meta);
-                    player.getInventory().setItemInMainHand(item);
-                    player.updateInventory();
-
                 } else {
                     if (!(sender instanceof Player)) {
                         sender.sendMessage(prefix + ChatColor.RED + "Only players can use this version of the command!");
                         return true;
                     }
-                    ItemStack item = ((Player) sender).getInventory().getItemInMainHand();
-                    if (item.getType().isAir()) {
-                        sender.sendMessage(prefix + ChatColor.RED + "You cannot add a skill to air!");
-                    }
-                    ItemMeta meta = item.getItemMeta();
-                    assert meta != null;
-                    List<String> lore = meta.hasLore() ? new Skills(Objects.requireNonNull(meta.getLore())).addSkillSlots(amount).getLore() : new Skills(new ArrayList<>()).addSkillSlots(amount).getLore();
-                    meta.setLore(lore);
-                    item.setItemMeta(meta);
-                    ((Player)sender).getInventory().setItemInMainHand(item);
-                    ((Player)sender).updateInventory();
+                    player = (Player) sender;
                 }
+                ItemStack item = player.getInventory().getItemInMainHand();
+                if (item.getType().isAir()) {
+                    sender.sendMessage(prefix + ChatColor.RED + "You cannot add a skill to air!");
+                }
+                ItemMeta meta = item.getItemMeta();
+                assert meta != null;
+                Skills skill = meta.hasLore() ? new Skills(Objects.requireNonNull(meta.getLore())).addSkillSlots(amount) : new Skills(new ArrayList<>()).addSkillSlots(amount);
+                if (skill.getUsedSkillSlots() + skill.getEmptySkillSlots() > maxSkillSlots){
+                    sender.sendMessage(prefix + ChatColor.RED + "Skill slots capped at: " + ChatColor.DARK_RED + maxSkillSlots);
+                    skill.setSkillSlots(maxSkillSlots);
+                }
+                meta.setLore(skill.getLore());
+                item.setItemMeta(meta);
+                player.getInventory().setItemInMainHand(item);
+                player.updateInventory();
+
             } else if (args[0].equalsIgnoreCase("remove")) {
                 // /ns remove <amount> <player>
                 if (args.length == 2) {

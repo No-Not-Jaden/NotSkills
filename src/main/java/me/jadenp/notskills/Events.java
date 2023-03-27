@@ -73,31 +73,32 @@ public class Events  implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event){
-        // check if entity is not a player and is holding a skill item
-        // random chance to do skill
-        // add to cooldown
+        // skill use for non-players
         if (!(event.getDamager() instanceof LivingEntity))
             return;
         if (event.getDamager() instanceof Player)
             return;
-        if (Math.random() > 0.25)
+        if (Math.random() > 0.25) // add some variability
             return;
 
-        EntityEquipment equipment = ((LivingEntity)event.getEntity()).getEquipment();
-        if (equipment == null)
+        // check if the entity has a skill item
+        EntityEquipment equipment = ((LivingEntity)event.getDamager()).getEquipment();
+        if (equipment == null) // no inventory
             return;
         ItemStack hand = equipment.getItemInMainHand();
         ItemMeta meta = hand.getItemMeta();
-        if (meta == null)
+        if (meta == null) // nothing in hand
             return;
-        if (!meta.hasLore())
+        if (!meta.hasLore()) // no skill
             return;
         Skills skill = new Skills(Objects.requireNonNull(meta.getLore()));
-        if (skill.getUsedSkillSlots() == 0)
+        if (skill.getUsedSkillSlots() == 0) // no used skill
             return;
+
         SkillOptions skillOptions = getSkill(skill.getSkill(0));
-        if (skillOptions == null)
+        if (skillOptions == null) // skill doesn't exist
             return;
+        // add to mob cooldowns so mobs have to wait just as long as players to use skills
         if (mobCooldowns.containsKey(event.getDamager().getUniqueId())){
             if (mobCooldowns.get(event.getDamager().getUniqueId()) > System.currentTimeMillis())
                 return;

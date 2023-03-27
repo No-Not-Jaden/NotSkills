@@ -2,6 +2,7 @@ package me.jadenp.notskills;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -136,7 +137,7 @@ public class Skills {
     public Skills addSkillSlots(int amount){
         emptySkillSlots+= amount;
         if (emptySkillSlots + getUsedSkillSlots() > maxSkillSlots){
-            Bukkit.getLogger().warning("Too many skill slots on an item!");
+            //Bukkit.getLogger().warning("Too many skill slots on an item!");
             emptySkillSlots = maxSkillSlots;
         }
         return this;
@@ -227,6 +228,16 @@ public class Skills {
             usedSkillSlots[i] = null;
             amount--;
         }
+        return this;
+    }
+
+    public Skills setSkillSlots(int amount){
+        if (amount < emptySkillSlots + getUsedSkillSlots())
+            while (emptySkillSlots + getUsedSkillSlots() > amount && emptySkillSlots + getUsedSkillSlots() > 0)
+                removeSkillSlots(1);
+        else
+            while (emptySkillSlots + getUsedSkillSlots() < amount && emptySkillSlots + getUsedSkillSlots() < maxSkillSlots)
+                addSkillSlots(1);
         return this;
     }
 

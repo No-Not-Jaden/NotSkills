@@ -5,6 +5,7 @@ api-version: 1.19
 softdepend:
   - PlaceholderAPI
   - MythicMobs
+  - MultiVerse-Core
 commands:
   notskills:
     description: Use this plugin!
