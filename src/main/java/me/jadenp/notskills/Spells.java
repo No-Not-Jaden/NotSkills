@@ -17,25 +17,6 @@ import java.util.Objects;
 import java.util.Random;
 
 public class Spells {
-
-    public static void castIndexSpell(int i, Player player){
-        switch (i){
-            case 0:
-                smite(player);
-                break;
-            case 1:
-                iceShards(player);
-                break;
-            case 2:
-                snipe(player);
-                break;
-            case 3:
-                absorb(player);
-                break;
-        }
-    }
-
-
     public static void absorb(Player p){
         Random rand = new Random();
 
@@ -140,13 +121,6 @@ public class Spells {
                 }
             }
         }.runTaskTimer(NotSkills.getInstance(), 0, 1L);
-    }
-    public static void smite(Player p){
-
-        Location target = p.getTargetBlock(null, 50).getLocation();
-        LightningStrike lightningStrike = p.getWorld().strikeLightning(target);
-        lightningStrike.setMetadata("magic", new FixedMetadataValue(NotSkills.getInstance(), true));
-        lightningStrike.setMetadata(p.getUniqueId().toString(), new FixedMetadataValue(NotSkills.getInstance(), true));
     }
 
     public static void snipe(Player p) {
