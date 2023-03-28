@@ -65,6 +65,28 @@ public class Events  implements Listener {
     }
 
     @EventHandler
+    public void onPrepareGrindStone(PrepareGrindstoneEvent event){
+        ItemStack[] contents = event.getInventory().getContents();
+        if (contents[0] == null && contents[1] == null)
+            return;
+        ItemStack item = contents[0] == null ? contents[1] : contents[0];
+        if (!item.hasItemMeta())
+            return;
+        ItemMeta meta = item.getItemMeta();
+        assert meta != null;
+        if (!meta.hasLore())
+            return;
+        Skills skill = new Skills(Objects.requireNonNull(meta.getLore()));
+        if (skill.getEmptySkillSlots() == 0)
+            return;
+        skill.removeSkillSlots(1);
+        meta.setLore(skill.getLore());
+        item.setItemMeta(meta);
+        event.setResult(item);
+        ((Player)event.getView().getPlayer()).updateInventory();
+    }
+
+    @EventHandler
     public void onJoin(PlayerJoinEvent event){
         if (getPlayerData(event.getPlayer()) == null){
             NotSkills.getInstance().addData(event.getPlayer().getUniqueId());
