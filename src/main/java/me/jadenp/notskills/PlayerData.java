@@ -27,6 +27,7 @@ public class PlayerData {
     }
 
     public boolean isSkillUnlocked(String name){
+        name = ChatColor.stripColor(color(name));
         return skillCooldowns.containsKey(name);
     }
 
@@ -68,6 +69,7 @@ public class PlayerData {
     public void setSkills(String[] skills){
         skillCooldowns.clear();
         for (String skill : skills){
+            skill = ChatColor.stripColor(color(skill));
             skillCooldowns.put(skill, 0L);
         }
     }

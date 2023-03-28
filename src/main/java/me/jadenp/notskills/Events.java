@@ -89,7 +89,7 @@ public class Events  implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event){
         if (getPlayerData(event.getPlayer()) == null){
-            NotSkills.getInstance().addData(event.getPlayer().getUniqueId());
+            NotSkills.playerDataMap.put(event.getPlayer().getUniqueId(), new PlayerData(event.getPlayer().getUniqueId()));
         }
     }
 

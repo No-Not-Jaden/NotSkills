@@ -34,15 +34,16 @@ public final class NotSkills extends JavaPlugin {
      * set cooldown - doesnt work
      * pos tag works or even entity uses work -
      * Expected whitespace to end one argument, but found trailing data
-     * ...xecute in NORMAL - entity type needs to be minecraft:lowercase
+     * ...xecute in NORMAL - entity type needs to be minecraft:lowercase -
      * skills permission - no work?
-     * seed prank do not know how to use the skill
-     * remove skills as players - grindstone to remove skills before enchantments
-     * config option if players hold an item with a skill, they unlock it - player message - doesnt work
+     * gui too
+     * seed prank do not know how to use the skill -
+     * remove skills as players - grindstone to remove skills before enchantments - doesnt work
+     * config option if players hold an item with a skill, they unlock it - player message -
      */
 
     private static NotSkills instance;
-    public Map<UUID, PlayerData> playerDataMap = new HashMap<>();
+    public static Map<UUID, PlayerData> playerDataMap = new HashMap<>();
     public File playerData;
     public Gson gson;
 
@@ -99,26 +100,6 @@ public final class NotSkills extends JavaPlugin {
             }
         }.runTaskTimer(this, 6000L, 6000L);
 
-    }
-
-    public void addData(UUID uuid){
-        playerDataMap.put(uuid, new PlayerData(uuid));
-    }
-
-    public void unlockSkill(UUID uuid, String name, boolean unlock){
-        if (playerDataMap.containsKey(uuid)){
-            playerDataMap.get(uuid).setSkillUnlocked(name, unlock);
-        }
-    }
-
-    public void setCooldown(UUID uuid, String name, double seconds){
-        if (playerDataMap.containsKey(uuid)){
-            playerDataMap.get(uuid).setCoolDown(name, seconds);
-        }
-    }
-
-    public Map<UUID, PlayerData> getPlayerDataMap() {
-        return playerDataMap;
     }
 
     public void save() {

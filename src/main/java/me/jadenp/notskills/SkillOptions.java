@@ -3,7 +3,6 @@ package me.jadenp.notskills;
 import io.lumine.mythic.api.mobs.MythicMob;
 import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.lumine.mythic.bukkit.MythicBukkit;
-import io.lumine.mythic.core.mobs.ActiveMob;
 import me.jadenp.notskills.utils.ConfigOptions;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -71,7 +70,7 @@ public class SkillOptions {
                 command = ConfigOptions.getPlaceholders(command, player);
                 command = command.replaceAll("\\{player}", player.getName());
             } else {
-                command = command.replaceAll("\\{player}", "@e[type=" + entity.getType() + ",limit=1,x=" + entity.getLocation().getX() + ",y=" + entity.getLocation().getY() + ",z=" + entity.getLocation().getZ() + ", distance=...01]");
+                command = command.replaceAll("\\{player}", "@e[type=minecraft:" + entity.getType().toString().toLowerCase() + ",limit=1,x=" + entity.getLocation().getX() + ",y=" + entity.getLocation().getY() + ",z=" + entity.getLocation().getZ() + ", distance=...01]");
             }
             command = command.replaceAll("\\{dimension}", dimension);
             command = command.replace("\\{world}", entity.getWorld().getName());

@@ -309,10 +309,12 @@ public class Commands implements CommandExecutor, TabCompleter {
                         return true;
                     }
                     if (args[0].equalsIgnoreCase("unlock")) {
-                        NotSkills.getInstance().unlockSkill(player.getUniqueId(), skill.getName(), true);
+                        PlayerData playerdata = getPlayerData(player);
+                        playerdata.setSkillUnlocked(skill.getName(), true);
                         sender.sendMessage(prefix + ChatColor.GREEN + "Unlocked " + ChatColor.DARK_GREEN + skill.getName() + ChatColor.GREEN + " for " + ChatColor.DARK_GREEN + player.getName());
                     } else {
-                        NotSkills.getInstance().unlockSkill(player.getUniqueId(), skill.getName(), false);
+                        PlayerData playerdata = getPlayerData(player);
+                        playerdata.setSkillUnlocked(skill.getName(), false);
                         sender.sendMessage(prefix + ChatColor.GREEN + "Locked " + ChatColor.DARK_GREEN + skill.getName() + ChatColor.GREEN + " for " + ChatColor.DARK_GREEN + player.getName());
                     }
                 } else {

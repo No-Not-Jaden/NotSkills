@@ -132,6 +132,7 @@ public class SkillTrigger implements Listener {
                         break;
                     }
                 }
+                Bukkit.getLogger().info(maxSS + "");
                 if (skillTrigger > maxSS){
                     player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1, 1);
                     player.sendMessage(ChatColor.BLUE + "You cannot use this many skill slots!");
@@ -141,7 +142,7 @@ public class SkillTrigger implements Listener {
                     player.playSound(player.getLocation(), Sound.ENTITY_SQUID_SQUIRT,1,1);
                     return;
                 }
-                NotSkills.getInstance().setCooldown(player.getUniqueId(), skillOptions.getName(), skillOptions.getCooldown());
+                data.setCoolDown(skillOptions.getName(), skillOptions.getCooldown());
                 skillOptions.runActions(player);
             }
 
@@ -180,7 +181,7 @@ public class SkillTrigger implements Listener {
                     // check if player has skill unlocked already
                     if (!data.isSkillUnlocked(skill.getSkill(i))){
                         // unlock skill
-                        NotSkills.getInstance().setCooldown(event.getPlayer().getUniqueId(), skill.getSkill(i), 0);
+                        data.setSkillUnlocked(Objects.requireNonNull(getSkill(skill.getSkill(i))).getName(), true);
                         event.getPlayer().sendMessage(prefix + ChatColor.YELLOW + "You unlocked " + getSkill(skill.getSkill(i)).getName());
                     }
                 }

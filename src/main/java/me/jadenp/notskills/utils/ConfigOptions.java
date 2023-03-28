@@ -105,7 +105,7 @@ public class ConfigOptions {
     }
 
     public static PlayerData getPlayerData(Player player){
-        return NotSkills.getInstance().getPlayerDataMap().get(player.getUniqueId());
+        return NotSkills.playerDataMap.get(player.getUniqueId());
     }
 
     public static String getPlaceholders(String str, OfflinePlayer player){
