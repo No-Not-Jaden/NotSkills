@@ -31,13 +31,14 @@ public final class NotSkills extends JavaPlugin {
      * skill remove doesn't work - x
      * cannot unlock skills with multiple names - x
      * particles to spawn when you use a trigger click - x
-     * set cooldown -
+     * set cooldown - doesnt work
      * pos tag works or even entity uses work -
      * Expected whitespace to end one argument, but found trailing data
-     * ...xecute in NORMAL -
-     * skills permission -
+     * ...xecute in NORMAL - entity type needs to be minecraft:lowercase
+     * skills permission - no work?
+     * seed prank do not know how to use the skill
      * remove skills as players - grindstone to remove skills before enchantments
-     * config option if players hold an item with a skill, they unlock it - player message -
+     * config option if players hold an item with a skill, they unlock it - player message - doesnt work
      */
 
     private static NotSkills instance;

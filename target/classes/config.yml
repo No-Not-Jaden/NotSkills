@@ -13,6 +13,10 @@ skill-select:
   # Players can choose their skill select type with /skill select (type)
   # Requires permission: notskills.sst - given by default
   players-choose: true
+# maximum amount of skills an item can have
+# any skills past 8 will not be able to be triggered
+# this will override the notskills.max.<x>
+max-skills: 8
 # how big the pause ratio is between big and small pauses for TIMED_CLICK
 pause-ratio: 1.75
 # how long until your last click is expired in milliseconds
@@ -21,6 +25,8 @@ expire-ms: 10000
 multi-click-trigger: 500
 # display a redstone particle in front of the player when they select are selecting a skill
 particles: true
+# unlock skills when you hold items with a skill in your hand
+natural-skill-unlock: true
 # what rate a mythic mob will have to spawn with a skill item
 mythic-mobs-skill-chance: 0.5
 
@@ -65,11 +71,11 @@ skills:
       - 'Hoe'
       - 'Blaze_Rod'
       - 'Iron_Sword'
-    #mythic-mobs:
-    #  weight: 1 # how likely a mob will spawn with this specific skill
+    mythic-mobs:
+      weight: 1 # how likely a mob will spawn with this specific skill
        # what mobs can spawn with this skill - leave empty to allow all mythic mobs
-    #  included-mobs:
-    #    - 'SkeletalKnight'
+      included-mobs:
+        - 'SkeletalKnight'
   2:
     name: '&f&lSmite'
     description:
