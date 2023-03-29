@@ -93,6 +93,15 @@ public class SkillsGUI implements Listener {
                 // return because not enough skill slots
                 if (!skill.addSkill(bookMeta.getDisplayName()))
                     return;
+                int maxSS = maxSkillSlots;
+                for (int i = maxSkillSlots; i > 0; i--) {
+                    if (event.getWhoClicked().hasPermission("notskills.max." + i)) {
+                        maxSS = i;
+                        break;
+                    }
+                }
+                if (skill.getUsedSkillSlots() + 1 > maxSS) // return because they dont have permission for more skill slots
+                    return;
             } else if (event.getCurrentItem().isSimilar(nextArrow)){
                 openGUI((Player) event.getWhoClicked(), page + 1);
                 return;

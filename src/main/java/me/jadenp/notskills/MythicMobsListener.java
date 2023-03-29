@@ -1,5 +1,6 @@
 package me.jadenp.notskills;
 
+import io.lumine.mythic.bukkit.events.MythicDropLoadEvent;
 import io.lumine.mythic.bukkit.events.MythicMobSpawnEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -19,7 +20,17 @@ import static me.jadenp.notskills.utils.ConfigOptions.mythicMobsSkillChance;
 import static me.jadenp.notskills.utils.ConfigOptions.skills;
 
 public class MythicMobsListener implements Listener {
-    public MythicMobsListener(){}
+    public MythicMobsListener(){
+    }
+    @EventHandler
+    public void onMythicDropLoad(MythicDropLoadEvent event)	{
+        Bukkit.getLogger().info("MythicDropLoadEvent called for drop " + event.getDropName());
+
+        if(event.getDropName().equalsIgnoreCase("EXAMPLE"))	{
+            event.register(new MythicMobDrop(event.getConfig(), event.getArgument()));
+            Bukkit.getLogger().info("-- Registered Excample drop!");
+        }
+    }
 
     @EventHandler
     public void onSpawn(MythicMobSpawnEvent event){

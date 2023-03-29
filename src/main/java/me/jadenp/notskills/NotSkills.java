@@ -3,6 +3,7 @@ package me.jadenp.notskills;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import io.lumine.mythic.bukkit.MythicBukkit;
 import me.jadenp.notskills.utils.ConfigOptions;
 import me.jadenp.notskills.utils.Items;
 import me.jadenp.notskills.utils.Language;
@@ -36,12 +37,13 @@ public final class NotSkills extends JavaPlugin {
      * Expected whitespace to end one argument, but found trailing data
      * ...xecute in NORMAL - entity type needs to be minecraft:lowercase - x
      * skills permission - no work? x
-     * gui too
+     * gui too -
      * seed prank do not know how to use the skill - x
      * remove skills as players - grindstone to remove skills before enchantments - doesnt work x
      * config option if players hold an item with a skill, they unlock it - player message - nope
      * multiverse works
-     * unknown skill to unlock other people's skill
+     * unknown skill to unlock other people's skill -
+     * implement mythicmobs skill -
      */
 
     private static NotSkills instance;
@@ -116,6 +118,10 @@ public final class NotSkills extends JavaPlugin {
         return instance;
     }
 
+    /**
+     * Saves playerDataMap
+     * @see PlayerData
+     */
     @Override
     public void onDisable() {
         // Plugin shutdown logic

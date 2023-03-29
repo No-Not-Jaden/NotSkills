@@ -1,8 +1,10 @@
 package me.jadenp.notskills;
 
 import io.lumine.mythic.api.mobs.MythicMob;
+import io.lumine.mythic.api.skills.SkillManager;
 import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.lumine.mythic.bukkit.MythicBukkit;
+import io.lumine.mythic.bukkit.compatibility.SkillAPISupport;
 import me.jadenp.notskills.utils.ConfigOptions;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -155,6 +157,9 @@ public class SkillOptions {
                             Bukkit.getLogger().warning("Could not spawn Mythic Mob!");
                         }
                     }
+                    break;
+                case "[mythicskills]":
+                    MythicBukkit.inst().getAPIHelper().castSkill(entity, command);
                     break;
             }
         }

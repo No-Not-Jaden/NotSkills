@@ -120,26 +120,26 @@ public class SkillTrigger implements Listener {
                 PlayerData data = getPlayerData(player);
                 if (data == null)
                     return;
-                if (!data.isSkillUnlocked(skillName)){
+                if (!data.isSkillUnlocked(skillName)) {
                     player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1, 1);
                     player.sendMessage(ChatColor.BLUE + "You do not know how to perform this skill.");
                     return;
                 }
                 int maxSS = maxSkillSlots;
-                    for (int i = maxSkillSlots; i > 0; i--) {
-                        if (player.hasPermission("notskills.max." + i)) {
-                            maxSS = i;
-                            break;
-                        }
+                for (int i = maxSkillSlots; i > 0; i--) {
+                    if (player.hasPermission("notskills.max." + i)) {
+                        maxSS = i;
+                        break;
                     }
+                }
 
-                if (skillTrigger > maxSS){
+                if (skillTrigger > maxSS) {
                     player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1, 1);
                     player.sendMessage(ChatColor.BLUE + "You cannot use this many skill slots!");
                     return;
                 }
-                if (data.getCooldown(skillName) > System.currentTimeMillis()){
-                    player.playSound(player.getLocation(), Sound.ENTITY_SQUID_SQUIRT,1,1);
+                if (data.getCooldown(skillName) > System.currentTimeMillis()) {
+                    player.playSound(player.getLocation(), Sound.ENTITY_SQUID_SQUIRT, 1, 1);
                     return;
                 }
                 data.setCoolDown(skillOptions.getName(), skillOptions.getCooldown());
@@ -176,10 +176,10 @@ public class SkillTrigger implements Listener {
                     return;
                 assert meta.getLore() != null;
                 Skills skill = new Skills(meta.getLore());
-                PlayerData data =  getPlayerData(event.getPlayer());
+                PlayerData data = getPlayerData(event.getPlayer());
                 for (int i = 0; i < skill.getUsedSkillSlots(); i++) {
                     // check if player has skill unlocked already
-                    if (!data.isSkillUnlocked(skill.getSkill(i))){
+                    if (!data.isSkillUnlocked(skill.getSkill(i))) {
                         // unlock skill
                         data.setSkillUnlocked(Objects.requireNonNull(getSkill(skill.getSkill(i))).getName(), true);
                         event.getPlayer().sendMessage(prefix + ChatColor.YELLOW + "You unlocked " + getSkill(skill.getSkill(i)).getName());

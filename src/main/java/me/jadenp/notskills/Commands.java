@@ -281,7 +281,7 @@ public class Commands implements CommandExecutor, TabCompleter {
                     Player player = null;
                     if (args.length >= 3) {
                         // could have player
-                        player = Bukkit.getPlayer(args[2]);
+                        player = Bukkit.getPlayer(args[1]);
                     }
                     StringBuilder skillName = new StringBuilder();
                     if (player == null){
