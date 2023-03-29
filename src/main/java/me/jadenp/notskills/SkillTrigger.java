@@ -126,13 +126,13 @@ public class SkillTrigger implements Listener {
                     return;
                 }
                 int maxSS = maxSkillSlots;
-                for (int i = maxSkillSlots; i > 0; i--) {
-                    if (player.hasPermission("notskills.max." + i)){
-                        maxSS = i;
-                        break;
+                    for (int i = maxSkillSlots; i > 0; i--) {
+                        if (player.hasPermission("notskills.max." + i)) {
+                            maxSS = i;
+                            break;
+                        }
                     }
-                }
-                Bukkit.getLogger().info(maxSS + "");
+
                 if (skillTrigger > maxSS){
                     player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1, 1);
                     player.sendMessage(ChatColor.BLUE + "You cannot use this many skill slots!");

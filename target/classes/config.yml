@@ -58,7 +58,7 @@ skills:
     # • Placeholders will be parsed as the player
     # • Mythic Mobs can be spawned through a skill and can be spawned with skill items (see below for an example)
     actions:
-      - '[console] execute run give {player} levitation 1 {random20_300} false'
+      - '[console] execute run effect give {player} levitation {random1_5} 1 false'
       - '[message] &7&oYou appear to feel lighter.'
       #- '[mythicmobs] SkeletalKnight' # will spawn a Skeletal Knight if mythic mobs is enabled
     # Which items the skill can be applied to (using the command to add skills bypasses this)

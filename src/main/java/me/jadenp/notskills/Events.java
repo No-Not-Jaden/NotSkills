@@ -69,7 +69,7 @@ public class Events  implements Listener {
         ItemStack[] contents = event.getInventory().getContents();
         if (contents[0] == null && contents[1] == null)
             return;
-        ItemStack item = contents[0] == null ? contents[1] : contents[0];
+        ItemStack item = contents[0] == null ? contents[1].clone() : contents[0].clone();
         if (!item.hasItemMeta())
             return;
         ItemMeta meta = item.getItemMeta();

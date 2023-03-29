@@ -118,9 +118,8 @@ public class SkillOptions {
                             command = "execute in " + world + " " + command;
                         }
                     }
-                command = ConfigOptions.color(command);
-
             }
+            command = ConfigOptions.color(command);
             switch (type) {
                 case "[console]":
                     Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);

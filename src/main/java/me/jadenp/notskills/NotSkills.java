@@ -32,14 +32,16 @@ public final class NotSkills extends JavaPlugin {
      * cannot unlock skills with multiple names - x
      * particles to spawn when you use a trigger click - x
      * set cooldown - doesnt work
-     * pos tag works or even entity uses work -
+     * pos tag works or even entity uses work - x
      * Expected whitespace to end one argument, but found trailing data
-     * ...xecute in NORMAL - entity type needs to be minecraft:lowercase -
-     * skills permission - no work?
+     * ...xecute in NORMAL - entity type needs to be minecraft:lowercase - x
+     * skills permission - no work? x
      * gui too
-     * seed prank do not know how to use the skill -
-     * remove skills as players - grindstone to remove skills before enchantments - doesnt work
-     * config option if players hold an item with a skill, they unlock it - player message -
+     * seed prank do not know how to use the skill - x
+     * remove skills as players - grindstone to remove skills before enchantments - doesnt work x
+     * config option if players hold an item with a skill, they unlock it - player message - nope
+     * multiverse works
+     * unknown skill to unlock other people's skill
      */
 
     private static NotSkills instance;
