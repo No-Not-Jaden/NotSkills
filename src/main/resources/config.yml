@@ -61,8 +61,8 @@ skills:
     actions:
       - '[console] execute run effect give {player} levitation {random1_5} 1 false'
       - '[message] &7&oYou appear to feel lighter.'
-      #- '[mythicmobs] SkeletalKnight' # will spawn a Skeletal Knight if mythic mobs is enabled
-      #- '[mythicskills] WitheringBladeStrike'
+      #- '[mythicmobs] SkeletalKnight' # will spawn a Skeletal Knight if Mythic Mobs is enabled
+      #- '[mythicskills] SmashAttack' # will do the smash attack skill from Mythic Mobs
     # Which items the skill can be applied to (using the command to add skills bypasses this)
     # • The name of the item material must include at least one string in the list
     # • Add "*" at the beginning to match the string strictly

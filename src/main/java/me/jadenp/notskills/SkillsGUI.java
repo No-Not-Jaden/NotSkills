@@ -100,7 +100,7 @@ public class SkillsGUI implements Listener {
                         break;
                     }
                 }
-                if (skill.getUsedSkillSlots() + 1 > maxSS) // return because they dont have permission for more skill slots
+                if (skill.getUsedSkillSlots() > maxSS) // return because they dont have permission for more skill slots
                     return;
             } else if (event.getCurrentItem().isSimilar(nextArrow)){
                 openGUI((Player) event.getWhoClicked(), page + 1);

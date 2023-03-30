@@ -1,6 +1,7 @@
 package me.jadenp.notskills;
 
 import io.lumine.mythic.api.mobs.MythicMob;
+import io.lumine.mythic.api.skills.Skill;
 import io.lumine.mythic.api.skills.SkillManager;
 import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.lumine.mythic.bukkit.MythicBukkit;
@@ -109,7 +110,7 @@ public class SkillOptions {
                     }
                 }
 
-                int rand = (int) ((Math.random() * (upperBounds - lowerBounds)) - lowerBounds);
+                int rand = (int) ((Math.random() * (upperBounds - lowerBounds)) + lowerBounds);
                 command = command.substring(0, command.indexOf("{random")) + rand + command.substring(command.indexOf("{random") + bounds.length() + 8);
                 if (player == null)
                     if (!command.contains("execute in ")){
@@ -159,7 +160,13 @@ public class SkillOptions {
                     }
                     break;
                 case "[mythicskills]":
-                    MythicBukkit.inst().getAPIHelper().castSkill(entity, command);
+                    if (mythicMobsEnabled) {
+                        MythicBukkit.inst().getAPIHelper().castSkill(entity, command);
+                        for (Skill s : MythicBukkit.inst().getSkillManager().getSkills() ) {
+                            Bukkit.getLogger().info("I: " + s.getInternalName());
+                            Bukkit.getLogger().info("S: " + s);
+                        }
+                    }
                     break;
             }
         }

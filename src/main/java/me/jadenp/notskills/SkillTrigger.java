@@ -163,27 +163,27 @@ public class SkillTrigger implements Listener {
         if (event.getNewSlot() != event.getPreviousSlot()) {
             if (Skills.hasSkill(event.getPlayer().getInventory().getItemInMainHand())) {
                 recordedClicks.remove(event.getPlayer().getUniqueId());
-                if (!naturalSkillUnlock)
-                    return;
-                ItemStack newItem = event.getPlayer().getInventory().getItem(event.getNewSlot());
-                if (newItem == null)
-                    return;
-                if (!newItem.hasItemMeta())
-                    return;
-                ItemMeta meta = newItem.getItemMeta();
-                assert meta != null;
-                if (!meta.hasLore())
-                    return;
-                assert meta.getLore() != null;
-                Skills skill = new Skills(meta.getLore());
-                PlayerData data = getPlayerData(event.getPlayer());
-                for (int i = 0; i < skill.getUsedSkillSlots(); i++) {
-                    // check if player has skill unlocked already
-                    if (!data.isSkillUnlocked(skill.getSkill(i))) {
-                        // unlock skill
-                        data.setSkillUnlocked(Objects.requireNonNull(getSkill(skill.getSkill(i))).getName(), true);
-                        event.getPlayer().sendMessage(prefix + ChatColor.YELLOW + "You unlocked " + getSkill(skill.getSkill(i)).getName());
-                    }
+            }
+            if (!naturalSkillUnlock)
+                return;
+            ItemStack newItem = event.getPlayer().getInventory().getItem(event.getNewSlot());
+            if (newItem == null)
+                return;
+            if (!newItem.hasItemMeta())
+                return;
+            ItemMeta meta = newItem.getItemMeta();
+            assert meta != null;
+            if (!meta.hasLore())
+                return;
+            assert meta.getLore() != null;
+            Skills skill = new Skills(meta.getLore());
+            PlayerData data = getPlayerData(event.getPlayer());
+            for (int i = 0; i < skill.getUsedSkillSlots(); i++) {
+                // check if player has skill unlocked already
+                if (!data.isSkillUnlocked(skill.getSkill(i))) {
+                    // unlock skill
+                    data.setSkillUnlocked(Objects.requireNonNull(getSkill(skill.getSkill(i))).getName(), true);
+                    event.getPlayer().sendMessage(prefix + ChatColor.YELLOW + "You unlocked " + getSkill(skill.getSkill(i)).getName());
                 }
             }
         }

@@ -60,9 +60,9 @@ public class PlayerData {
     public void setCoolDown(String name, double seconds){
         name = ChatColor.stripColor(color(name));
         if (skillCooldowns.containsKey(name)){
-            skillCooldowns.replace(name, (long) (seconds * 1000));
+            skillCooldowns.replace(name, System.currentTimeMillis() + (long) (seconds * 1000));
         } else {
-            skillCooldowns.put(name, (long) (seconds * 1000));
+            skillCooldowns.put(name, System.currentTimeMillis() + (long) (seconds * 1000));
         }
     }
 

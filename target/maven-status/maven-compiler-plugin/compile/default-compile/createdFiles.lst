@@ -10,5 +10,6 @@ me\jadenp\notskills\TriggerClick.class
 me\jadenp\notskills\PlayerDataAdapter.class
 me\jadenp\notskills\Skills.class
 me\jadenp\notskills\utils\ConfigOptions.class
+me\jadenp\notskills\MythicMobDrop.class
 me\jadenp\notskills\NotSkills$1.class
 me\jadenp\notskills\MythicMobsListener$1.class

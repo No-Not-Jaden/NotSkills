@@ -37,13 +37,13 @@ public final class NotSkills extends JavaPlugin {
      * Expected whitespace to end one argument, but found trailing data
      * ...xecute in NORMAL - entity type needs to be minecraft:lowercase - x
      * skills permission - no work? x
-     * gui too -
+     * gui too - x
      * seed prank do not know how to use the skill - x
      * remove skills as players - grindstone to remove skills before enchantments - doesnt work x
-     * config option if players hold an item with a skill, they unlock it - player message - nope
+     * config option if players hold an item with a skill, they unlock it - player message - nope x
      * multiverse works
-     * unknown skill to unlock other people's skill -
-     * implement mythicmobs skill -
+     * unknown skill to unlock other people's skill - x
+     * implement mythicmobs skill - x
      */
 
     private static NotSkills instance;

@@ -47,6 +47,7 @@ skills:
     # • [console] will run a command as the console
     # • [message] will send the player a message
     # • [mythicmobs] <mob> (optional:{target<x>}) will spawn mythic mob
+    # • [mythicskills] <skillname> will use a Mythic Mobs skill
     # These characters will be replaced:
     # • {player} will be replaced with the player's name
     # • {world} will be replaced with the world name
@@ -56,11 +57,12 @@ skills:
     # • {random<y>_<x>} will be replaced with a random number from y (inclusive) to x (non-inclusive)
     # External plugin support:
     # • Placeholders will be parsed as the player
-    # • Mythic Mobs can be spawned through a skill and can be spawned with skill items (see below for an example)
+    # • Mythic Mobs can be spawned by skills and use skills. You can also use the Mythic Mob skills as a skill action
     actions:
       - '[console] execute run effect give {player} levitation {random1_5} 1 false'
       - '[message] &7&oYou appear to feel lighter.'
-      #- '[mythicmobs] SkeletalKnight' # will spawn a Skeletal Knight if mythic mobs is enabled
+      #- '[mythicmobs] SkeletalKnight' # will spawn a Skeletal Knight if Mythic Mobs is enabled
+      #- '[mythicskills] SmashAttack' # will do the smash attack skill from Mythic Mobs
     # Which items the skill can be applied to (using the command to add skills bypasses this)
     # • The name of the item material must include at least one string in the list
     # • Add "*" at the beginning to match the string strictly
