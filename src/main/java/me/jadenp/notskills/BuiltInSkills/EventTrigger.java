@@ -9,6 +9,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -93,6 +94,12 @@ public class EventTrigger implements Listener {
                 eventSkills.replace(event.getPlayer().getUniqueId(), delayedActionSkills);
             else
                 eventSkills.remove(event.getPlayer().getUniqueId());
+    }
+
+    @EventHandler
+    public void onProjectileHit(ProjectileHitEvent event){
+        if (event.getEntity().hasMetadata("remove"))
+            event.getEntity().remove();
     }
 
     /**

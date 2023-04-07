@@ -27,7 +27,7 @@ public class IceShards extends BuiltInSkill {
     public IceShards(LivingEntity livingEntity, int actions, double damageMultiplier) {
         super(livingEntity, actions);
         this.damageMultiplier = damageMultiplier;
-
+        skillAction();
     }
     @Override
     public boolean skillAction(){

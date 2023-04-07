@@ -35,6 +35,7 @@ public class Snipe extends ProjectileSkill {
         if (event.getEntity() instanceof Arrow){
             ((Arrow) event.getEntity()).setDamage(((Arrow) event.getEntity()).getDamage() * damageMultiplier);
         }
+        onLaunch(event);
         return true;
     }
 
