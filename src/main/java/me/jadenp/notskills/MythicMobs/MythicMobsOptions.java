@@ -1,4 +1,4 @@
-package me.jadenp.notskills;
+package me.jadenp.notskills.MythicMobs;
 
 import java.util.List;
 

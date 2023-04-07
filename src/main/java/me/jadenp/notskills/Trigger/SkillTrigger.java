@@ -1,5 +1,9 @@
-package me.jadenp.notskills;
+package me.jadenp.notskills.Trigger;
 
+import me.jadenp.notskills.NotSkills;
+import me.jadenp.notskills.PlayerData;
+import me.jadenp.notskills.SkillOptions;
+import me.jadenp.notskills.utils.Skills;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

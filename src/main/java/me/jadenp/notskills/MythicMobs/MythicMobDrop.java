@@ -1,4 +1,4 @@
-package me.jadenp.notskills;
+package me.jadenp.notskills.MythicMobs;
 
 import io.lumine.mythic.api.adapters.AbstractItemStack;
 import io.lumine.mythic.api.config.MythicLineConfig;

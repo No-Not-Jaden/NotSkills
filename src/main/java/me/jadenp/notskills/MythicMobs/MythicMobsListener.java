@@ -1,12 +1,13 @@
-package me.jadenp.notskills;
+package me.jadenp.notskills.MythicMobs;
 
 import io.lumine.mythic.bukkit.events.MythicDropLoadEvent;
 import io.lumine.mythic.bukkit.events.MythicMobSpawnEvent;
+import me.jadenp.notskills.NotSkills;
+import me.jadenp.notskills.SkillOptions;
+import me.jadenp.notskills.utils.Skills;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;

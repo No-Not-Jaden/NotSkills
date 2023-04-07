@@ -6,6 +6,7 @@ softdepend:
   - PlaceholderAPI
   - MythicMobs
   - MultiVerse-Core
+  - Magic
 commands:
   notskills:
     description: Use this plugin!

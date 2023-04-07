@@ -1,7 +1,10 @@
 package me.jadenp.notskills.utils;
 
+import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.jadenp.notskills.*;
+import me.jadenp.notskills.MythicMobs.MythicMobsOptions;
+import me.jadenp.notskills.Trigger.Trigger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -41,11 +44,16 @@ public class ConfigOptions {
     public static double mythicMobsSkillChance = 0.5;
     public static boolean multiVerseEnabled = false;
     public static boolean naturalSkillUnlock = true;
+    public static MagicAPI magicAPI;
+    public static boolean magicAPIEnabled = false;
 
     public static void reloadOptions(){
         papiEnabled = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
         mythicMobsEnabled = Bukkit.getPluginManager().isPluginEnabled("MythicMobs");
         multiVerseEnabled = Bukkit.getPluginManager().isPluginEnabled("MultiVerse-Core");
+        magicAPIEnabled = Bukkit.getPluginManager().isPluginEnabled("Magic");
+        if (magicAPIEnabled)
+            magicAPI = (MagicAPI) Bukkit.getPluginManager().getPlugin("Magic");
 
         NotSkills.getInstance().reloadConfig();
         FileConfiguration config = NotSkills.getInstance().getConfig();

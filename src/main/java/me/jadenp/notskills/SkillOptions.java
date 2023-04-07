@@ -1,11 +1,9 @@
 package me.jadenp.notskills;
 
 import io.lumine.mythic.api.mobs.MythicMob;
-import io.lumine.mythic.api.skills.Skill;
-import io.lumine.mythic.api.skills.SkillManager;
 import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.lumine.mythic.bukkit.MythicBukkit;
-import io.lumine.mythic.bukkit.compatibility.SkillAPISupport;
+import me.jadenp.notskills.MythicMobs.MythicMobsOptions;
 import me.jadenp.notskills.utils.ConfigOptions;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -162,10 +160,23 @@ public class SkillOptions {
                 case "[mythicskills]":
                     if (mythicMobsEnabled) {
                         MythicBukkit.inst().getAPIHelper().castSkill(entity, command);
-                        for (Skill s : MythicBukkit.inst().getSkillManager().getSkills() ) {
-                            Bukkit.getLogger().info("I: " + s.getInternalName());
-                            Bukkit.getLogger().info("S: " + s);
+                    }
+                    break;
+                case "[magic]":
+                    if (magicAPIEnabled){
+                        String[] split = command.split(" ");
+                        if (split.length == 0){
+                            Bukkit.getLogger().warning("Skill Action for " + name + " run by " + entity.getType() + " does not have a spell declared after [magic].");
+                            return;
                         }
+                        String spellName = split[0];
+                        try {
+                            System.arraycopy(split, 1, split, 0, split.length);
+                            magicAPI.cast(spellName, split);
+                        } catch (IndexOutOfBoundsException e){
+                            magicAPI.cast(spellName, new String[0]);
+                        }
+
                     }
                     break;
             }

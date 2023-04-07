@@ -1,29 +1,25 @@
 package me.jadenp.notskills;
 
 
+import me.jadenp.notskills.MythicMobs.MythicMobsListener;
+import me.jadenp.notskills.Trigger.SkillTrigger;
+import me.jadenp.notskills.utils.Skills;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import javax.swing.*;
 import java.util.*;
 
 import static me.jadenp.notskills.utils.ConfigOptions.*;
-import static me.jadenp.notskills.utils.Items.backArrow;
 import static me.jadenp.notskills.utils.Items.skillSlotArtifact;
 
 public class Events  implements Listener {
