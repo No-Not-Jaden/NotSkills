@@ -96,6 +96,12 @@ public class EventTrigger implements Listener {
                 eventSkills.remove(event.getPlayer().getUniqueId());
     }
 
+    public static void addSkill(UUID uuid, DelayedActionSkill delayedActionSkill){
+        List<DelayedActionSkill> delayedActionSkills = eventSkills.containsKey(uuid) ? eventSkills.get(uuid) : new ArrayList<>();
+        delayedActionSkills.add(delayedActionSkill);
+        eventSkills.put(uuid, delayedActionSkills);
+    }
+
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent event){
         if (event.getEntity().hasMetadata("remove"))

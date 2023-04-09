@@ -1,6 +1,7 @@
 package me.jadenp.notskills;
 
 
+import me.jadenp.notskills.BuiltInSkills.EventTrigger;
 import me.jadenp.notskills.MythicMobs.MythicMobsListener;
 import me.jadenp.notskills.Trigger.SkillTrigger;
 import me.jadenp.notskills.utils.Skills;
@@ -29,6 +30,7 @@ public class Events  implements Listener {
         Plugin plugin = NotSkills.getInstance();
         Bukkit.getPluginManager().registerEvents(new SkillsGUI(), plugin);
         Bukkit.getPluginManager().registerEvents(new SkillTrigger(), plugin);
+        Bukkit.getPluginManager().registerEvents(new EventTrigger(), plugin);
         if (mythicMobsEnabled)
             Bukkit.getPluginManager().registerEvents(new MythicMobsListener(), plugin);
     }

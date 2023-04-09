@@ -13,7 +13,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 public class ArielStrike extends ProjectileSkill {
-    private final int range;
     private final Location target;
     private final int spread;
     private final int delay;
@@ -31,7 +30,6 @@ public class ArielStrike extends ProjectileSkill {
      */
     public ArielStrike(LivingEntity livingEntity, int actions, int expireTicks, boolean itemBound, int chargeTicks, int range, int spread, int delay) {
         super(livingEntity, actions, expireTicks, itemBound, chargeTicks);
-        this.range = range;
         this.spread = spread;
         this.delay = delay;
         target = livingEntity.getTargetBlock(null, range).getLocation();

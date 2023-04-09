@@ -3,6 +3,8 @@ package me.jadenp.notskills;
 import io.lumine.mythic.api.mobs.MythicMob;
 import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.lumine.mythic.bukkit.MythicBukkit;
+import me.jadenp.notskills.BuiltInSkills.EventTrigger;
+import me.jadenp.notskills.BuiltInSkills.SpecificSkills.*;
 import me.jadenp.notskills.MythicMobs.MythicMobsOptions;
 import me.jadenp.notskills.utils.ConfigOptions;
 import org.bukkit.Bukkit;
@@ -176,7 +178,53 @@ public class SkillOptions {
                         } catch (IndexOutOfBoundsException e){
                             magicAPI.cast(spellName, new String[0]);
                         }
-
+                    }
+                    break;
+                case "[notskill]":
+                    String[] split = command.split(" ");
+                    switch (split[0].toUpperCase()){
+                        case "ABSORB":
+                            try {
+                                EventTrigger.addSkill(entity.getUniqueId(), new Absorb(entity, Integer.parseInt(split[1]), Integer.parseInt(split[2]), Boolean.parseBoolean(split[3]), Integer.parseInt(split[4]), Integer.parseInt(split[5]), Double.parseDouble(split[6]), Double.parseDouble(split[7]), Integer.parseInt(split[8])));
+                            } catch (IndexOutOfBoundsException | NumberFormatException e){
+                                Bukkit.getLogger().warning("Skill Action for " + name + " run by " + entity.getType() + " does not have correct arguments for [notskill] Absorb");
+                            }
+                            break;
+                        case "ARIELSTRIKE":
+                            try {
+                                EventTrigger.addSkill(entity.getUniqueId(), new ArielStrike(entity, Integer.parseInt(split[1]), Integer.parseInt(split[2]), Boolean.parseBoolean(split[3]), Integer.parseInt(split[4]), Integer.parseInt(split[5]), Integer.parseInt(split[6]),  Integer.parseInt(split[7])));
+                            } catch (IndexOutOfBoundsException | NumberFormatException e){
+                                Bukkit.getLogger().warning("Skill Action for " + name + " run by " + entity.getType() + " does not have correct arguments for [notskill] ArielStrike");
+                            }
+                            break;
+                        case "BLOODSACRIFICE":
+                            try {
+                                new BloodSacrifice(entity, Integer.parseInt(split[1]), Double.parseDouble(split[2]), Integer.parseInt(split[3]), Integer.parseInt(split[4]));
+                            } catch (IndexOutOfBoundsException | NumberFormatException e){
+                                Bukkit.getLogger().warning("Skill Action for " + name + " run by " + entity.getType() + " does not have correct arguments for [notskill] BloodSacrifice");
+                            }
+                            break;
+                        case "DASH":
+                            try {
+                                new Dash(entity, Integer.parseInt(split[1]), Double.parseDouble(split[2]));
+                            } catch (IndexOutOfBoundsException | NumberFormatException e){
+                                Bukkit.getLogger().warning("Skill Action for " + name + " run by " + entity.getType() + " does not have correct arguments for [notskill] Dash");
+                            }
+                            break;
+                        case "ICESHARDS":
+                            try {
+                                new IceShards(entity, Integer.parseInt(split[1]), Double.parseDouble(split[2]));
+                            } catch (IndexOutOfBoundsException | NumberFormatException e){
+                                Bukkit.getLogger().warning("Skill Action for " + name + " run by " + entity.getType() + " does not have correct arguments for [notskill] IceShards");
+                            }
+                            break;
+                        case "SNIPE":
+                            try {
+                                EventTrigger.addSkill(entity.getUniqueId(), new Snipe(entity, Integer.parseInt(split[1]), Integer.parseInt(split[2]), Boolean.parseBoolean(split[3]), Integer.parseInt(split[4]), Double.parseDouble(split[5])));
+                            } catch (IndexOutOfBoundsException | NumberFormatException e){
+                                Bukkit.getLogger().warning("Skill Action for " + name + " run by " + entity.getType() + " does not have correct arguments for [notskill] Snipe");
+                            }
+                            break;
                     }
                     break;
             }
