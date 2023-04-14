@@ -1,4 +1,4 @@
-package me.jadenp.notskills.Trigger;
+package me.jadenp.notskills.ItemTrigger;
 
 import me.jadenp.notskills.NotSkills;
 import me.jadenp.notskills.PlayerData;

@@ -3,7 +3,7 @@ package me.jadenp.notskills;
 
 import me.jadenp.notskills.BuiltInSkills.EventTrigger;
 import me.jadenp.notskills.MythicMobs.MythicMobsListener;
-import me.jadenp.notskills.Trigger.SkillTrigger;
+import me.jadenp.notskills.ItemTrigger.SkillTrigger;
 import me.jadenp.notskills.utils.Skills;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;

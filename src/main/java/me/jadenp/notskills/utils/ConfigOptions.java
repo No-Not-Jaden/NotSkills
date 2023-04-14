@@ -4,7 +4,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.jadenp.notskills.*;
 import me.jadenp.notskills.MythicMobs.MythicMobsOptions;
-import me.jadenp.notskills.Trigger.Trigger;
+import me.jadenp.notskills.ItemTrigger.Trigger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;

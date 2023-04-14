@@ -4,8 +4,8 @@ import de.tr7zw.changeme.nbtapi.NBT;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import de.tr7zw.changeme.nbtapi.NbtApiException;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
-import me.jadenp.notskills.Trigger.SkillTrigger;
-import me.jadenp.notskills.Trigger.Trigger;
+import me.jadenp.notskills.ItemTrigger.SkillTrigger;
+import me.jadenp.notskills.ItemTrigger.Trigger;
 import me.jadenp.notskills.utils.Skills;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -311,12 +311,11 @@ public class Commands implements CommandExecutor, TabCompleter {
                         sender.sendMessage(prefix + ChatColor.RED + "Unknown skill!");
                         return true;
                     }
+                    PlayerData playerdata = getPlayerData(player);
                     if (args[0].equalsIgnoreCase("unlock")) {
-                        PlayerData playerdata = getPlayerData(player);
                         playerdata.setSkillUnlocked(skill.getName(), true);
                         sender.sendMessage(prefix + ChatColor.GREEN + "Unlocked " + ChatColor.DARK_GREEN + skill.getName() + ChatColor.GREEN + " for " + ChatColor.DARK_GREEN + player.getName());
                     } else {
-                        PlayerData playerdata = getPlayerData(player);
                         playerdata.setSkillUnlocked(skill.getName(), false);
                         sender.sendMessage(prefix + ChatColor.GREEN + "Locked " + ChatColor.DARK_GREEN + skill.getName() + ChatColor.GREEN + " for " + ChatColor.DARK_GREEN + player.getName());
                     }

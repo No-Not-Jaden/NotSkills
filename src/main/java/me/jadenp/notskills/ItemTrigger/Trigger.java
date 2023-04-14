@@ -1,4 +1,4 @@
-package me.jadenp.notskills.Trigger;
+package me.jadenp.notskills.ItemTrigger;
 
 import me.jadenp.notskills.utils.ConfigOptions;
 import org.bukkit.Color;

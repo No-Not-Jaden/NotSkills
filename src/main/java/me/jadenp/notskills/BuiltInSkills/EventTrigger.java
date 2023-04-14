@@ -115,6 +115,8 @@ public class EventTrigger implements Listener {
     public void onProjectileLaunch(ProjectileLaunchEvent event){
         if (event.getEntity().getShooter() instanceof LivingEntity) {
             UUID uuid = ((LivingEntity) event.getEntity().getShooter()).getUniqueId();
+            if (!eventSkills.containsKey(uuid))
+                return;
             List<DelayedActionSkill> delayedActionSkills = eventSkills.get(uuid);
             ListIterator<DelayedActionSkill> delayedActionSkillListIterator = delayedActionSkills.listIterator();
             boolean update = false;
