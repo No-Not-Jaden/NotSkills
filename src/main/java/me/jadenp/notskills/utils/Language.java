@@ -2,7 +2,6 @@ package me.jadenp.notskills.utils;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.jadenp.notskills.NotSkills;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -22,7 +21,6 @@ public class Language {
     public static String skillBreak;
     public static String skillMenu;
     public static String[] splitSkillMenu;
-
     public static String noPermission;
     public static String sstChange;
     public static String unknownSst;
@@ -30,6 +28,7 @@ public class Language {
     public static String unknownPlayer;
     public static String unknownItem;
     public static String noSkillSlots;
+    public static String magicFail;
     public static void reloadLanguage(){
 
         YamlConfiguration configuration = YamlConfiguration.loadConfiguration(languageFile);
@@ -60,6 +59,8 @@ public class Language {
             configuration.set("unknown-item", "&cUnknown Item!");
         if (!configuration.isSet("no-skill-slots"))
             configuration.set("no-skill-slots", "&cThis item doesn't have any skill slots.");
+        if (!configuration.isSet("magic-fail"))
+            configuration.set("magic-fail", "&cSkill Failed!");
 
         try {
             configuration.save(languageFile);
@@ -79,6 +80,7 @@ public class Language {
         unknownPlayer = color(configuration.getString("unknown-player"));
         unknownItem = color(configuration.getString("unknown-item"));
         noSkillSlots = color(configuration.getString("no-skill-slots"));
+        magicFail = color(configuration.getString("magic-fail"));
 
         splitReserved = skillSlotsReserved.split("\\{amount}");
         splitBind = skillBindIdentifier.split("\\{amount}");

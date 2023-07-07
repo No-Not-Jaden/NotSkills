@@ -68,7 +68,7 @@ skills:
       #- '[magic] curse range 32' # will cast the curse spell with a range of 32
     # Which items the skill can be applied to (using the command to add skills bypasses this)
     # • The name of the item material must include at least one string in the list
-    # • Add "*" at the beginning to match the string strictly
+    # • Add "*" at the beginning to match the item strictly
     # • Leave the list empty to allow the skill on all items
     # In this case, a stick, all types of hoes, and an iron sword can have this skill be attached to them
     allowed-items:

@@ -3,17 +3,18 @@ package me.jadenp.notskills.utils;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.jadenp.notskills.*;
-import me.jadenp.notskills.MythicMobs.MythicMobsOptions;
 import me.jadenp.notskills.ItemTrigger.Trigger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,18 +43,27 @@ public class ConfigOptions {
     public static boolean mythicMobsEnabled = false;
     public static int maxSkillSlots = 8;
     public static double mythicMobsSkillChance = 0.5;
+    public static MythicClass mythicAPI;
     public static boolean multiVerseEnabled = false;
     public static boolean naturalSkillUnlock = true;
-    public static MagicAPI magicAPI;
+    public static MagicClass magicAPI;
     public static boolean magicAPIEnabled = false;
 
     public static void reloadOptions(){
         papiEnabled = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
-        mythicMobsEnabled = Bukkit.getPluginManager().isPluginEnabled("MythicMobs");
         multiVerseEnabled = Bukkit.getPluginManager().isPluginEnabled("MultiVerse-Core");
+
+        mythicMobsEnabled = Bukkit.getPluginManager().isPluginEnabled("MythicMobs");
+        if (mythicMobsEnabled)
+            mythicAPI = new MythicClass();
+
         magicAPIEnabled = Bukkit.getPluginManager().isPluginEnabled("Magic");
-        if (magicAPIEnabled)
-            magicAPI = (MagicAPI) Bukkit.getPluginManager().getPlugin("Magic");
+        if (magicAPIEnabled) {
+            Plugin magicPlugin = Bukkit.getPluginManager().getPlugin("Magic");
+            if (magicPlugin instanceof MagicAPI) {
+                magicAPI = new MagicClass(magicPlugin);
+            }
+        }
 
         NotSkills.getInstance().reloadConfig();
         FileConfiguration config = NotSkills.getInstance().getConfig();
@@ -91,12 +101,8 @@ public class ConfigOptions {
 
 
         skills.clear();
-        for (int i = 1; config.isSet("skills." + i + ".name"); i++){
-            MythicMobsOptions mythicMobsOptions = null;
-            if (config.isSet("skills." + i + ".mythic-mobs.weight")){
-                mythicMobsOptions = new MythicMobsOptions(config.getInt("skills." + i + ".mythic-mobs.weight"), config.getStringList("skills." + i + ".mythic-mobs.included-mobs"));
-            }
-            skills.add(new SkillOptions(color(config.getString("skills." + i + ".name")), config.getDouble("skills." + i + ".cooldown"), config.getStringList("skills." + i + ".actions"), config.getStringList("skills." + i + ".allowed-items"), config.getStringList("skills." + i + ".description"), mythicMobsOptions));
+        for (int i = 1; config.isConfigurationSection("skills." + i); i++){
+            skills.add(new SkillOptions(Objects.requireNonNull(config.getConfigurationSection("skills." + i))));
         }
 
     }

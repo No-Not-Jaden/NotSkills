@@ -57,7 +57,7 @@ public class MythicMobsListener implements Listener {
                                 continue;
                             MythicMobsOptions mythicMobsOptions = skill.getMythicMobsOptions();
                             //Bukkit.getLogger().info(event.getMob().getMobType());
-                            if (!mythicMobsOptions.getIncludedMobs().contains(event.getMob().getMobType()))
+                            if (!mythicMobsOptions.isValidMob(event.getMob().getMobType(), event.getMobLevel()))
                                 continue;
                             for (int i = 0; i < mythicMobsOptions.getWeight(); i++) {
                                 validSkills.add(skill);

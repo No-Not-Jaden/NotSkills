@@ -8,10 +8,9 @@ import io.lumine.mythic.bukkit.adapters.BukkitItemStack;
 import me.jadenp.notskills.utils.Items;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class MythicMobDrop implements IItemDrop {
-    private ItemStack item;
+    private final ItemStack item;
 
     public MythicMobDrop(MythicLineConfig config, String argument) {
         String str = config.getString(new String[] {"type", "t"}, "STONE", argument);

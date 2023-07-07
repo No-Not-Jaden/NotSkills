@@ -6,7 +6,7 @@
 
     <groupId>me.jadenp</groupId>
     <artifactId>NotSkills</artifactId>
-    <version>1.88</version>
+    <version>1.91</version>
     <packaging>jar</packaging>
 
     <name>NotSkills</name>
@@ -71,8 +71,8 @@
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
         <repository>
-            <id>elmakers-repo</id>
-            <url>https://maven.elmakers.com/repository/ </url>
+            <id>Maven Central</id>
+            <url>https://repo1.maven.org/maven2/</url>
         </repository>
         <repository>
             <id>codemc-repo</id>
@@ -100,7 +100,7 @@
         <dependency>
             <groupId>com.elmakers.mine.bukkit</groupId>
             <artifactId>MagicAPI</artifactId>
-            <version>1.0</version>
+            <version>10.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

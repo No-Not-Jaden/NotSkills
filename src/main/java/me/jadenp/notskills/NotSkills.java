@@ -3,7 +3,6 @@ package me.jadenp.notskills;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import io.lumine.mythic.bukkit.MythicBukkit;
 import me.jadenp.notskills.utils.ConfigOptions;
 import me.jadenp.notskills.utils.Items;
 import me.jadenp.notskills.utils.Language;
