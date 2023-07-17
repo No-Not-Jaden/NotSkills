@@ -1,6 +1,5 @@
 package me.jadenp.notskills.utils;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import me.jadenp.notskills.NotSkills;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -98,7 +97,7 @@ public class Language {
         }
 
         if (ConfigOptions.papiEnabled){
-            text = PlaceholderAPI.setPlaceholders(player, text);
+            text = PapiClass.parse(text, player);
         }
 
         return text;

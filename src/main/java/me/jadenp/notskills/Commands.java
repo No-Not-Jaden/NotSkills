@@ -1,11 +1,8 @@
 package me.jadenp.notskills;
 
-import de.tr7zw.changeme.nbtapi.NBT;
-import de.tr7zw.changeme.nbtapi.NBTItem;
-import de.tr7zw.changeme.nbtapi.NbtApiException;
-import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
 import me.jadenp.notskills.ItemTrigger.SkillTrigger;
 import me.jadenp.notskills.ItemTrigger.Trigger;
+import me.jadenp.notskills.utils.NBTClass;
 import me.jadenp.notskills.utils.Skills;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -81,6 +78,9 @@ public class Commands implements CommandExecutor, TabCompleter {
                 reloadOptions();
                 reloadLanguage();
                 sender.sendMessage(prefix + ChatColor.YELLOW + "Reloaded NotSkills version " + NotSkills.getInstance().getDescription().getVersion() + "!");
+            } else if (args[0].equalsIgnoreCase("debug")){
+                debug = !debug;
+                sender.sendMessage(prefix + ChatColor.YELLOW + "Debug is not set to " + debug + ".");
             } else if (args[0].equalsIgnoreCase("give")) {
                 if (args.length >= 3) {
                     Player player = Bukkit.getPlayer(args[1]);
@@ -107,16 +107,8 @@ public class Commands implements CommandExecutor, TabCompleter {
 
                     if (args[2].contains("{")) {
                         // has nbt
-                        try {
-                            NBTItem nbti = new NBTItem(item);
-                            ReadWriteNBT nbt = NBT.parseNBT(args[2].substring(args[2].indexOf("{")));
-                            nbti.mergeCompound(nbt);
-
-                            item = nbti.getItem();
-                        } catch (NbtApiException e) {
-                            sender.sendMessage(prefix + ChatColor.RED + "NBT Error!");
-                            return true;
-                        }
+                        if (NBTAPIEnabled)
+                            item = NBTClass.addNBTToItem(item, args[2].substring(args[2].indexOf("{")));
                     }
 
                     // get item amount

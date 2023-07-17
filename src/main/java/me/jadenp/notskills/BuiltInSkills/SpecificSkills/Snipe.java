@@ -1,6 +1,7 @@
 package me.jadenp.notskills.BuiltInSkills.SpecificSkills;
 
 import me.jadenp.notskills.BuiltInSkills.ProjectileSkill;
+import me.jadenp.notskills.BuiltInSkills.SkillHandler;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Arrow;
@@ -25,6 +26,14 @@ public class Snipe extends ProjectileSkill {
     public Snipe(LivingEntity livingEntity, int actions, int expireTicks, boolean itemBound, int chargeTicks, double damageMultiplier) {
         super(livingEntity, actions, expireTicks, itemBound, chargeTicks);
         this.damageMultiplier = damageMultiplier;
+    }
+
+    public static final Object[] defaultParameters = new Object[]{1, 300, true, 100, 1.5};
+    public Snipe(LivingEntity livingEntity, String[] requestedParameters){
+        super(livingEntity);
+        Object[] parameters = SkillHandler.fillParameters(defaultParameters, requestedParameters);
+        registerParameters(parameters);
+        this.damageMultiplier = (double) parameters[4];
     }
 
     @Override

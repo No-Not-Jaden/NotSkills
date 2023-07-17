@@ -1,7 +1,5 @@
 package me.jadenp.notskills.utils;
 
-import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import me.clip.placeholderapi.PlaceholderAPI;
 import me.jadenp.notskills.*;
 import me.jadenp.notskills.ItemTrigger.Trigger;
 import org.bukkit.Bukkit;
@@ -21,6 +19,8 @@ import java.util.regex.Pattern;
 import static net.md_5.bungee.api.ChatColor.COLOR_CHAR;
 
 public class ConfigOptions {
+
+    public static boolean debug = false;
     public static Trigger defaultSST = Trigger.DIRECTIONAL_CLICK;
     public static boolean playersChooseSST = true;
     public static double pauseRatio = 1.75;
@@ -48,10 +48,12 @@ public class ConfigOptions {
     public static boolean naturalSkillUnlock = true;
     public static MagicClass magicAPI;
     public static boolean magicAPIEnabled = false;
+    public static boolean NBTAPIEnabled = false;
 
     public static void reloadOptions(){
         papiEnabled = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
         multiVerseEnabled = Bukkit.getPluginManager().isPluginEnabled("MultiVerse-Core");
+        NBTAPIEnabled = Bukkit.getPluginManager().isPluginEnabled("NBTAPI");
 
         mythicMobsEnabled = Bukkit.getPluginManager().isPluginEnabled("MythicMobs");
         if (mythicMobsEnabled)
@@ -60,9 +62,7 @@ public class ConfigOptions {
         magicAPIEnabled = Bukkit.getPluginManager().isPluginEnabled("Magic");
         if (magicAPIEnabled) {
             Plugin magicPlugin = Bukkit.getPluginManager().getPlugin("Magic");
-            if (magicPlugin instanceof MagicAPI) {
-                magicAPI = new MagicClass(magicPlugin);
-            }
+            magicAPI = new MagicClass(magicPlugin);
         }
 
         NotSkills.getInstance().reloadConfig();
@@ -123,7 +123,7 @@ public class ConfigOptions {
     }
 
     public static String getPlaceholders(String str, OfflinePlayer player){
-        return papiEnabled ? PlaceholderAPI.setPlaceholders(player, str) : str;
+        return papiEnabled ? PapiClass.parse(str, player) : str;
     }
 
     public static String color(String str){

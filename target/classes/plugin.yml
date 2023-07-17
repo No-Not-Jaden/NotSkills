@@ -1,5 +1,5 @@
 name: NotSkills
-version: '1.90'
+version: '1.101'
 main: me.jadenp.notskills.NotSkills
 api-version: 1.19
 softdepend:
@@ -7,6 +7,7 @@ softdepend:
   - MythicMobs
   - MultiVerse-Core
   - Magic
+  - NBTAPI
 commands:
   notskills:
     description: Use this plugin!

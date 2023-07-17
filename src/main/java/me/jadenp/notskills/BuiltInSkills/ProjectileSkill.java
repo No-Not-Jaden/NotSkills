@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 
 public class ProjectileSkill extends DelayedActionSkill implements IChargeSkill{
-    private final int chargeTicks;
+    private int chargeTicks;
     private long chargeReady = 0;
 
     /**
@@ -21,6 +21,16 @@ public class ProjectileSkill extends DelayedActionSkill implements IChargeSkill{
         this.chargeTicks = chargeTicks;
         startCharge();
     }
+
+    public ProjectileSkill(LivingEntity livingEntity){
+        super(livingEntity);
+    }
+
+    protected void registerParameters(Object[] parameters){
+        super.registerParameters(parameters);
+        this.chargeTicks = (int) parameters[3];
+    }
+
 
     /**
      * Actions that occur when a player launches a projectile with this skill

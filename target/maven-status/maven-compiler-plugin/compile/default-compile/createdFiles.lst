@@ -1,6 +1,7 @@
 me\jadenp\notskills\SkillsGUI.class
 me\jadenp\notskills\ItemTrigger\SkillTrigger$1.class
 me\jadenp\notskills\BuiltInSkills\ProjectileSkill.class
+me\jadenp\notskills\BuiltInSkills\SkillHandler.class
 me\jadenp\notskills\BuiltInSkills\SpecificSkills\Dash.class
 me\jadenp\notskills\BuiltInSkills\SpecificSkills\IceShards$1.class
 me\jadenp\notskills\BuiltInSkills\SpecificSkills\Snipe.class
@@ -9,15 +10,17 @@ me\jadenp\notskills\MythicMobs\MythicMobsOptions.class
 me\jadenp\notskills\ItemTrigger\TriggerClick.class
 me\jadenp\notskills\BuiltInSkills\EventTrigger$1.class
 me\jadenp\notskills\NotSkills$1.class
+me\jadenp\notskills\BuiltInSkills\SpecificSkills\Veil.class
 me\jadenp\notskills\ItemTrigger\SkillTrigger.class
 me\jadenp\notskills\BuiltInSkills\RepeatingSkill.class
 me\jadenp\notskills\BuiltInSkills\BuiltInSkill.class
-me\jadenp\notskills\MagicClass.class
+me\jadenp\notskills\utils\MagicClass.class
 me\jadenp\notskills\utils\Skills.class
 me\jadenp\notskills\BuiltInSkills\SpecificSkills\ArielStrike$1.class
 me\jadenp\notskills\utils\Items.class
 me\jadenp\notskills\utils\Language.class
 me\jadenp\notskills\BuiltInSkills\SpecificSkills\BloodSacrifice.class
+me\jadenp\notskills\utils\MythicClass.class
 me\jadenp\notskills\BuiltInSkills\DelayedActionSkill.class
 me\jadenp\notskills\BuiltInSkills\SpecificSkills\ArielStrike.class
 me\jadenp\notskills\BuiltInSkills\EventTrigger.class
@@ -31,4 +34,5 @@ me\jadenp\notskills\BuiltInSkills\SpecificSkills\Absorb.class
 me\jadenp\notskills\utils\ConfigOptions.class
 me\jadenp\notskills\MythicMobs\MythicMobsListener$1.class
 me\jadenp\notskills\BuiltInSkills\IChargeSkill.class
+me\jadenp\notskills\SkillOptions$1.class
 me\jadenp\notskills\MythicMobs\MythicMobDrop.class

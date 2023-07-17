@@ -123,7 +123,7 @@ public class EventTrigger implements Listener {
             while (delayedActionSkillListIterator.hasNext()){
                 DelayedActionSkill skill = delayedActionSkillListIterator.next();
                 if (!(skill instanceof ProjectileSkill))
-                    return;
+                    continue;
                 ProjectileSkill projectileSkill = (ProjectileSkill) skill;
                 if (skill.isExpired()){
                     delayedActionSkillListIterator.remove();

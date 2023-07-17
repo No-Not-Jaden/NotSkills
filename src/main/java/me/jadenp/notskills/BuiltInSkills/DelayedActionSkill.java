@@ -4,9 +4,9 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class DelayedActionSkill extends BuiltInSkill{
-    private final int expireTicks;
-    protected final long expireTime;
-    private final boolean itemBound;
+    private int expireTicks;
+    protected long expireTime;
+    private boolean itemBound;
 
     /**
      * A skill that can be triggered sometime after the skill is activated
@@ -17,10 +17,25 @@ public class DelayedActionSkill extends BuiltInSkill{
      */
     public DelayedActionSkill(LivingEntity livingEntity, int actions, int expireTicks, boolean itemBound) {
         super(livingEntity, actions);
-        this.expireTicks = expireTicks;
-        expireTime = System.currentTimeMillis() + expireTicks * 50L;
+        setExpireTicks(expireTicks);
         this.itemBound = itemBound;
     }
+
+    public DelayedActionSkill(LivingEntity livingEntity){
+        super(livingEntity);
+    }
+
+    protected void registerParameters(Object[] parameters){
+        super.registerParameters(parameters);
+        setExpireTicks((int) parameters[1]);
+        itemBound = (boolean) parameters[2];
+    }
+
+    private void setExpireTicks(int expireTicks){
+        this.expireTicks = expireTicks;
+        expireTime = System.currentTimeMillis() + expireTicks * 50L;
+    }
+
 
     /**
      *

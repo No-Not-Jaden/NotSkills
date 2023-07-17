@@ -8,6 +8,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 public class BuiltInSkill {
     protected final LivingEntity livingEntity;
     protected int actions;
+    protected static final Object[] defaultParameters = new Object[]{1};
 
     /**
      * A skill that is built into the plugin
@@ -17,6 +18,24 @@ public class BuiltInSkill {
     public BuiltInSkill(LivingEntity livingEntity, int actions){
         this.livingEntity = livingEntity;
         this.actions = actions;
+    }
+
+    public BuiltInSkill(LivingEntity livingEntity, String[] requestedParameters){
+        this.livingEntity = livingEntity;
+        Object[] parameters = SkillHandler.fillParameters(defaultParameters, requestedParameters);
+        actions = (int) parameters[0];
+    }
+
+    /**
+     * Create an empty skill to modify later
+     * @param livingEntity Entity to be executing the skill
+     */
+    public BuiltInSkill(LivingEntity livingEntity){
+        this.livingEntity = livingEntity;
+    }
+
+    protected void registerParameters(Object[] parameters){
+        this.actions = (int) parameters[0];
     }
 
     /**
@@ -48,5 +67,9 @@ public class BuiltInSkill {
 
     public boolean isExpired(){
         return actions <= 0;
+    }
+
+    public static Object[] getDefaultParameters() {
+        return defaultParameters;
     }
 }

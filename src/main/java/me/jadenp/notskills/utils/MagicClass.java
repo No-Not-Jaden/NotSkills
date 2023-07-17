@@ -8,7 +8,7 @@ import org.bukkit.plugin.Plugin;
 public class MagicClass {
     private final MagicAPI magicAPI;
     public MagicClass(Plugin plugin){
-        magicAPI = (MagicAPI) plugin;
+            magicAPI = (MagicAPI) plugin;
     }
 
     public boolean castSpell(String spellName, String[] parameters, CommandSender sender, Entity caster){

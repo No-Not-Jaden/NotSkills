@@ -49,6 +49,9 @@ skills:
     # • [mythicmobs] <mob> (optional:{target<x>}) will spawn mythic mob
     # • [mythicskills] <skillname> will use a Mythic Mobs skill
     # • [magic] <spell> (optional parameters) will cast a spell
+    # • [notskill] <skill> (optional parameters) will cast a built-in skill
+    # Delay can be added with: - Note: this is takes up the whole action
+    # • [delay] (ticks)
     # These characters will be replaced:
     # • {player} will be replaced with the player's name
     # • {world} will be replaced with the world name
@@ -66,6 +69,7 @@ skills:
       #- '[mythicmobs] SkeletalKnight' # will spawn a Skeletal Knight if Mythic Mobs is enabled
       #- '[mythicskills] SmashAttack' # will do the smash attack skill from Mythic Mobs
       #- '[magic] curse range 32' # will cast the curse spell with a range of 32
+      #- '[notskill] snipe 2' # will cast the snipe skill with 2 arrows
     # Which items the skill can be applied to (using the command to add skills bypasses this)
     # • The name of the item material must include at least one string in the list
     # • Add "*" at the beginning to match the item strictly
@@ -77,9 +81,10 @@ skills:
       - 'Iron_Sword'
     mythic-mobs:
       weight: 1 # how likely a mob will spawn with this specific skill
-       # what mobs can spawn with this skill - leave empty to allow all mythic mobs
+       # what mobs can spawn with this skill and the minimum level required - leave empty to allow all mythic mobs
+       # (name) (level)
       included-mobs:
-        - 'SkeletalKnight'
+        - 'SkeletalKnight 1.1'
   2:
     name: '&f&lSmite'
     description:
@@ -112,6 +117,7 @@ skills:
     cooldown: 1200
     actions:
       - '[message] &eYour daily luck reading (0-10) is...'
+      - '[delay] 10'
       - '[message] &d&l{random10}'
     allowed-items: []
 

@@ -1,6 +1,7 @@
 package me.jadenp.notskills;
 
 import me.jadenp.notskills.BuiltInSkills.EventTrigger;
+import me.jadenp.notskills.BuiltInSkills.SkillHandler;
 import me.jadenp.notskills.BuiltInSkills.SpecificSkills.*;
 import me.jadenp.notskills.MythicMobs.MythicMobsOptions;
 import me.jadenp.notskills.utils.ConfigOptions;
@@ -206,6 +207,7 @@ public class SkillOptions {
                             break;
                         case "[notskill]":
                             String[] split = command.split(" ");
+                            /*
                             switch (split[0].toUpperCase()) {
                                 case "ABSORB":
                                     try {
@@ -249,7 +251,8 @@ public class SkillOptions {
                                         Bukkit.getLogger().warning("Skill Action for " + name + " run by " + entity.getType() + " does not have correct arguments for [notskill] Snipe");
                                     }
                                     break;
-                            }
+                            }*/
+                            SkillHandler.executeSkill(name, split, entity);
                             break;
                     }
 
