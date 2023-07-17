@@ -1,6 +1,7 @@
 package me.jadenp.notskills.BuiltInSkills.SpecificSkills;
 
 import me.jadenp.notskills.BuiltInSkills.BuiltInSkill;
+import me.jadenp.notskills.BuiltInSkills.SkillHandler;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -20,6 +21,17 @@ public class BloodSacrifice extends BuiltInSkill {
         this.damage = damage;
         this.effectStrength = effectStrength;
         this.duration = duration;
+        skillAction();
+    }
+
+    public static final Object[] defaultParameters = new Object[]{1, 5.0, 1, 600};
+    public BloodSacrifice(LivingEntity livingEntity, String[] requestedParameters){
+        super(livingEntity);
+        Object[] parameters = SkillHandler.fillParameters(defaultParameters, requestedParameters);
+        registerParameters(parameters);
+        this.damage = (double) parameters[1];
+        this.effectStrength = (int) parameters[2];
+        this.duration = (int) parameters[3];
         skillAction();
     }
 

@@ -6,8 +6,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 public class RepeatingSkill extends DelayedActionSkill{
-    private final int delayTicks;
-    private final int timingTicks;
+    private int delayTicks;
+    private int timingTicks;
     protected BukkitTask runnable;
     /**
      * A skill that is triggered repeatedly for a certain amount of time
@@ -24,6 +24,17 @@ public class RepeatingSkill extends DelayedActionSkill{
         this.delayTicks = delayTicks;
         this.timingTicks = timingTicks;
         runnable = null; // runnable is set in child class
+    }
+
+    public RepeatingSkill(LivingEntity livingEntity){
+        super(livingEntity);
+        runnable = null;
+    }
+
+    protected void registerParameters(Object[] parameters){
+        super.registerParameters(parameters);
+        this.delayTicks = (int) parameters[3];
+        this.timingTicks = (int) parameters[4];
     }
 
     /**

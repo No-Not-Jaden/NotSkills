@@ -1,6 +1,7 @@
 package me.jadenp.notskills.BuiltInSkills.SpecificSkills;
 
 import me.jadenp.notskills.BuiltInSkills.ProjectileSkill;
+import me.jadenp.notskills.BuiltInSkills.SkillHandler;
 import me.jadenp.notskills.NotSkills;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -33,6 +34,17 @@ public class ArielStrike extends ProjectileSkill {
         this.spread = spread;
         this.delay = delay;
         target = livingEntity.getTargetBlock(null, range).getLocation();
+    }
+
+    public static final Object[] defaultParameters = new Object[]{1, 300, true, 100, 25.0, 5, 10};
+    public ArielStrike(LivingEntity livingEntity, String[] requestedParameters){
+        super(livingEntity);
+        Object[] parameters = SkillHandler.fillParameters(defaultParameters, requestedParameters);
+        registerParameters(parameters);
+
+        this.spread = (int) parameters[5];
+        this.delay = (int) parameters[6];
+        target = livingEntity.getTargetBlock(null, (int) parameters[4]).getLocation();
     }
 
     @Override

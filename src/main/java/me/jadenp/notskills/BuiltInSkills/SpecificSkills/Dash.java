@@ -1,6 +1,7 @@
 package me.jadenp.notskills.BuiltInSkills.SpecificSkills;
 
 import me.jadenp.notskills.BuiltInSkills.BuiltInSkill;
+import me.jadenp.notskills.BuiltInSkills.SkillHandler;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
@@ -17,12 +18,21 @@ public class Dash extends BuiltInSkill {
         this.speedMultiplier = speedMultiplier;
         skillAction();
     }
+    public static final Object[] defaultParameters = new Object[]{1, 2.0};
+    public Dash(LivingEntity livingEntity, String[] requestedParameters){
+        super(livingEntity);
+        Object[] parameters = SkillHandler.fillParameters(defaultParameters, requestedParameters);
+        registerParameters(parameters);
+        this.speedMultiplier = (double) parameters[1];
+    }
+
 
     @Override
     public boolean skillAction(){
         if (!super.skillAction())
             return false;
-        livingEntity.setVelocity(livingEntity.getVelocity().normalize().multiply(new Vector(speedMultiplier,1,speedMultiplier)));
+        livingEntity.setVelocity(livingEntity.getVelocity().add(livingEntity.getEyeLocation().getDirection().multiply(speedMultiplier)));
+        //livingEntity.setVelocity(livingEntity.getVelocity().normalize().multiply(new Vector(speedMultiplier,1,speedMultiplier)));
         if (actions > 0)
             skillAction();
         return true;

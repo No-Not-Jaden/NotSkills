@@ -28,7 +28,7 @@ public class Snipe extends ProjectileSkill {
         this.damageMultiplier = damageMultiplier;
     }
 
-    public static final Object[] defaultParameters = new Object[]{1, 300, true, 100, 1.5};
+    public static final Object[] defaultParameters = new Object[]{1, 300, true, 100, 1.0};
     public Snipe(LivingEntity livingEntity, String[] requestedParameters){
         super(livingEntity);
         Object[] parameters = SkillHandler.fillParameters(defaultParameters, requestedParameters);

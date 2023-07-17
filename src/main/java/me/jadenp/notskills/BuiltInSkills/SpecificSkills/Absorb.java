@@ -2,6 +2,7 @@ package me.jadenp.notskills.BuiltInSkills.SpecificSkills;
 
 import me.jadenp.notskills.BuiltInSkills.IChargeSkill;
 import me.jadenp.notskills.BuiltInSkills.RepeatingSkill;
+import me.jadenp.notskills.BuiltInSkills.SkillHandler;
 import me.jadenp.notskills.NotSkills;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -51,6 +52,7 @@ public class Absorb extends RepeatingSkill implements IChargeSkill {
         if (livingEntity instanceof Player)
             slot = ((Player) livingEntity).getInventory().getHeldItemSlot();
 
+        // start the skill
         runnable = new BukkitRunnable(){
             @Override
             public void run() {
@@ -58,6 +60,31 @@ public class Absorb extends RepeatingSkill implements IChargeSkill {
                     this.cancel();
             }
         }.runTaskTimer(NotSkills.getInstance(), super.getDelayTicks(), timingTicks);
+    }
+
+    public static final Object[] defaultParameters = new Object[]{1, 2000, true, 3, 300, 1.0, 3.0, 300};
+    public Absorb(LivingEntity livingEntity, String[] requestedParameters){
+        super(livingEntity);
+        Object[] parameters = SkillHandler.fillParameters(defaultParameters, requestedParameters);
+        // adding charge ticks to delay ticks
+        parameters[3] = (int) parameters[3] + (int) parameters[7];
+        registerParameters(parameters);
+
+        this.damageMultiplier = (double) parameters[5];
+        this.radius = (double) parameters[6];
+        this.chargeTicks = (int) parameters[7];
+        location = livingEntity.getEyeLocation().add(livingEntity.getEyeLocation().getDirection().multiply(3));
+        if (livingEntity instanceof Player)
+            slot = ((Player) livingEntity).getInventory().getHeldItemSlot();
+
+        // start the skill
+        runnable = new BukkitRunnable(){
+            @Override
+            public void run() {
+                if (!skillAction())
+                    this.cancel();
+            }
+        }.runTaskTimer(NotSkills.getInstance(), super.getDelayTicks(), (int) parameters[4]);
     }
 
     @Override

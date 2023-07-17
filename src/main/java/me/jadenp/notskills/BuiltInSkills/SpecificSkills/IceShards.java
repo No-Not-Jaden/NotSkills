@@ -1,6 +1,7 @@
 package me.jadenp.notskills.BuiltInSkills.SpecificSkills;
 
 import me.jadenp.notskills.BuiltInSkills.BuiltInSkill;
+import me.jadenp.notskills.BuiltInSkills.SkillHandler;
 import me.jadenp.notskills.NotSkills;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -27,6 +28,14 @@ public class IceShards extends BuiltInSkill {
     public IceShards(LivingEntity livingEntity, int actions, double damageMultiplier) {
         super(livingEntity, actions);
         this.damageMultiplier = damageMultiplier;
+        skillAction();
+    }
+    public static final Object[] defaultParameters = new Object[]{1, 1.0};
+    public IceShards(LivingEntity livingEntity, String[] requestedParameters){
+        super(livingEntity);
+        Object[] parameters = SkillHandler.fillParameters(defaultParameters, requestedParameters);
+        registerParameters(parameters);
+        this.damageMultiplier = (double) parameters[1];
         skillAction();
     }
     @Override
