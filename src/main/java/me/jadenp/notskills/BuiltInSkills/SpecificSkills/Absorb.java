@@ -62,7 +62,7 @@ public class Absorb extends RepeatingSkill implements IChargeSkill {
         }.runTaskTimer(NotSkills.getInstance(), super.getDelayTicks(), timingTicks);
     }
 
-    public static final Object[] defaultParameters = new Object[]{1, 2000, true, 3, 300, 1.0, 3.0, 300};
+    public static final Object[] defaultParameters = new Object[]{10, 2000, true, 3, 40, 1.0, 3.0, 300};
     public Absorb(LivingEntity livingEntity, String[] requestedParameters){
         super(livingEntity);
         Object[] parameters = SkillHandler.fillParameters(defaultParameters, requestedParameters);

@@ -64,4 +64,9 @@ public class RepeatingSkill extends DelayedActionSkill{
     public BukkitTask getRunnable() {
         return runnable;
     }
+
+    @Override
+    public void cancelAction(){
+        runnable.cancel();
+    }
 }

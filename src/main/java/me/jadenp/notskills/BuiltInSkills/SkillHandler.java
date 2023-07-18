@@ -87,7 +87,7 @@ public class SkillHandler {
              constructor = skillType.getConstructor(LivingEntity.class, String[].class);
         } catch (NoSuchMethodException e) {
             if (ConfigOptions.debug){
-                Bukkit.getLogger().info("[NotSkills] So such method for " + command[0] + " in skill " + name);
+                Bukkit.getLogger().info("[NotSkills] No such method for " + command[0] + " in skill " + name);
             }
             return;
         } catch (SecurityException e) {
