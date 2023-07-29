@@ -1,0 +1,49 @@
+
+How to add a built-in skill:
+(1) Create a class in the SpecificSkills folder with the name of your skill
+(2) Add the skill name in all caps to the skillNames arrayList in SkillHandler.java
+(3) Extend your class with BuiltInSkill or another skill trait in the SkillTraits folder
+(4) Create defaultParameters as an object array - Include all parameters in parent class except the LivingEntity and any additional parameters | ex: public static final Object[] defaultParameters = new Object[]{1, 300, 2.4};
+(5) Create 2 constructors:
+    [1] Constructor to reveal what all the parameters are
+        - Include a LivingEntity and all parameters in defaultParameters | ex: public ExampleSkill(LivingEntity livingEntity, int actions, int expireTicks, double exampleParameter)
+        - Super your parent class | ex: super(livingEntity, actions, expireTicks);
+        - Initialize example parameters | ex: this.exampleParameter = exampleParameter
+    [2] Constructor to auto-initialize the class
+        - Include only a LivingEntity and a String array like this: public ExampleSkill(LivingEntity livingEntity, String[] requestedParameters)
+        - Super just the livingEntity | ex: super(livingEntity);
+        - Get final parameters from requested parameters with Object[] parameters = SkillHandler.fillParameters(defaultParameters, requestedParameters);
+        - Register those parameters with the parent class: registerParameters(parameters);
+        - Initialize example parameters | ex: exampleParameter = parameters[2];
+(6) Create the action for the skill. There are a few ways to do this
+    [1] Skill extends an Event Trait
+        - Override onEventAction(EventName event) | This will be a recursive method to be repeated for each action | ex: public boolean onLaunch(ProjectileLaunchEvent event)
+        - Escape recursion with super method: if (!super.onEventAction(event)) return false; | ex: if (!super.onLaunch(event)) return false;
+        - Write your code with the event
+        - Add the next two lines: onEventAction(event); return true; | ex: onLaunch(event); return true;
+   [2] Skill extends anything else
+       - Override skillAction()
+       - Add the line: if (!super.skillAction()) return false;
+       - Write your code
+       - *Triggering the skillAction*
+         {A} Class only extends BuiltInSkill
+             ~ Add a call to skillAction() at the end of both your constructors
+             ~ Add a call to skillAction() at the end of its own method before return true;
+         {B} Class extends DelayedActionSkill or RepeatingSkill
+             ~ Add these lines of code to initialize the runnable. Remove super.getTimingTicks() if only extending DelayedActionSkill
+                 runnable = new BukkitRunnable(){
+                     @Override
+                     public void run() {
+                         if (!skillAction())
+                             this.cancel();
+                     }
+                 }.runTaskTimer(NotSkills.getInstance(), super.getDelayTicks(), super.getTimingTicks());
+(7) Optional traits
+    [1] IChargeSkill
+        - Override Required methods
+        - Override cancelAction() and add super.cancelAction(); and cancelCharge();
+        - Start the charge with startCharge(); Usually in constructor
+        - Code in what you are using for charge
+        - Look at ProjectileSkill for an example
+
+

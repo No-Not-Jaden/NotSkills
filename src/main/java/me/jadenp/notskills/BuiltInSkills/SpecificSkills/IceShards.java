@@ -1,6 +1,6 @@
 package me.jadenp.notskills.BuiltInSkills.SpecificSkills;
 
-import me.jadenp.notskills.BuiltInSkills.BuiltInSkill;
+import me.jadenp.notskills.BuiltInSkills.SkillTraits.BuiltInSkill;
 import me.jadenp.notskills.BuiltInSkills.SkillHandler;
 import me.jadenp.notskills.NotSkills;
 import org.bukkit.Location;

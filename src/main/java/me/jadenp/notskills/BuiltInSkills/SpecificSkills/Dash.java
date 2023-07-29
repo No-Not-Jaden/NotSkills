@@ -1,9 +1,8 @@
 package me.jadenp.notskills.BuiltInSkills.SpecificSkills;
 
-import me.jadenp.notskills.BuiltInSkills.BuiltInSkill;
+import me.jadenp.notskills.BuiltInSkills.SkillTraits.BuiltInSkill;
 import me.jadenp.notskills.BuiltInSkills.SkillHandler;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.util.Vector;
 
 public class Dash extends BuiltInSkill {
     private final double speedMultiplier;
@@ -32,9 +31,7 @@ public class Dash extends BuiltInSkill {
         if (!super.skillAction())
             return false;
         livingEntity.setVelocity(livingEntity.getVelocity().add(livingEntity.getEyeLocation().getDirection().multiply(speedMultiplier)));
-        //livingEntity.setVelocity(livingEntity.getVelocity().normalize().multiply(new Vector(speedMultiplier,1,speedMultiplier)));
-        if (actions > 0)
-            skillAction();
+        skillAction();
         return true;
     }
 

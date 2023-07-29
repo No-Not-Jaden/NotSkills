@@ -1,4 +1,4 @@
-package me.jadenp.notskills.BuiltInSkills;
+package me.jadenp.notskills.BuiltInSkills.SkillTraits;
 
 public interface IChargeSkill {
     /**

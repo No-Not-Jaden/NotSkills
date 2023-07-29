@@ -1,7 +1,7 @@
 package me.jadenp.notskills.BuiltInSkills.SpecificSkills;
 
-import me.jadenp.notskills.BuiltInSkills.IChargeSkill;
-import me.jadenp.notskills.BuiltInSkills.RepeatingSkill;
+import me.jadenp.notskills.BuiltInSkills.SkillTraits.IChargeSkill;
+import me.jadenp.notskills.BuiltInSkills.SkillTraits.RepeatingSkill;
 import me.jadenp.notskills.BuiltInSkills.SkillHandler;
 import me.jadenp.notskills.NotSkills;
 import org.bukkit.Location;
@@ -13,12 +13,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-import org.intellij.lang.annotations.Language;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 

@@ -1,6 +1,6 @@
 package me.jadenp.notskills.BuiltInSkills.SpecificSkills;
 
-import me.jadenp.notskills.BuiltInSkills.RepeatingSkill;
+import me.jadenp.notskills.BuiltInSkills.SkillTraits.RepeatingSkill;
 import me.jadenp.notskills.BuiltInSkills.SkillHandler;
 import me.jadenp.notskills.NotSkills;
 import me.jadenp.notskills.utils.ConfigOptions;
@@ -50,7 +50,7 @@ public class Veil extends RepeatingSkill {
                 if (!skillAction())
                     this.cancel();
             }
-        }.runTaskTimer(NotSkills.getInstance(), super.getDelayTicks(), timingTicks);
+        }.runTaskTimer(NotSkills.getInstance(), super.getDelayTicks(), super.getTimingTicks());
     }
 
     public static final Object[] defaultParameters = new Object[]{10, 300, false, 0, 80, 25.0, "SCULK"};
@@ -78,7 +78,7 @@ public class Veil extends RepeatingSkill {
                 if (!skillAction())
                     this.cancel();
             }
-        }.runTaskTimer(NotSkills.getInstance(), super.getDelayTicks(), (int) parameters[4]);
+        }.runTaskTimer(NotSkills.getInstance(), super.getDelayTicks(), super.getTimingTicks());
     }
 
     public void calculateParticleLocations(){

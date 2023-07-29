@@ -1,6 +1,6 @@
 package me.jadenp.notskills.BuiltInSkills.SpecificSkills;
 
-import me.jadenp.notskills.BuiltInSkills.ProjectileSkill;
+import me.jadenp.notskills.BuiltInSkills.SkillTraits.ProjectileSkill;
 import me.jadenp.notskills.BuiltInSkills.SkillHandler;
 import org.bukkit.Location;
 import org.bukkit.Particle;

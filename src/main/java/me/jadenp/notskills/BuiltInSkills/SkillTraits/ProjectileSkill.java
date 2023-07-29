@@ -1,7 +1,6 @@
-package me.jadenp.notskills.BuiltInSkills;
+package me.jadenp.notskills.BuiltInSkills.SkillTraits;
 
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 
 public class ProjectileSkill extends DelayedActionSkill implements IChargeSkill{

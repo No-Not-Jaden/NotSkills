@@ -1,8 +1,6 @@
-package me.jadenp.notskills.BuiltInSkills;
+package me.jadenp.notskills.BuiltInSkills.SkillTraits;
 
-import me.jadenp.notskills.NotSkills;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 public class RepeatingSkill extends DelayedActionSkill{

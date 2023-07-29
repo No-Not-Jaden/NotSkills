@@ -1,7 +1,6 @@
-package me.jadenp.notskills.BuiltInSkills;
+package me.jadenp.notskills.BuiltInSkills.SkillTraits;
 
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 
 public class DelayedActionSkill extends BuiltInSkill{
     private int expireTicks;

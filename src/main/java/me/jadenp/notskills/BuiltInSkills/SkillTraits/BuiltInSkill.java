@@ -1,5 +1,6 @@
-package me.jadenp.notskills.BuiltInSkills;
+package me.jadenp.notskills.BuiltInSkills.SkillTraits;
 
+import me.jadenp.notskills.BuiltInSkills.SkillHandler;
 import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;

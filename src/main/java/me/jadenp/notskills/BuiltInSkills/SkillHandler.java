@@ -1,22 +1,17 @@
 package me.jadenp.notskills.BuiltInSkills;
 
-import me.jadenp.notskills.BuiltInSkills.SpecificSkills.*;
-import me.jadenp.notskills.NotSkills;
+import me.jadenp.notskills.BuiltInSkills.SkillTraits.BuiltInSkill;
+import me.jadenp.notskills.BuiltInSkills.SkillTraits.DelayedActionSkill;
 import me.jadenp.notskills.utils.ConfigOptions;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.List;
+
+
 
 public class SkillHandler {
 

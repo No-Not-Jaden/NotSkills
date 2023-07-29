@@ -1,5 +1,8 @@
 package me.jadenp.notskills.BuiltInSkills;
 
+import me.jadenp.notskills.BuiltInSkills.SkillTraits.DelayedActionSkill;
+import me.jadenp.notskills.BuiltInSkills.SkillTraits.IChargeSkill;
+import me.jadenp.notskills.BuiltInSkills.SkillTraits.ProjectileSkill;
 import me.jadenp.notskills.NotSkills;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
