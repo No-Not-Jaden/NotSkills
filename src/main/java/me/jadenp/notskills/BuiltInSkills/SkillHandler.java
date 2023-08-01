@@ -16,7 +16,7 @@ import java.util.List;
 public class SkillHandler {
 
 
-    private static final List<String> skillNames = Arrays.asList("ABSORB","ARIELSTRIKE","BLOODSACRIFICE","DASH","ICESHARDS","SNIPE","VEIL");
+    private static final List<String> skillNames = Arrays.asList("ABSORB","ARIELSTRIKE","BLOODSACRIFICE","DASH","ICESHARDS","SNIPE","VEIL","LOCK");
 
 
 

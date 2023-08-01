@@ -29,8 +29,8 @@ How to add a built-in skill:
          {A} Class only extends BuiltInSkill
              ~ Add a call to skillAction() at the end of both your constructors
              ~ Add a call to skillAction() at the end of its own method before return true;
-         {B} Class extends DelayedActionSkill or RepeatingSkill
-             ~ Add these lines of code to initialize the runnable. Remove super.getTimingTicks() if only extending DelayedActionSkill
+         {B} Class extends RepeatingSkill
+             ~ Add these lines of code to initialize the runnable.
                  runnable = new BukkitRunnable(){
                      @Override
                      public void run() {

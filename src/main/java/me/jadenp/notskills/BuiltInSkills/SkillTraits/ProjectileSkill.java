@@ -28,6 +28,7 @@ public class ProjectileSkill extends DelayedActionSkill implements IChargeSkill{
     protected void registerParameters(Object[] parameters){
         super.registerParameters(parameters);
         this.chargeTicks = (int) parameters[3];
+        startCharge();
     }
 
 
